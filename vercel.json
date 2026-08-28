@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/upload-file", "destination": "/upload-file.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
