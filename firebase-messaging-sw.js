@@ -13,35 +13,30 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Notifikasi background
+// Tangkap notifikasi background
 messaging.onBackgroundMessage((payload) => {
-  console.log('📩 Notifikasi background:', payload);
+  console.log('📩 Background notif:', payload);
   const title = payload.notification.title || 'RIKY STORE';
   const options = {
-    body: payload.notification.body || 'Ada notifikasi baru',
+    body: payload.notification.body || 'Pesan baru',
     icon: '/icon.png',
     badge: '/icon.png',
-    tag: 'riky-store',
-    data: payload.data || {}
+    tag: 'riky'
   };
-  return self.registration.showNotification(title, options);
+  self.registration.showNotification(title, options);
 });
 
-// Event SW agar tetap aktif
-self.addEventListener('install', (event) => {
+// Event agar SW tetap hidup
+self.addEventListener('install', () => {
   console.log('✅ SW installed');
   self.skipWaiting();
 });
-
 self.addEventListener('activate', (event) => {
   console.log('✅ SW activated');
   event.waitUntil(clients.claim());
 });
-
-// Tambahkan event fetch (biar SW tidak dianggap idle)
 self.addEventListener('fetch', (event) => {
-  // Tidak perlu melakukan apa-apa, cukup agar SW tetap hidup
+  // Biar SW tetap aktif
   event.respondWith(fetch(event.request));
 });
-
-console.log('🔥 Service Worker RIKY STORE siap!');
+console.log('🔥 SW RIKY STORE siap!');
