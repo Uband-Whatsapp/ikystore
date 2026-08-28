@@ -1,7 +1,10 @@
 {
   "name": "riky-store-push",
   "version": "1.0.0",
+  "private": true,
   "dependencies": {
-    "firebase-admin": "^11.11.0"
+    "firebase-admin": "^12.0.0",
+    "@vercel/kv": "^2.0.0",
+    "web-push": "^3.6.0"
   }
 }
