@@ -1,4 +1,4 @@
-// sw.js - RIKY STORE (Kustom)
+// sw.js - RIKY STORE
 const DEFAULT_URL = 'https://iky.store.ekkstore.web.id/';
 const DEFAULT_ICON = 'https://files.catbox.moe/kzg0nc.png';
 const DEFAULT_BADGE = 'https://files.catbox.moe/kzg0nc.png';
