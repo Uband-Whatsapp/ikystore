@@ -1,6 +1,12 @@
 // api/update-index.js
 module.exports = async function handler(req, res) {
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -22,7 +28,7 @@ module.exports = async function handler(req, res) {
   const BRANCH = 'main';
 
   try {
-    // Ambil SHA file saat ini
+    // Ambil SHA
     const getRes = await fetch(
       `https://api.github.com/repos/${REPO}/contents/${PATH}?ref=${BRANCH}`,
       { headers: { Authorization: `token ${GITHUB_TOKEN}` } }
@@ -34,7 +40,7 @@ module.exports = async function handler(req, res) {
     const fileData = await getRes.json();
     const sha = fileData.sha;
 
-    // Update file
+    // Update
     const updateRes = await fetch(
       `https://api.github.com/repos/${REPO}/contents/${PATH}`,
       {
@@ -44,7 +50,7 @@ module.exports = async function handler(req, res) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: 'Update index.html via admin',
+          message: 'Update via admin',
           content: Buffer.from(html).toString('base64'),
           sha: sha,
           branch: BRANCH,
@@ -59,10 +65,10 @@ module.exports = async function handler(req, res) {
 
     res.status(200).json({
       success: true,
-      message: '✅ index.html berhasil diupdate! Vercel akan deploy otomatis.',
+      message: '✅ Berhasil! Vercel akan deploy otomatis.',
     });
   } catch (err) {
-    console.error('❌ Error update index:', err);
+    console.error('❌ Error:', err);
     res.status(500).json({ error: err.message });
   }
 };
