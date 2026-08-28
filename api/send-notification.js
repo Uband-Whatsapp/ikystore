@@ -27,9 +27,10 @@ module.exports = async (req, res) => {
 
   // Verifikasi password admin
   const password = req.headers['x-admin-password'];
-  if (password !== process.env.ADMIN_PASSWORD) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+  // 🔴 SEMENTARA: Hardcode password "1"
+if (password !== "1") {
+  return res.status(401).json({ error: 'Unauthorized' });
+}
 
   const { title, body, url } = req.body;
   if (!title || !body) {
