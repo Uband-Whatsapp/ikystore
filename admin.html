@@ -33,54 +33,58 @@
 
   <script>
     document.getElementById('pushForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const password = document.getElementById('adminPassword').value.trim();
-      const title = document.getElementById('title').value.trim();
-      const body = document.getElementById('body').value.trim();
-      const url = document.getElementById('url').value.trim() || 'https://lky.store.ekkstore.web.id';
-      const statusDiv = document.getElementById('status');
+  e.preventDefault();
+  const password = document.getElementById('adminPassword').value.trim();
+  const title = document.getElementById('title').value.trim();
+  const body = document.getElementById('body').value.trim();
+  const url = document.getElementById('url').value.trim() || 'https://iky.store.ekkstore.web.id';
+  const statusDiv = document.getElementById('status');
 
-      if (!password) { statusDiv.textContent = '❌ Masukkan password admin!'; statusDiv.className = 'error'; return; }
-      if (!title || !body) { statusDiv.textContent = '❌ Isi judul dan pesan!'; statusDiv.className = 'error'; return; }
+  if (!password) { statusDiv.textContent = '❌ Masukkan password admin!'; statusDiv.className = 'error'; return; }
+  if (!title || !body) { statusDiv.textContent = '❌ Isi judul dan pesan!'; statusDiv.className = 'error'; return; }
 
-      statusDiv.textContent = '⏳ Mengirim...';
-      statusDiv.className = '';
+  statusDiv.textContent = '⏳ Mengirim...';
+  statusDiv.className = '';
 
-      try {
-        const res = await fetch('/api/send-notification', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'x-admin-password': password
-          },
-          body: JSON.stringify({ title, body, url })
-        });
-
-        // Baca response sebagai text dulu
-        const text = await res.text();
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch (err) {
-          // Jika bukan JSON, tampilkan teks error
-          statusDiv.textContent = '❌ Server error: ' + text.substring(0, 100);
-          statusDiv.className = 'error';
-          console.error('Response bukan JSON:', text);
-          return;
-        }
-
-        if (res.ok) {
-          statusDiv.textContent = '✅ ' + (data.message || 'Berhasil dikirim!');
-          statusDiv.className = 'success';
-        } else {
-          statusDiv.textContent = '❌ Gagal: ' + (data.error || 'unknown error');
-          statusDiv.className = 'error';
-        }
-      } catch (err) {
-        statusDiv.textContent = '❌ Error jaringan: ' + err.message;
-        statusDiv.className = 'error';
-      }
+  try {
+    const res = await fetch('/api/send-notification', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-admin-password': password
+      },
+      body: JSON.stringify({ title, body, url })
     });
+
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
+      statusDiv.textContent = '❌ Server error: ' + text.substring(0, 100);
+      statusDiv.className = 'error';
+      console.error('Response bukan JSON:', text);
+      return;
+    }
+
+    if (res.ok) {
+      // ===== TAMPILKAN JUMLAH PERANGKAT =====
+      if (data.total !== undefined) {
+        const success = data.success || data.total;
+        statusDiv.textContent = `✅ Pesan berhasil dikirim ke ${success} perangkat dari ${data.total} subscriber.`;
+      } else {
+        statusDiv.textContent = '✅ ' + (data.message || 'Berhasil dikirim!');
+      }
+      statusDiv.className = 'success';
+    } else {
+      statusDiv.textContent = '❌ Gagal: ' + (data.error || 'unknown error');
+      statusDiv.className = 'error';
+    }
+  } catch (err) {
+    statusDiv.textContent = '❌ Error jaringan: ' + err.message;
+    statusDiv.className = 'error';
+  }
+});
   </script>
 </body>
 </html>
