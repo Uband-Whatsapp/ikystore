@@ -12,7 +12,7 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-// 🔥 VAPID KEYS (pakai punya kamu, saya contohkan dari deploy)
+// VAPID KEYS (SAMA PERSIS DENGAN YANG DI INDEX.HTML)
 const VAPID_PUBLIC_KEY = 'BPXIBP6nsxkkYmrHpkkBQsZDwVnnyAYKbGupNOTls_HcOQVC39iI0eLHJtx4qGv5AJHmDYNnxz5PeE6fYZ3BINk';
 const VAPID_PRIVATE_KEY = 'uxUkgwgAFK32C6l5gXxeYdTvOSTcgg3rSfP2TCiuoMo';
 
@@ -27,12 +27,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Cek password admin (sesuai env)
   const password = req.headers['x-admin-password'];
-  // SEMENTARA: hardcode password "1"
-if (password !== "1") {
-  return res.status(401).json({ error: 'Unauthorized' });
-}
+  if (password !== process.env.ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   const { title, body, icon, url } = req.body;
   if (!title || !body) {
@@ -72,7 +70,7 @@ if (password !== "1") {
       } catch (err) {
         console.error('❌ Gagal kirim:', err.statusCode, err.message);
         if (err.statusCode === 410 || err.statusCode === 404) {
-          // Subscription expired, kita hapus nanti (opsional)
+          // Subscription expired, nanti hapus
         }
       }
     }
