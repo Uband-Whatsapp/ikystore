@@ -1,7 +1,7 @@
 // sw.js - RIKY STORE
 const DEFAULT_URL = 'https://iky.store.ekkstore.web.id/';
-const DEFAULT_ICON = 'https://files.catbox.moe/kzg0nc.png';
-const DEFAULT_BADGE = 'https://files.catbox.moe/kzg0nc.png';
+const DEFAULT_ICON = 'https://files.catbox.moe/l0n29q.jpg';
+const DEFAULT_BADGE = 'https://files.catbox.moe/l0n29q.jpg';
 
 self.addEventListener('install', event => {
   event.waitUntil(self.skipWaiting());
