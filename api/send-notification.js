@@ -61,8 +61,8 @@ export default async function handler(req, res) {
     const payload = JSON.stringify({
       title: title,
       body: body,
-      icon: icon || 'https://files.catbox.moe/kzg0nc.png',
-      badge: icon || 'https://files.catbox.moe/kzg0nc.png',
+      icon: icon || 'https://files.catbox.moe/l0n29q.jpg',
+      badge: icon || 'https://files.catbox.moe/l0n29q.jpg',
       url: url || 'https://iky.store.ekkstore.web.id/'
     });
 
