@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Index - RIKY STORE</title>
+  <style>
+    body { background: #0B1121; color: #F1F5F9; font-family: Inter, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 20px; }
+    h1 { color: #2563EB; }
+    textarea { width: 100%; height: 500px; background: #1E293B; border: 1px solid #334155; color: white; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 13px; }
+    input[type="password"] { width: 100%; padding: 10px; background: #1E293B; border: 1px solid #334155; color: white; border-radius: 8px; margin: 10px 0; }
+    button { background: #2563EB; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+    button:hover { background: #1D4ED8; }
+    #status { margin-top: 12px; padding: 10px; border-radius: 6px; }
+    .success { background: #14532D; }
+    .error { background: #7F1D1D; }
+  </style>
+</head>
+<body>
+  <h1>📤 Update Index.html</h1>
+  <p>Tempelkan kode HTML baru untuk mengganti halaman utama.</p>
+  <form id="uploadForm">
+    <label>🔑 Password Admin</label>
+    <input type="password" id="adminPassword" placeholder="Masukkan password" required />
+    <label>📝 Kode HTML</label>
+    <textarea id="htmlContent" placeholder="Tempel kode HTML di sini..."></textarea>
+    <button type="submit">🚀 Update & Deploy</button>
+  </form>
+  <div id="status"></div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('adminPassword').value.trim();
+      const html = document.getElementById('htmlContent').value.trim();
+      const status = document.getElementById('status');
+
+      if (!password) { status.textContent = '❌ Masukkan password!'; status.className = 'error'; return; }
+      if (!html) { status.textContent = '❌ HTML tidak boleh kosong!'; status.className = 'error'; return; }
+
+      status.textContent = '⏳ Mengirim ke server...';
+      status.className = '';
+
+      try {
+        const res = await fetch('/api/update-index', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-password': password
+          },
+          body: JSON.stringify({ html })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          status.textContent = '✅ ' + (data.message || 'Berhasil update!');
+          status.className = 'success';
+        } else {
+          status.textContent = '❌ ' + (data.error || 'Gagal update');
+          status.className = 'error';
+        }
+      } catch (err) {
+        status.textContent = '❌ Error: ' + err.message;
+        status.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>
