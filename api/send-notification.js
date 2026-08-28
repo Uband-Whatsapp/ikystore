@@ -1,25 +1,31 @@
 // api/send-notification.js
 const admin = require('firebase-admin');
-const { getFirestore } = require('firebase-admin/firestore');
 
-// 🔴 GANTI PROJECT ID DI BAWAH DENGAN PUNYA KAMU
-const PROJECT_ID = "riky-store-push";
-
-if (!admin.apps.length) {
+// 🔴 PASTIKAN SERVICE ACCOUNT SUDAH DI-SET DI ENV
+let app;
+try {
   const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  admin.initializeApp({
+  app = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    projectId: PROJECT_ID,
+    projectId: process.env.FIREBASE_PROJECT_ID,
   });
+} catch (err) {
+  console.error('Gagal inisialisasi Firebase Admin:', err.message);
 }
 
-const db = getFirestore();
+const db = admin.firestore();
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
+  // Set CORS dan response JSON
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Content-Type', 'application/json');
+
+  // Hanya terima POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Verifikasi password admin
   const password = req.headers['x-admin-password'];
   if (password !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -27,10 +33,11 @@ export default async function handler(req, res) {
 
   const { title, body, url } = req.body;
   if (!title || !body) {
-    return res.status(400).json({ error: 'Title dan body wajib' });
+    return res.status(400).json({ error: 'Title dan body wajib diisi' });
   }
 
   try {
+    // Ambil semua token dari Firestore
     const snapshot = await db.collection('tokens').get();
     const tokens = [];
     snapshot.forEach(doc => {
@@ -42,10 +49,11 @@ export default async function handler(req, res) {
       return res.status(200).json({ message: 'Tidak ada token tersimpan' });
     }
 
+    // Kirim notifikasi
     const payload = {
       notification: { title, body },
       webpush: {
-        fcm_options: { link: url || 'https://iky.store.ekkstore.web.id' }
+        fcm_options: { link: url || 'https://lky.store.ekkstore.web.id' }
       }
     };
 
@@ -54,6 +62,7 @@ export default async function handler(req, res) {
       ...payload,
     });
 
+    // Hapus token yang gagal
     const failedTokens = [];
     response.responses.forEach((resp, idx) => {
       if (!resp.success) failedTokens.push(tokens[idx]);
@@ -69,13 +78,14 @@ export default async function handler(req, res) {
       await batch.commit();
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: `Notifikasi dikirim ke ${tokens.length - failedTokens.length} perangkat (${failedTokens.length} gagal)`,
       failed: failedTokens.length,
     });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: error.message });
+
+  } catch (err) {
+    console.error('Error:', err);
+    return res.status(500).json({ error: err.message || 'Internal server error' });
   }
-}
+};
