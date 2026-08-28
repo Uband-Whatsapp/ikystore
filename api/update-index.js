@@ -1,12 +1,10 @@
 // api/update-index.js
 export default async function handler(req, res) {
-  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Auth password
   const password = req.headers['x-admin-password'];
   if (password !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -23,7 +21,6 @@ export default async function handler(req, res) {
   const BRANCH = 'main';
 
   try {
-    // 1. Ambil SHA file saat ini
     const getRes = await fetch(
       `https://api.github.com/repos/${REPO}/contents/${PATH}?ref=${BRANCH}`,
       { headers: { Authorization: `token ${GITHUB_TOKEN}` } }
@@ -35,7 +32,6 @@ export default async function handler(req, res) {
     const fileData = await getRes.json();
     const sha = fileData.sha;
 
-    // 2. Update file dengan konten baru
     const updateRes = await fetch(
       `https://api.github.com/repos/${REPO}/contents/${PATH}`,
       {
