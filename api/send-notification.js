@@ -29,9 +29,9 @@ export default async function handler(req, res) {
 
   const password = req.headers['x-admin-password'];
   // SEMENTARA: hardcode password "1"
-if (password !== "1") {
-  return res.status(401).json({ error: 'Unauthorized' });
-}
+  if (password !== "1") {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   const { title, body, icon, url } = req.body;
   if (!title || !body) {
@@ -51,7 +51,11 @@ if (password !== "1") {
     console.log(`📨 Total subscriber: ${subscriptions.length}`);
 
     if (subscriptions.length === 0) {
-      return res.status(200).json({ message: 'Tidak ada subscriber', total: 0 });
+      return res.status(200).json({
+        message: 'Tidak ada subscriber yang terdaftar.',
+        total: 0,
+        success: 0
+      });
     }
 
     const payload = JSON.stringify({
@@ -76,7 +80,11 @@ if (password !== "1") {
       }
     }
 
-    res.status(200).json({ total: subscriptions.length, success: successCount });
+    res.status(200).json({
+      total: subscriptions.length,
+      success: successCount,
+      message: `Notifikasi dikirim ke ${successCount} perangkat dari ${subscriptions.length} subscriber.`
+    });
   } catch (err) {
     console.error('❌ Error send-notification:', err);
     res.status(500).json({ error: err.message });
