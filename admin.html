@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Push Notif</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { background: #0B1121; color: #F1F5F9; font-family: Inter, sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 20px; }
+    h1 { color: #2563EB; }
+    label { display: block; margin-top: 12px; font-weight: 600; }
+    input, textarea { width: 100%; padding: 10px; margin: 4px 0 8px; background: #1E293B; border: 1px solid #334155; color: white; border-radius: 8px; }
+    button { background: #2563EB; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+    button:hover { background: #1D4ED8; }
+    #status { margin-top: 12px; padding: 10px; border-radius: 6px; }
+    .error { background: #7F1D1D; }
+    .success { background: #14532D; }
+  </style>
+</head>
+<body>
+  <h1>🔔 Kirim Notifikasi Push</h1>
+  <form id="pushForm">
+    <label>🔑 Password Admin</label>
+    <input type="password" id="adminPassword" placeholder="Masukkan password admin" required />
+    <label>📌 Judul</label>
+    <input type="text" id="title" placeholder="Judul notifikasi" required />
+    <label>📝 Pesan</label>
+    <textarea id="body" rows="4" placeholder="Isi notifikasi..." required></textarea>
+    <label>🔗 URL (opsional, saat notifikasi diklik)</label>
+    <input type="url" id="url" placeholder="https://iky.store.ekkstore.web.id" value="https://iky.store.ekkstore.web.id" />
+    <button type="submit">📨 Kirim ke Semua Pengguna</button>
+  </form>
+  <div id="status"></div>
+
+  <script>
+    document.getElementById('pushForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('adminPassword').value.trim();
+      const title = document.getElementById('title').value.trim();
+      const body = document.getElementById('body').value.trim();
+      const url = document.getElementById('url').value.trim() || 'https://iky.store.ekkstore.web.id';
+      const statusDiv = document.getElementById('status');
+
+      if (!password) { statusDiv.textContent = '❌ Masukkan password admin!'; statusDiv.className = 'error'; return; }
+      if (!title || !body) { statusDiv.textContent = '❌ Isi judul dan pesan!'; statusDiv.className = 'error'; return; }
+
+      statusDiv.textContent = '⏳ Mengirim...';
+      statusDiv.className = '';
+
+      try {
+        const res = await fetch('/api/send-notification', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'x-admin-password': password
+          },
+          body: JSON.stringify({ title, body, url })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          statusDiv.textContent = '✅ ' + (data.message || 'Berhasil dikirim!');
+          statusDiv.className = 'success';
+        } else {
+          statusDiv.textContent = '❌ Gagal: ' + (data.error || 'unknown error');
+          statusDiv.className = 'error';
+        }
+      } catch (err) {
+        statusDiv.textContent = '❌ Error: ' + err.message;
+        statusDiv.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>
