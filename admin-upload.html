@@ -42,7 +42,8 @@
       status.className = '';
 
       try {
-        const res = await fetch('/api/update-index', {
+        // 🔥 PASTIKAN URL INI BENAR (relatif terhadap root)
+        const response = await fetch('/api/update-index', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -51,8 +52,20 @@
           body: JSON.stringify({ html })
         });
 
-        const data = await res.json();
-        if (res.ok) {
+        // Baca response sebagai text terlebih dahulu
+        const text = await response.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (err) {
+          // Jika response bukan JSON, tampilkan isi response (biasanya HTML error)
+          status.textContent = '❌ Server error: ' + text.substring(0, 100);
+          status.className = 'error';
+          console.error('Response bukan JSON:', text);
+          return;
+        }
+
+        if (response.ok) {
           status.textContent = '✅ ' + (data.message || 'Berhasil update!');
           status.className = 'success';
         } else {
@@ -60,8 +73,9 @@
           status.className = 'error';
         }
       } catch (err) {
-        status.textContent = '❌ Error: ' + err.message;
+        status.textContent = '❌ Error jaringan: ' + err.message;
         status.className = 'error';
+        console.error(err);
       }
     });
   </script>
