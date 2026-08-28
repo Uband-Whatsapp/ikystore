@@ -3203,6 +3203,7 @@
         window.previewBukti = previewBukti;
     </script>
 <!-- Firebase SDK -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -3224,7 +3225,7 @@ const db = firebase.firestore();
 
 const VAPID_KEY = "BGVdmUlwAsQA04HuozJ5XmvNBO8wzq3ZPDqrqMp635aXjFnAkvQCIg4_IArVzZ7rcpieWe9N9sBGHxJyR8g5C-o";
 
-// Fungsi simpan token
+// Fungsi simpan token (hanya console log, tanpa pop-up)
 function saveToken(token) {
   let userId = localStorage.getItem('pushUserId') || 'user_' + Date.now();
   localStorage.setItem('pushUserId', userId);
@@ -3235,15 +3236,11 @@ function saveToken(token) {
   }).then(() => console.log('✅ Token tersimpan')).catch(err => console.error('❌ Gagal simpan', err));
 }
 
-// Daftar SW, lalu minta token
+// Daftar SW, lalu minta token (TANPA ALERT / POP-UP)
 if ('Notification' in window && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then(reg => {
-      console.log('✅ SW registered');
-      return navigator.serviceWorker.ready;
-    })
     .then(() => {
-      console.log('✅ SW ready, minta izin...');
+      console.log('✅ SW registered');
       return Notification.requestPermission();
     })
     .then(perm => {
@@ -3251,12 +3248,15 @@ if ('Notification' in window && 'serviceWorker' in navigator) {
         console.log('✅ Izin diberikan');
         return messaging.getToken({ vapidKey: VAPID_KEY });
       } else {
-        throw new Error('Izin ditolak');
+        console.warn('⚠️ Izin ditolak');
+        return null;
       }
     })
     .then(token => {
-      console.log('✅ Token:', token);
-      saveToken(token);
+      if (token) {
+        console.log('✅ Token:', token);
+        saveToken(token);
+      }
     })
     .catch(err => console.error('❌ Error:', err));
 }
