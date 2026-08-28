@@ -1,6 +1,7 @@
-// api/update-index.js
-export default async function handler(req, res) {
+// api/update-index.js (CommonJS)
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -21,6 +22,7 @@ export default async function handler(req, res) {
   const BRANCH = 'main';
 
   try {
+    // Ambil SHA file saat ini
     const getRes = await fetch(
       `https://api.github.com/repos/${REPO}/contents/${PATH}?ref=${BRANCH}`,
       { headers: { Authorization: `token ${GITHUB_TOKEN}` } }
@@ -32,6 +34,7 @@ export default async function handler(req, res) {
     const fileData = await getRes.json();
     const sha = fileData.sha;
 
+    // Update file
     const updateRes = await fetch(
       `https://api.github.com/repos/${REPO}/contents/${PATH}`,
       {
@@ -62,4 +65,4 @@ export default async function handler(req, res) {
     console.error('❌ Error update index:', err);
     res.status(500).json({ error: err.message });
   }
-}
+};
