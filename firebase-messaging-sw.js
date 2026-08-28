@@ -1,15 +1,16 @@
+
 // firebase-messaging-sw.js
 importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js');
 
-// 🔴 GANTI DATA DI BAWAH INI DENGAN PUNYA KAMU
 firebase.initializeApp({
-  apiKey: "AIzaSy...",              // ganti dengan apiKey kamu
+  apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
   authDomain: "riky-store-push.firebaseapp.com",
   projectId: "riky-store-push",
-  storageBucket: "riky-store-push.appspot.com",
-  messagingSenderId: "1234567890",   // ganti dengan senderId kamu
-  appId: "1:1234567890:web:abcdef"   // ganti dengan appId kamu
+  storageBucket: "riky-store-push.firebasestorage.app",
+  messagingSenderId: "700709840952",
+  appId: "1:700709840952:web:d2efb042652f931d269ecd",
+  measurementId: "G-SCS91DNX9P"
 });
 
 const messaging = firebase.messaging();
@@ -19,7 +20,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/icon.png'  // ganti dengan icon kamu (opsional)
+    icon: '/icon.png'
   };
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
