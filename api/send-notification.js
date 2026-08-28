@@ -13,8 +13,8 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 
 // VAPID KEYS (SAMA PERSIS DENGAN YANG DI INDEX.HTML)
-const VAPID_PUBLIC_KEY = 'BPXIBP6nsxkkYmrHpkkBQsZDwVnnyAYKbGupNOTls_HcOQVC39iI0eLHJtx4qGv5AJHmDYNnxz5PeE6fYZ3BINk';
-const VAPID_PRIVATE_KEY = 'uxUkgwgAFK32C6l5gXxeYdTvOSTcgg3rSfP2TCiuoMo';
+const VAPID_PUBLIC_KEY = 'BFcH-HuEIbgumvfYh8SXXIip0MCOndkFTovfImUmIwxU1NotrrQxdma7c7vt2PkZcQLHFCsCHPGAQqDKO_QDwCs';
+const VAPID_PRIVATE_KEY = '5slaCeRBYXAhBAgs4SVlMLT4vLY0e9Ilok7p1y-HIzg';
 
 webpush.setVapidDetails(
   'mailto:ekkstore.id@gmail.com',
