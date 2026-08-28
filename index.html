@@ -3202,12 +3202,12 @@
         window.showToast = showToast;
         window.previewBukti = previewBukti;
     </script>
-<!-- Firebase SDK -->
+<!-- Firebase SDK (tetap dipakai untuk Firestore) -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
+// ===== KONFIGURASI FIREBASE (PAKAI PUNYA KAMU) =====
 const firebaseConfig = {
   apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
   authDomain: "riky-store-push.firebaseapp.com",
@@ -3218,41 +3218,67 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const messaging = firebase.messaging();
+// Kita tetap pakai Firestore untuk simpan subscription
 const db = firebase.firestore();
-const VAPID_KEY = "BGVdmUlwAsQA04HuozJ5XmvNBO8wzq3ZPDqrqMp635aXjFnAkvQCIg4_IArVzZ7rcpieWe9N9sBGHxJyR8g5C-o";
 
-function saveToken(token) {
-  let userId = localStorage.getItem('pushUserId') || 'user_' + Date.now();
-  localStorage.setItem('pushUserId', userId);
-  db.collection('tokens').doc(userId).set({
-    token: token,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    userAgent: navigator.userAgent
-  }).then(() => console.log('✅ Token tersimpan')).catch(err => console.error('❌ Gagal simpan', err));
+// ===== VAPID PUBLIC KEY (PAKAI PUNYA DEPLOY) =====
+const VAPID_PUBLIC_KEY = 'BPXIBP6nsxkkYmrHpkkBQsZDwVnnyAYKbGupNOTls_HcOQVC39iI0eLHJtx4qGv5AJHmDYNnxz5PeE6fYZ3BINk';
+
+// ===== FUNGSI SUBSCRIBE =====
+async function subscribeUser() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    console.warn('Push not supported');
+    return;
+  }
+
+  // Register service worker (sw.js)
+  const registration = await navigator.serviceWorker.register('/sw.js');
+  console.log('✅ SW registered');
+
+  // Minta izin notifikasi
+  const permission = await Notification.requestPermission();
+  if (permission !== 'granted') {
+    console.warn('Izin ditolak');
+    return;
+  }
+
+  // Dapatkan subscription
+  const subscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: VAPID_PUBLIC_KEY
+  });
+
+  console.log('✅ Subscription:', subscription);
+
+  // Simpan ke Firestore via API
+  const anonId = localStorage.getItem('pushAnonId') || 'user_' + Date.now();
+  localStorage.setItem('pushAnonId', anonId);
+
+  await fetch('/api/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ anonId, subscription: subscription.toJSON() })
+  });
+
+  console.log('✅ Subscription tersimpan');
 }
 
-if ('Notification' in window && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then(reg => {
-      console.log('✅ SW registered');
+// ===== JALANKAN SAAT HALAMAN DIMUAT =====
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => {
+      console.log('SW registered, cek subscription...');
       return navigator.serviceWorker.ready;
     })
-    .then(() => {
-      console.log('✅ SW ready');
-      return Notification.requestPermission();
+    .then(reg => {
+      return reg.pushManager.getSubscription();
     })
-    .then(perm => {
-      if (perm === 'granted') {
-        console.log('✅ Izin diberikan');
-        return messaging.getToken({ vapidKey: VAPID_KEY });
+    .then(sub => {
+      if (!sub) {
+        subscribeUser(); // jika belum subscribe, daftarkan
       } else {
-        throw new Error('Izin ditolak');
+        console.log('✅ Sudah subscribe');
       }
-    })
-    .then(token => {
-      console.log('✅ Token:', token);
-      saveToken(token);
     })
     .catch(err => console.error('❌ Error:', err));
 }
