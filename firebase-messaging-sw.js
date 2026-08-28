@@ -13,30 +13,20 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Tangkap notifikasi background
 messaging.onBackgroundMessage((payload) => {
-  console.log('📩 Background notif:', payload);
+  console.log('📩 Notifikasi background:', payload);
   const title = payload.notification.title || 'RIKY STORE';
   const options = {
-    body: payload.notification.body || 'Pesan baru',
+    body: payload.notification.body || 'Ada notifikasi baru',
     icon: '/icon.png',
     badge: '/icon.png',
-    tag: 'riky'
+    tag: 'riky-store'
   };
   self.registration.showNotification(title, options);
 });
 
-// Event agar SW tetap hidup
-self.addEventListener('install', () => {
-  console.log('✅ SW installed');
-  self.skipWaiting();
-});
-self.addEventListener('activate', (event) => {
-  console.log('✅ SW activated');
-  event.waitUntil(clients.claim());
-});
-self.addEventListener('fetch', (event) => {
-  // Biar SW tetap aktif
-  event.respondWith(fetch(event.request));
-});
+// Biar SW tetap aktif
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', (event) => event.waitUntil(clients.claim()));
+self.addEventListener('fetch', (event) => event.respondWith(fetch(event.request)));
 console.log('🔥 SW RIKY STORE siap!');
