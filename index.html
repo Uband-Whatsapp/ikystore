@@ -1,0 +1,3273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>RIKY STORE - Marketplace Digital</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0B1121;
+            --surface: #0F172A;
+            --card: #1E293B;
+            --cardHover: #263348;
+            --text: #F1F5F9;
+            --textSec: #94A3B8;
+            --border: #334155;
+            --primary: #2563EB;
+            --primaryLight: #60A5FA;
+            --radius: 16px;
+            --radiusSm: 10px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadowSm: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 72px;
+            overflow-x: hidden;
+        }
+
+        /* ===== LIGHT THEME ===== */
+        body.light {
+            --bg: #F1F5F9;
+            --surface: #FFFFFF;
+            --card: #F1F5F9;
+            --text: #0F172A;
+            --textSec: #475569;
+            --border: #E2E8F0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadowSm: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--surface);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(11, 17, 33, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+        }
+        body.light .header {
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            height: 64px;
+            padding: 0 6px;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+        body.light .bottom-nav {
+            background: rgba(255, 255, 255, 0.96);
+        }
+        .bottom-nav .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+            border: none;
+            background: transparent;
+            color: var(--textSec);
+            font-size: 10px;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            border-radius: 12px;
+            padding: 4px 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bottom-nav .nav-item i {
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        .bottom-nav .nav-item.active {
+            color: var(--primary);
+        }
+        .bottom-nav .nav-item.active i {
+            transform: translateY(-2px);
+        }
+        .bottom-nav .nav-item .badge {
+            position: absolute;
+            top: 2px;
+            right: 50%;
+            transform: translateX(calc(50% + 18px));
+            background: #EF4444;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            border: 2px solid var(--surface);
+        }
+        .bottom-nav .nav-item .indicator {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 3px;
+            border-radius: 0 0 4px 4px;
+            background: var(--primary);
+            opacity: 0;
+            transition: all 0.2s;
+        }
+        .bottom-nav .nav-item.active .indicator {
+            opacity: 1;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            animation: fadeUp 0.35s ease forwards;
+            padding: 0 16px 16px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: all 0.25s;
+            overflow: hidden;
+        }
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadowSm);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #1D4ED8);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.25s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.4);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.25s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== INPUTS ===== */
+        .input-modern {
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radiusSm);
+            padding: 10px 14px;
+            color: var(--text);
+            font-size: 13px;
+            width: 100%;
+            transition: all 0.25s;
+            outline: none;
+        }
+        .input-modern:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        .input-modern::placeholder {
+            color: var(--textSec);
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge-blue {
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--primaryLight);
+        }
+        .badge-green {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22C55E;
+        }
+        .badge-yellow {
+            background: rgba(234, 179, 8, 0.15);
+            color: #EAB308;
+        }
+        .badge-red {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+        }
+        .badge-purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: #A855F7;
+        }
+
+        /* ===== PRODUCT CARD ===== */
+        .product-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        .product-card .img-wrap {
+            width: 100%;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            background: var(--surface);
+            position: relative;
+        }
+        .product-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s;
+        }
+        .product-card:hover .img-wrap img {
+            transform: scale(1.05);
+        }
+        .product-card .body {
+            padding: 10px 12px;
+        }
+        .product-card .name {
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: var(--text);
+        }
+        .product-card .price {
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--primary);
+            margin-top: 2px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .modal-content {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            animation: slideUp 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(16px) scale(0.96);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--surface);
+            z-index: 2;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        .modal-body {
+            padding: 14px 16px;
+        }
+        .modal-footer {
+            padding: 10px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--card);
+            border-radius: var(--radiusSm);
+            padding: 4px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .tabs .tab {
+            flex: 1;
+            min-width: 60px;
+            padding: 6px 10px;
+            border: none;
+            background: transparent;
+            color: var(--textSec);
+            font-weight: 600;
+            font-size: 10px;
+            border-radius: var(--radiusSm);
+            transition: all 0.2s;
+            cursor: pointer;
+            white-space: nowrap;
+            text-align: center;
+        }
+        .tabs .tab.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.3);
+        }
+        .tabs .tab:hover:not(.active) {
+            color: var(--text);
+        }
+
+        /* ===== DRAWER / SIDEBAR ===== */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            max-width: 80vw;
+            height: 100%;
+            z-index: 46;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 16px 0;
+            overscroll-behavior: contain;
+            scroll-behavior: smooth;
+        }
+        .drawer.open {
+            left: 0;
+        }
+        /* Scroll sidebar agar bisa ke bawah */
+        .drawer::-webkit-scrollbar {
+            width: 3px;
+        }
+        .drawer::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* ===== SCROLL X ===== */
+        .scroll-x {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 4px 0 10px;
+            scrollbar-width: thin;
+        }
+        .scroll-x::-webkit-scrollbar {
+            height: 3px;
+        }
+        .scroll-x::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        .scroll-x>* {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+
+        /* ===== BLINK DOT ===== */
+        .blink-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22C55E;
+            animation: pulse 1.6s infinite;
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 72px;
+            right: 12px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-width: 300px;
+            width: 100%;
+        }
+        .toast {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radiusSm);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            animation: slideRight 0.35s ease;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .toast.success {
+            border-left: 4px solid #22C55E;
+        }
+        .toast.error {
+            border-left: 4px solid #EF4444;
+        }
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+        @keyframes slideRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* ===== SEARCH RESULT ===== */
+        .search-result {
+            background: var(--card);
+            border-radius: var(--radiusSm);
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .search-result:hover {
+            border-color: var(--primary);
+            transform: scale(1.01);
+        }
+        .search-result .info .name {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text);
+        }
+        .search-result .info .cat {
+            font-size: 9px;
+            color: var(--textSec);
+        }
+        .search-result .price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 12px;
+        }
+        .search-result .price.layanan {
+            color: var(--textSec);
+            font-size: 10px;
+        }
+
+        /* ===== SYARAT LINK ===== */
+        .syarat-link {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+        .syarat-link:hover {
+            color: var(--primaryLight);
+            text-decoration: underline;
+        }
+
+        /* ===== WAJIB MODAL LIGHT THEME FIX ===== */
+        body.light #wajibModal .bg-surface {
+            background: #FFFFFF !important;
+        }
+        body.light #wajibModal .text-textMain {
+            color: #0F172A !important;
+        }
+        body.light #wajibModal .text-textSec {
+            color: #475569 !important;
+        }
+        body.light #wajibModal .border-borderColor {
+            border-color: #E2E8F0 !important;
+        }
+
+        /* ===== ORDER STATUS ===== */
+        .order-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .order-status .dot.pending {
+            background: #EAB308;
+        }
+        .order-status .dot.progress {
+            background: var(--primary);
+        }
+        .order-status .dot.success {
+            background: #22C55E;
+        }
+        .order-status .dot.cancel {
+            background: #EF4444;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 400px) {
+            .bottom-nav .nav-item {
+                font-size: 9px;
+            }
+            .bottom-nav .nav-item i {
+                font-size: 18px;
+            }
+            .page {
+                padding: 0 12px 12px;
+            }
+            .modal-content {
+                max-width: 95%;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .page {
+                padding: 0 24px 24px;
+                max-width: 640px;
+            }
+            .bottom-nav {
+                max-width: 640px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 20px 20px 0 0;
+            }
+        }
+
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .bottom-nav {
+                padding-bottom: env(safe-area-inset-bottom, 0);
+            }
+        }
+
+        /* ===== SIDEBAR SCROLL FIX ===== */
+        .drawer {
+            display: flex;
+            flex-direction: column;
+        }
+        .drawer .drawer-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        /* Supaya scroll di sidebar tidak mempengaruhi halaman */
+        body.drawer-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    TOAST
+    ============================================================ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================
+    WAJIB MODAL
+    ============================================================ -->
+    <div id="wajibModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md" style="backdrop-filter:blur(12px);">
+        <div class="bg-surface rounded-2xl max-w-sm w-full mx-4 p-6 shadow-2xl border border-borderColor text-center">
+            <div class="mb-4">
+                <h1 class="text-3xl font-black tracking-tight" style="color:var(--text);">
+                    RIKY <span style="color:var(--primary);">STORE</span>
+                </h1>
+                <div class="w-16 h-1 bg-primary rounded-full mx-auto mt-2"></div>
+            </div>
+            <p class="text-lg font-bold" style="color:var(--text);">Selamat Datang!</p>
+            <p class="text-sm mt-1 leading-relaxed" style="color:var(--textSec);">Toko digital terpercaya untuk topup game dan sewa bot WhatsApp.</p>
+            <button id="btnSetujuMasuk" class="mt-5 w-full btn-primary py-3 text-base">
+                <i class="fas fa-arrow-right"></i> Setuju & Masuk
+            </button>
+            <p class="text-[10px] mt-3 leading-relaxed" style="color:var(--textSec);">
+                Dengan melanjutkan, Anda menyetujui
+                <span class="syarat-link" id="syaratLink">syarat dan ketentuan</span>
+                RIKY STORE.
+            </p>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SYARAT & KETENTUAN MODAL
+    ============================================================ -->
+    <div class="modal-overlay" id="syaratModal">
+        <div class="modal-content" style="max-width:420px;">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-file-contract text-primary mr-2"></i>Syarat & Ketentuan</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="syaratModal">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height:55vh;overflow-y:auto;">
+                <div class="space-y-3 text-sm" style="color:var(--textSec);">
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">1. Penerimaan Syarat</h4>
+                        <p>Dengan mengakses dan menggunakan RIKY STORE, Anda menyetujui untuk terikat dengan syarat dan ketentuan ini.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">2. Perubahan Syarat</h4>
+                        <p>RIKY STORE berhak mengubah syarat dan ketentuan ini sewaktu-waktu. Perubahan akan diumumkan melalui website.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">3. Deskripsi Layanan</h4>
+                        <p>Kami menyediakan layanan top-up game, sewa bot WhatsApp, dan aplikasi premium. Semua produk digital dikirim secara elektronik.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">4. Harga dan Pembayaran</h4>
+                        <p>Harga dalam Rupiah (IDR). Pembayaran melalui transfer bank atau QRIS. Harga dapat berubah sewaktu-waktu.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">5. Pengiriman Produk</h4>
+                        <p>Produk digital dikirim 1-15 menit setelah pembayaran. Aplikasi premium maksimal 24 jam.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">6. Garansi dan Refund</h4>
+                        <p>Garansi 100% uang kembali jika produk tidak sesuai. Klaim refund disertai bukti transaksi valid.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">7. Privasi Data</h4>
+                        <p>Data pribadi Anda kami jaga kerahasiaannya dan tidak dibagikan ke pihak ketiga.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">8. Larangan Penggunaan</h4>
+                        <p>Dilarang menggunakan layanan untuk aktivitas ilegal, penipuan, atau pelanggaran hak cipta.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">9. Kontak</h4>
+                        <p>WhatsApp: <a href="https://wa.me/6289507390286" target="_blank" class="text-primary hover:underline">6289507390286</a> | Telegram: <a href="https://t.me/Rikynurrohman" target="_blank" class="text-primary hover:underline">@Rikynurrohman</a></p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" style="color:var(--text);">10. Hukum yang Berlaku</h4>
+                        <p>Syarat ini diatur oleh hukum Republik Indonesia.</p>
+                    </div>
+                    <p class="text-[10px] mt-2" style="color:var(--textSec);">Terakhir diperbarui: 27 Agustus 2026</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary text-sm w-full modal-close" data-modal="syaratModal"><i class="fas fa-check"></i> Saya Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="header flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <button id="menuBtn" class="text-xl" style="color:var(--textSec);" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div>
+                <h1 class="text-lg font-extrabold tracking-tight" style="color:var(--text);">
+                    RIKY <span style="color:var(--primary);">STORE</span>
+                </h1>
+                <div class="flex items-center gap-2 text-xs" style="color:var(--textSec);">
+                    <span class="blink-dot"></span>
+                    <span>Online</span>
+                    <span class="w-px h-3" style="background:var(--border);"></span>
+                    <span id="onlineCount"><i class="fas fa-users text-[10px]"></i> <span id="onlineNumber">1.2k</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-1">
+            <button id="searchBtn" class="w-8 h-8 rounded-full flex items-center justify-center transition" style="color:var(--textSec);">
+                <i class="fas fa-search text-sm"></i>
+            </button>
+            <button id="themeBtn" class="w-8 h-8 rounded-full flex items-center justify-center transition" style="color:var(--textSec);">
+                <i class="fas fa-moon text-sm"></i>
+            </button>
+            <button id="profileBtn" class="w-8 h-8 rounded-full flex items-center justify-center transition" style="color:var(--textSec);">
+                <i class="fas fa-user text-sm"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    DRAWER / SIDEBAR (dengan scroll fix)
+    ============================================================ -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-content px-4 pb-4">
+            <div class="pb-3 border-b" style="border-color:var(--border);">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-extrabold" style="color:var(--text);">RIKY <span style="color:var(--primary);">STORE</span></span>
+                    <button id="closeDrawer" class="text-2xl" style="color:var(--textSec);">&times;</button>
+                </div>
+                <div id="drawerUser" class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-user"></i></div>
+                    <div>
+                        <p class="font-bold text-sm" style="color:var(--text);">Guest</p>
+                        <p class="text-xs" style="color:var(--textSec);">Login untuk akses penuh</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-2">
+                <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--textSec);">Menu</p>
+                <div class="mt-1 space-y-0.5">
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="home"><i class="fas fa-house text-primary w-5 text-center"></i> Beranda</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="bot"><i class="fas fa-robot text-primary w-5 text-center"></i> Sewa Bot</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="topup"><i class="fas fa-gamepad text-primary w-5 text-center"></i> Top Up Game</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="premium"><i class="fas fa-crown text-primary w-5 text-center"></i> APK Premium</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="allproducts"><i class="fas fa-th-large text-primary w-5 text-center"></i> Semua Produk</button>
+                </div>
+            </div>
+
+            <div class="py-2 border-t" style="border-color:var(--border);">
+                <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--textSec);">Akun</p>
+                <div class="mt-1 space-y-0.5">
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="profile"><i class="fas fa-user-circle text-primary w-5 text-center"></i> Profil</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="cart"><i class="fas fa-shopping-cart text-primary w-5 text-center"></i> Keranjang <span class="ml-auto text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full" id="drawerCartCount">0</span></button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="orders"><i class="fas fa-receipt text-primary w-5 text-center"></i> Pesanan</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="history"><i class="fas fa-clock-rotate-left text-primary w-5 text-center"></i> Riwayat</button>
+                </div>
+            </div>
+
+            <div class="py-2 border-t" style="border-color:var(--border);">
+                <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--textSec);">Bantuan</p>
+                <div class="mt-1 space-y-0.5">
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="faq"><i class="fas fa-circle-question text-primary w-5 text-center"></i> FAQ</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="ticket"><i class="fas fa-ticket text-primary w-5 text-center"></i> Tiket</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="guide"><i class="fas fa-book text-primary w-5 text-center"></i> Panduan</button>
+                    <a href="https://wa.me/6289507390286" target="_blank" class="w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);"><i class="fab fa-whatsapp text-green-500 w-5 text-center"></i> Hubungi Admin</a>
+                </div>
+            </div>
+
+            <div class="py-2 border-t mt-auto" style="border-color:var(--border);">
+                <div class="flex gap-2 justify-center">
+                    <a href="https://www.instagram.com/newkinky" target="_blank" class="w-8 h-8 rounded-full bg-card flex items-center justify-center transition" style="color:var(--textSec);"><i class="fab fa-instagram text-sm"></i></a>
+                    <a href="https://t.me/Rikynurrohman" target="_blank" class="w-8 h-8 rounded-full bg-card flex items-center justify-center transition" style="color:var(--textSec);"><i class="fab fa-telegram text-sm"></i></a>
+                    <a href="https://www.tiktok.com/@a_ikyy09" target="_blank" class="w-8 h-8 rounded-full bg-card flex items-center justify-center transition" style="color:var(--textSec);"><i class="fab fa-tiktok text-sm"></i></a>
+                </div>
+                <p class="text-center text-[9px] mt-2" style="color:var(--textSec);">© 2026 RIKY STORE</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: HOME
+    ============================================================ -->
+    <div class="page active" id="page-home">
+
+        <section class="mt-3">
+            <div class="relative rounded-2xl overflow-hidden" style="aspect-ratio:16/7;background:var(--card);">
+                <div id="homeSlider" class="relative w-full h-full">
+                    <div class="slide-home absolute inset-0 w-full h-full transition-opacity duration-700 opacity-100">
+                        <img src="https://i.ibb.co.com/JjPGdkkn/Biru-Muda-dan-Biru-Tua-Modern-Anime-Top-Up-Banner-Horizontal-20260312-121937-0000.png" class="w-full h-full object-cover">
+                    </div>
+                    <div class="slide-home absolute inset-0 w-full h-full transition-opacity duration-700 opacity-0">
+                        <img src="https://i.ibb.co.com/qYpKhmHx/file-00000000865471fa9361ac53a4a2e318.png" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-2 z-10">
+                    <div class="home-dot w-2 h-2 rounded-full bg-white shadow-md transition-all cursor-pointer" style="width:18px;"></div>
+                    <div class="home-dot w-2 h-2 rounded-full bg-white/50 shadow-md transition-all cursor-pointer"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-3">
+            <div class="relative">
+                <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2" style="color:var(--textSec);"></i>
+                <input type="text" id="homeSearch" placeholder="Cari produk, game, bot, aplikasi..." class="input-modern pl-10 pr-3.5 py-3 rounded-2xl text-sm">
+                <div id="searchResults" class="mt-2 space-y-1.5 hidden"></div>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="grid grid-cols-4 gap-2.5">
+                <button class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition" data-page="allproducts">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-th-large"></i></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">Semua Produk</span>
+                </button>
+                <button class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition" data-page="topup">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-gamepad"></i></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">Top Up Game</span>
+                </button>
+                <button class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition" data-page="bot">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-robot"></i></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">Sewa Bot</span>
+                </button>
+                <button class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition" data-page="premium">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-crown"></i></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">APK Premium</span>
+                </button>
+                <button class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition" data-action="cart">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg relative"><i class="fas fa-shopping-cart"></i><span id="quickCartBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1 hidden">0</span></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">Keranjang</span>
+                </button>
+                <button class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition" data-action="orders">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-receipt"></i></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">Pesanan</span>
+                </button>
+                <button class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition" data-action="ticket">
+                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-ticket"></i></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">Bantuan</span>
+                </button>
+                <a href="https://wa.me/6289507390286" target="_blank" class="quick-menu flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-card border border-borderColor hover:border-primary transition">
+                    <div class="w-11 h-11 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 text-lg"><i class="fab fa-whatsapp"></i></div>
+                    <span class="text-[9px] font-semibold text-center" style="color:var(--text);">Hubungi</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="grid grid-cols-4 gap-2">
+                <div class="card p-2.5 text-center">
+                    <p class="text-lg font-black text-primary">156</p>
+                    <p class="text-[8px] font-medium" style="color:var(--textSec);">Total Produk</p>
+                </div>
+                <div class="card p-2.5 text-center">
+                    <p class="text-lg font-black text-green-500">24</p>
+                    <p class="text-[8px] font-medium" style="color:var(--textSec);">Layanan Aktif</p>
+                </div>
+                <div class="card p-2.5 text-center">
+                    <p class="text-lg font-black text-yellow-500" id="onlineMemberCount">342</p>
+                    <p class="text-[8px] font-medium" style="color:var(--textSec);">Member Online</p>
+                </div>
+                <div class="card p-2.5 text-center">
+                    <p class="text-lg font-black text-purple-500">99.8%</p>
+                    <p class="text-[8px] font-medium" style="color:var(--textSec);">Uptime</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="card p-3.5 flex items-start gap-2.5" style="border-left:4px solid var(--primary);">
+                <i class="fas fa-bullhorn text-primary text-base mt-0.5"></i>
+                <div>
+                    <p class="text-sm font-bold" style="color:var(--text);">Promo Akhir Tahun!</p>
+                    <p class="text-xs" style="color:var(--textSec);">Dapatkan diskon 10% untuk semua produk premium dengan kode <span class="text-primary font-bold">RIKY10</span>.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-sm font-extrabold" style="color:var(--text);">Kategori</h2>
+                <button class="text-[10px] font-semibold text-primary hover:text-primaryLight transition">Lihat Semua</button>
+            </div>
+            <div class="scroll-x no-scrollbar" style="gap:8px;">
+                <button class="cat-chip flex-shrink-0 px-4 py-1.5 rounded-full bg-card border border-borderColor text-[10px] font-semibold hover:border-primary transition" style="color:var(--text);">Populer</button>
+                <button class="cat-chip flex-shrink-0 px-4 py-1.5 rounded-full bg-card border border-borderColor text-[10px] font-semibold hover:border-primary transition" style="color:var(--text);">Game</button>
+                <button class="cat-chip flex-shrink-0 px-4 py-1.5 rounded-full bg-card border border-borderColor text-[10px] font-semibold hover:border-primary transition" style="color:var(--text);">Bot WA</button>
+                <button class="cat-chip flex-shrink-0 px-4 py-1.5 rounded-full bg-card border border-borderColor text-[10px] font-semibold hover:border-primary transition" style="color:var(--text);">Premium</button>
+                <button class="cat-chip flex-shrink-0 px-4 py-1.5 rounded-full bg-card border border-borderColor text-[10px] font-semibold hover:border-primary transition" style="color:var(--text);">Pulsa</button>
+                <button class="cat-chip flex-shrink-0 px-4 py-1.5 rounded-full bg-card border border-borderColor text-[10px] font-semibold hover:border-primary transition" style="color:var(--text);">Tagihan</button>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-sm font-extrabold" style="color:var(--text);">🔥 Terlaris</h2>
+                <button class="text-[10px] font-semibold text-primary hover:text-primaryLight transition">Lihat Semua</button>
+            </div>
+            <div class="scroll-x" style="gap:10px;">
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg"></div>
+                    <div class="body"><p class="name">Free Fire 50 Diamond</p><p class="price">Rp9.000</p><span class="badge badge-green text-[7px]">Best Seller</span></div>
+                </div>
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/zTzk7D6D/1d229015a421e9ab344dfe1d61e2f082.jpg"></div>
+                    <div class="body"><p class="name">ML 28 Diamonds</p><p class="price">Rp10.000</p><span class="badge badge-yellow text-[7px]">Promo</span></div>
+                </div>
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/TxTS4YY0/file-000000009e2c7206825f8800acb714a1.png"></div>
+                    <div class="body"><p class="name">Bot WA 1 Bulan</p><p class="price">Rp20.000</p><span class="badge badge-blue text-[7px]">Popular</span></div>
+                </div>
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/Vc31zWjy/c410c7c8c7bb31013500d214a7da8a8b.jpg"></div>
+                    <div class="body"><p class="name">CapCut Pro 1 Bulan</p><p class="price">Rp33.000</p><span class="badge badge-purple text-[7px]">Premium</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-sm font-extrabold" style="color:var(--text);">🆕 Terbaru</h2>
+                <button class="text-[10px] font-semibold text-primary hover:text-primaryLight transition">Lihat Semua</button>
+            </div>
+            <div class="scroll-x" style="gap:10px;">
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/PZBmbnp8/6f5fe5d261b0b2f59c14bfaa0517bb15.jpg"></div>
+                    <div class="body"><p class="name">Apple Music 1 Bulan</p><p class="price">Rp15.000</p><span class="badge badge-blue text-[7px]">Baru</span></div>
+                </div>
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/N2kk700d/c466286f76cbb3f2007c9af419a8127e.jpg"></div>
+                    <div class="body"><p class="name">YOUKU PRO 1 Bulan</p><p class="price">Rp15.000</p><span class="badge badge-blue text-[7px]">Baru</span></div>
+                </div>
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/mVKv1s2P/c92075f1fe24432274ed394347e2ca4e.jpg"></div>
+                    <div class="body"><p class="name">BANDLAB PRO 1 Bulan</p><p class="price">Rp15.000</p><span class="badge badge-blue text-[7px]">Baru</span></div>
+                </div>
+                <div class="product-card w-[130px] flex-shrink-0">
+                    <div class="img-wrap"><img src="https://i.ibb.co.com/vxQ37F9x/2c4e2d188f5df936d954b9228a90d1f3.jpg"></div>
+                    <div class="body"><p class="name">AI GEMINI PRO 3 Bulan</p><p class="price">Rp35.000</p><span class="badge badge-purple text-[7px]">AI</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="card p-3.5" style="background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(37,99,235,0.08));">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="badge badge-red text-[9px]"><i class="fas fa-clock"></i> Flash Sale</span>
+                        <p class="text-sm font-bold mt-0.5" style="color:var(--text);">Diskon 20% untuk semua bot!</p>
+                        <p class="text-[10px]" style="color:var(--textSec);">Berlaku hingga 23:59 WIB</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex items-center gap-1 text-lg font-black" style="color:var(--text);">
+                            <span class="bg-card px-2 py-0.5 rounded text-sm">02</span>
+                            <span style="color:var(--textSec);">:</span>
+                            <span class="bg-card px-2 py-0.5 rounded text-sm">14</span>
+                            <span style="color:var(--textSec);">:</span>
+                            <span class="bg-card px-2 py-0.5 rounded text-sm">38</span>
+                        </div>
+                        <p class="text-[8px]" style="color:var(--textSec);">Jam • Menit • Detik</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-sm font-extrabold" style="color:var(--text);">📦 Semua Layanan</h2>
+                <button class="text-[10px] font-semibold text-primary hover:text-primaryLight transition">Lihat Semua</button>
+            </div>
+            <div class="grid grid-cols-4 gap-2">
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary mx-auto"><i class="fas fa-phone"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">Pulsa</p>
+                </div>
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary mx-auto"><i class="fas fa-bolt"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">Token</p>
+                </div>
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary mx-auto"><i class="fas fa-droplet"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">PDAM</p>
+                </div>
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary mx-auto"><i class="fas fa-wifi"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">Paket Data</p>
+                </div>
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto"><i class="fas fa-wallet"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">E-Wallet</p>
+                </div>
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 mx-auto"><i class="fas fa-building-columns"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">Bank</p>
+                </div>
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 mx-auto"><i class="fas fa-heart-pulse"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">BPJS</p>
+                </div>
+                <div class="card p-2.5 text-center hover:border-primary transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-500 mx-auto"><i class="fas fa-ellipsis"></i></div>
+                    <p class="text-[9px] font-semibold mt-1" style="color:var(--text);">Lainnya</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-sm font-extrabold" style="color:var(--text);">💬 Pertanyaan Umum</h2>
+                <button class="text-[10px] font-semibold text-primary hover:text-primaryLight transition" id="faqSeeAll">Lihat Semua</button>
+            </div>
+            <div class="space-y-2">
+                <div class="faq-mini card p-3 cursor-pointer hover:border-primary transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-semibold" style="color:var(--text);">Bagaimana cara top up game?</span>
+                        <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                    </div>
+                    <div class="faq-answer text-xs mt-1 hidden" style="color:var(--textSec);">Pilih produk, masukkan ID game, lalu checkout dan transfer sesuai nominal.</div>
+                </div>
+                <div class="faq-mini card p-3 cursor-pointer hover:border-primary transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-semibold" style="color:var(--text);">Berapa lama proses aktivasi bot?</span>
+                        <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                    </div>
+                    <div class="faq-answer text-xs mt-1 hidden" style="color:var(--textSec);">Proses aktivasi bot memakan waktu 1-15 menit setelah pembayaran terkonfirmasi.</div>
+                </div>
+                <div class="faq-mini card p-3 cursor-pointer hover:border-primary transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-semibold" style="color:var(--text);">Apakah ada garansi refund?</span>
+                        <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                    </div>
+                    <div class="faq-answer text-xs mt-1 hidden" style="color:var(--textSec);">Ya, kami memberikan garansi refund 100% jika produk tidak sesuai atau gagal.</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-6 pt-3 border-t text-center" style="border-color:var(--border);">
+            <div class="flex justify-center gap-3 text-xs font-medium" style="color:var(--textSec);">
+                <a href="#" class="hover:text-primary transition">Tentang</a>
+                <a href="#" class="hover:text-primary transition">Kebijakan</a>
+                <a href="#" class="hover:text-primary transition">Syarat</a>
+            </div>
+            <p class="text-[9px] mt-2" style="color:var(--textSec);">© 2026 RIKY STORE — Digital Marketplace</p>
+        </footer>
+    </div>
+
+    <!-- ============================================================
+    PAGE: BOT
+    ============================================================ -->
+    <div class="page" id="page-bot">
+        <div class="mt-3">
+            <h2 class="text-lg font-extrabold" style="color:var(--text);">🤖 Sewa Bot WhatsApp</h2>
+            <p class="text-sm" style="color:var(--textSec);">Pilih paket bot sesuai kebutuhan Anda</p>
+        </div>
+        <div class="mt-3">
+            <div class="tabs" id="botTabs">
+                <button class="tab active" data-cat="biasa">Bot Biasa</button>
+                <button class="tab" data-cat="premium">Bot Premium</button>
+                <button class="tab" data-cat="userpremium">User Premium</button>
+            </div>
+        </div>
+        <div class="mt-3 card p-3.5" id="botDescArea" style="border-left:4px solid var(--primary);">
+            <div class="flex items-start gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary text-base"><i class="fas fa-robot" id="botDescIcon"></i></div>
+                <div>
+                    <h4 class="font-bold text-sm" id="botDescTitle" style="color:var(--text);">Bot Grup Biasa</h4>
+                    <p class="text-xs mt-0.5 leading-relaxed" id="botDescText" style="color:var(--textSec);"></p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 flex gap-1.5 overflow-x-auto no-scrollbar">
+            <button class="bot-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-primary text-white" data-filter="all">Semua</button>
+            <button class="bot-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-filter="1">1 Bulan</button>
+            <button class="bot-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-filter="2">2 Bulan</button>
+            <button class="bot-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-filter="3">3 Bulan</button>
+            <button class="bot-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-filter="4">4 Bulan</button>
+        </div>
+        <div class="mt-3 space-y-2.5" id="botProductsContainer"></div>
+        <div class="mt-4 card p-3.5">
+            <div class="flex items-center gap-2.5">
+                <i class="fas fa-circle-info text-primary text-base"></i>
+                <div>
+                    <p class="text-sm font-bold" style="color:var(--text);">Butuh bantuan memilih?</p>
+                    <p class="text-xs" style="color:var(--textSec);">Hubungi admin untuk konsultasi gratis via WhatsApp.</p>
+                </div>
+                <a href="https://wa.me/6289507390286" target="_blank" class="btn-primary text-[10px] px-3 py-1.5 ml-auto flex-shrink-0">Hubungi</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: TOPUP
+    ============================================================ -->
+    <div class="page" id="page-topup">
+        <div class="mt-3">
+            <h2 class="text-lg font-extrabold" style="color:var(--text);">🎮 Top Up Game</h2>
+            <p class="text-sm" style="color:var(--textSec);">Isi diamond game favoritmu dengan mudah</p>
+        </div>
+        <div class="mt-3 relative">
+            <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2" style="color:var(--textSec);"></i>
+            <input type="text" id="gameSearch" placeholder="Cari game..." class="input-modern pl-10 pr-3.5 py-3 rounded-2xl text-sm">
+        </div>
+        <div class="mt-3">
+            <p class="text-[10px] font-bold uppercase tracking-wider" style="color:var(--textSec);">🔥 Populer</p>
+            <div class="flex gap-2.5 mt-1.5 overflow-x-auto no-scrollbar">
+                <button class="game-tab flex flex-col items-center gap-0.5 p-1.5 rounded-xl bg-card border border-borderColor hover:border-primary transition min-w-[64px]" data-game="ff">
+                    <img src="https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" class="w-11 h-11 rounded-full object-cover">
+                    <span class="text-[9px] font-semibold" style="color:var(--text);">Free Fire</span>
+                </button>
+                <button class="game-tab flex flex-col items-center gap-0.5 p-1.5 rounded-xl bg-card border border-borderColor hover:border-primary transition min-w-[64px]" data-game="ml">
+                    <img src="https://i.ibb.co.com/zTzk7D6D/1d229015a421e9ab344dfe1d61e2f082.jpg" class="w-11 h-11 rounded-full object-cover">
+                    <span class="text-[9px] font-semibold" style="color:var(--text);">MLBB</span>
+                </button>
+                <button class="game-tab flex flex-col items-center gap-0.5 p-1.5 rounded-xl bg-card border border-borderColor hover:border-primary transition min-w-[64px]" data-game="aov">
+                    <img src="https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" class="w-11 h-11 rounded-full object-cover">
+                    <span class="text-[9px] font-semibold" style="color:var(--text);">AOV</span>
+                </button>
+            </div>
+        </div>
+        <div class="mt-3" id="gameContentContainer"></div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: PREMIUM
+    ============================================================ -->
+    <div class="page" id="page-premium">
+        <div class="mt-3">
+            <h2 class="text-lg font-extrabold" style="color:var(--text);">✨ APK Premium</h2>
+            <p class="text-sm" style="color:var(--textSec);">Akses aplikasi premium dengan harga terjangkau</p>
+        </div>
+        <div class="mt-3 overflow-x-auto no-scrollbar">
+            <div class="flex gap-1.5">
+                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-primary text-white" data-cat="all">Semua</button>
+                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="streaming">Streaming</button>
+                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="ai">AI</button>
+                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="editing">Editing</button>
+                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="musik">Musik</button>
+                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="produktivitas">Produktivitas</button>
+            </div>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2.5" id="premiumProductsContainer"></div>
+        <div class="mt-4 card p-3.5" style="border-left:4px solid #EF4444;">
+            <div class="flex items-start gap-2.5">
+                <i class="fas fa-triangle-exclamation text-red-500 text-base mt-0.5"></i>
+                <div>
+                    <p class="text-sm font-bold" style="color:var(--text);">Stock Terbatas!</p>
+                    <p class="text-xs" style="color:var(--textSec);">Hubungi owner sebelum membeli untuk memastikan ketersediaan.</p>
+                    <a href="https://wa.me/6289507390286" target="_blank" class="inline-block mt-1.5 btn-primary text-[10px] px-3 py-1">Hubungi Owner</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: ALL PRODUCTS
+    ============================================================ -->
+    <div class="page" id="page-allproducts">
+        <div class="mt-3">
+            <h2 class="text-lg font-extrabold" style="color:var(--text);">📦 Semua Produk</h2>
+            <p class="text-sm" style="color:var(--textSec);">Temukan semua produk yang tersedia di RIKY STORE</p>
+        </div>
+        <div class="mt-3 relative">
+            <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2" style="color:var(--textSec);"></i>
+            <input type="text" id="allSearch" placeholder="Cari produk..." class="input-modern pl-10 pr-3.5 py-3 rounded-2xl text-sm">
+        </div>
+        <div class="mt-3 flex gap-1.5 overflow-x-auto no-scrollbar">
+            <button class="all-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-primary text-white" data-filter="all">Semua</button>
+            <button class="all-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-filter="game">Game</button>
+            <button class="all-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-filter="bot">Bot</button>
+            <button class="all-filter px-3 py-1 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-filter="premium">Premium</button>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2.5" id="allProductsContainer"></div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: MENU (empty - untuk bottom nav)
+    ============================================================ -->
+    <div class="page" id="page-menu"></div>
+
+    <!-- ============================================================
+    BOTTOM NAV
+    ============================================================ -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-page="home">
+            <span class="indicator"></span>
+            <i class="fas fa-house"></i>
+            <span>Beranda</span>
+        </button>
+        <button class="nav-item" data-page="bot">
+            <span class="indicator"></span>
+            <i class="fas fa-robot"></i>
+            <span>Bot</span>
+        </button>
+        <button class="nav-item" data-page="topup">
+            <span class="indicator"></span>
+            <i class="fas fa-gamepad"></i>
+            <span>Top Up</span>
+        </button>
+        <button class="nav-item" data-page="premium">
+            <span class="indicator"></span>
+            <i class="fas fa-crown"></i>
+            <span>Premium</span>
+        </button>
+        <button class="nav-item" data-page="allproducts">
+            <span class="indicator"></span>
+            <i class="fas fa-th-large"></i>
+            <span>Semua</span>
+            <span class="badge" id="bottomNavBadge" style="display:none;">0</span>
+        </button>
+    </nav>
+
+    <!-- ============================================================
+    MODALS
+    ============================================================ -->
+
+    <!-- CART -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-shopping-cart text-primary mr-2"></i>Keranjang</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="cartModal">&times;</button>
+            </div>
+            <div class="modal-body" id="cartItemsList">
+                <div class="text-center py-5" style="color:var(--textSec);"><i class="fas fa-cart-plus text-3xl opacity-30"></i><p class="mt-1 text-sm">Keranjang kosong</p></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline text-sm flex-1" id="cartContinueBtn"><i class="fas fa-arrow-left"></i> Lanjut</button>
+                <button class="btn-primary text-sm flex-1" id="cartCheckoutBtn"><i class="fas fa-credit-card"></i> Checkout</button>
+            </div>
+            <div class="px-4 pb-3 flex justify-between items-center border-t pt-2.5" style="border-color:var(--border);">
+                <span class="text-sm font-semibold" style="color:var(--textSec);">Total</span>
+                <span class="text-xl font-black text-primary" id="cartTotal">Rp0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="modal-overlay" id="ordersModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-receipt text-primary mr-2"></i>Pesanan</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="ordersModal">&times;</button>
+            </div>
+            <div class="modal-body" id="ordersList">
+                <div class="text-center py-5" style="color:var(--textSec);"><i class="fas fa-box-open text-3xl opacity-30"></i><p class="mt-1 text-sm">Belum ada pesanan</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-clock-rotate-left text-primary mr-2"></i>Riwayat</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="historyModal">&times;</button>
+            </div>
+            <div class="modal-body" id="historyList">
+                <div class="text-center py-5" style="color:var(--textSec);"><i class="fas fa-history text-3xl opacity-30"></i><p class="mt-1 text-sm">Belum ada riwayat</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-user-circle text-primary mr-2"></i>Profil</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="profileModal">&times;</button>
+            </div>
+            <div class="modal-body" id="profileContent">
+                <div class="flex flex-col items-center text-center py-3">
+                    <div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-primary text-4xl mb-2"><i class="fas fa-user"></i></div>
+                    <p class="text-lg font-extrabold" style="color:var(--text);">Guest</p>
+                    <p class="text-sm" style="color:var(--textSec);">Login untuk mengakses profil</p>
+                    <button class="btn-primary mt-3 text-sm" id="profileLoginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TICKET -->
+    <div class="modal-overlay" id="ticketModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-ticket text-primary mr-2"></i>Buat Tiket</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="ticketModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Subjek</label>
+                        <input type="text" id="ticketSubject" placeholder="Ringkasan masalah" class="input-modern text-sm">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Kategori</label>
+                        <select id="ticketCategory" class="input-modern text-sm">
+                            <option value="Bug">Bug / Error</option>
+                            <option value="Fitur">Permintaan Fitur</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Pesan</label>
+                        <textarea id="ticketMessage" rows="3" placeholder="Jelaskan detail masalah..." class="input-modern resize-none text-sm"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline text-sm flex-1 modal-close" data-modal="ticketModal">Batal</button>
+                <button class="btn-primary text-sm flex-1" id="ticketSendBtn"><i class="fas fa-paper-plane"></i> Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="modal-overlay" id="faqModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-circle-question text-primary mr-2"></i>Pertanyaan Umum</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="faqModal">&times;</button>
+            </div>
+            <div class="modal-body" id="faqContainer"></div>
+        </div>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="modal-overlay" id="guideModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-book text-primary mr-2"></i>Panduan</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="guideModal">&times;</button>
+            </div>
+            <div class="modal-body" id="guideContainer">
+                <div class="space-y-2.5">
+                    <div class="guide-item card p-3 cursor-pointer hover:border-primary transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold" style="color:var(--text);">Cara Top Up Game</span>
+                            <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                        </div>
+                        <div class="guide-answer text-xs mt-1 hidden" style="color:var(--textSec);">Pilih produk → Masukkan ID game → Checkout → Transfer → Upload bukti → Proses 1-15 menit.</div>
+                    </div>
+                    <div class="guide-item card p-3 cursor-pointer hover:border-primary transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold" style="color:var(--text);">Cara Sewa Bot</span>
+                            <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                        </div>
+                        <div class="guide-answer text-xs mt-1 hidden" style="color:var(--textSec);">Pilih paket → Masukkan link grup atau nomor WA → Checkout → Transfer → Aktivasi 1-15 menit.</div>
+                    </div>
+                    <div class="guide-item card p-3 cursor-pointer hover:border-primary transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold" style="color:var(--text);">Cara Checkout QRIS</span>
+                            <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                        </div>
+                        <div class="guide-answer text-xs mt-1 hidden" style="color:var(--textSec);">Buka keranjang → Klik Checkout QRIS → Scan QRIS → Transfer → Upload bukti → Tunggu konfirmasi.</div>
+                    </div>
+                    <div class="guide-item card p-3 cursor-pointer hover:border-primary transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold" style="color:var(--text);">Cara Hubungi Admin</span>
+                            <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                        </div>
+                        <div class="guide-answer text-xs mt-1 hidden" style="color:var(--textSec);">Via WhatsApp: 6289507390286, Telegram: @Rikynurrohman, Instagram: @newkinky.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT -->
+    <div class="modal-overlay" id="inputModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" id="modalTitle" style="color:var(--text);"><i class="fas fa-pen text-primary mr-2"></i>Masukkan Data</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="inputModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-sm" id="modalProductInfo" style="color:var(--textSec);">Produk: -</p>
+                <div class="mt-2 relative">
+                    <i class="fas fa-edit absolute left-3.5 top-1/2 -translate-y-1/2" style="color:var(--textSec);"></i>
+                    <input type="text" id="modalInputField" class="input-modern pl-9 text-sm" placeholder="Masukkan data...">
+                </div>
+                <div class="mt-2 text-xs" id="modalGuide" style="color:var(--textSec);"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline text-sm flex-1 modal-close" data-modal="inputModal">Batal</button>
+                <button class="btn-primary text-sm flex-1" id="modalConfirmBtn"><i class="fas fa-check"></i> Tambahkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-credit-card text-primary mr-2"></i>Checkout</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="checkoutModal">&times;</button>
+            </div>
+            <div class="modal-body" id="checkoutDetails"></div>
+            <div class="px-4 pb-1">
+                <div class="flex gap-1.5">
+                    <input type="text" id="checkoutVoucherInput" placeholder="Kode voucher" class="input-modern text-sm flex-1">
+                    <button class="btn-primary text-xs px-3" id="checkoutVoucherApply">Terapkan</button>
+                </div>
+                <div id="voucherMessage" class="text-xs mt-1"></div>
+                <div id="voucherDetail" class="text-xs mt-1 hidden"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-full flex justify-between items-center">
+                    <span class="text-sm font-semibold" style="color:var(--textSec);">Total</span>
+                    <span class="text-xl font-black text-primary" id="checkoutTotal">Rp0</span>
+                </div>
+                <button class="btn-primary w-full mt-1.5" id="checkoutQrisBtn"><i class="fas fa-qrcode"></i> Bayar dengan QRIS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QRIS -->
+    <div class="modal-overlay" id="qrisModal">
+        <div class="modal-content" style="max-width:360px;">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-qrcode text-primary mr-2"></i>Pembayaran</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="qrisModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="bg-white rounded-2xl p-3 flex justify-center">
+                    <img src="https://i.ibb.co.com/wFG0M4xj/IMG-20260825-WA0016.jpg" alt="QRIS" class="w-full max-w-[220px] aspect-square object-contain rounded-xl">
+                </div>
+                <div class="mt-3 text-center card p-3">
+                    <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--textSec);">Total Pembayaran</p>
+                    <p class="text-2xl font-black text-primary" id="qrisTotal">Rp0</p>
+                    <p class="text-[9px]" style="color:var(--textSec);">NMID: ID1025430095246 | RIKY STORE</p>
+                </div>
+                <button class="btn-primary w-full mt-3" id="uploadBuktiBtn"><i class="fas fa-upload"></i> Upload Bukti Transfer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-content" style="max-width:360px;">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-image text-primary mr-2"></i>Upload Bukti</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="uploadModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card p-3 text-center mb-3">
+                    <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--textSec);">Nominal</p>
+                    <p class="text-2xl font-black text-primary" id="uploadNominal">Rp0</p>
+                </div>
+                <div class="space-y-2.5">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">No. WhatsApp</label>
+                        <input type="tel" id="buyerWa" placeholder="628123456789" class="input-modern text-sm">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Bukti Transfer</label>
+                        <label class="flex flex-col items-center justify-center w-full p-3 border-2 border-dashed border-borderColor rounded-xl cursor-pointer hover:border-primary transition bg-card">
+                            <i class="fas fa-cloud-upload-alt text-xl" style="color:var(--textSec);"></i>
+                            <span class="text-[10px] mt-0.5" style="color:var(--textSec);">Klik untuk pilih foto</span>
+                            <input type="file" id="buktiFile" accept="image/*" class="hidden" onchange="previewBukti(this)">
+                            <div id="filePreviewName" class="hidden text-xs font-semibold mt-0.5" style="color:var(--text);"></div>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Catatan (Opsional)</label>
+                        <textarea id="checkoutNote" rows="2" placeholder="Tambahan informasi..." class="input-modern resize-none text-sm"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline text-sm flex-1 modal-close" data-modal="uploadModal">Batal</button>
+                <button class="btn-primary text-sm flex-1" id="kirimBuktiBtn"><i class="fas fa-paper-plane"></i> Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // DATA PRODUK
+        // ============================================================
+
+        const freeFireProducts = [
+            { nama: "Free Fire 5 Diamond", harga: 2000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 12 Diamond", harga: 3000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 50 Diamond", harga: 9000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 70 Diamond", harga: 10000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 140 Diamond", harga: 19000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 355 Diamond", harga: 46000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 720 Diamond", harga: 91000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 1450 Diamond", harga: 181000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 2180 Diamond", harga: 271000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 3640 Diamond", harga: 451000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" },
+            { nama: "Free Fire 7290 Diamond", harga: 901000, img: "https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg" }
+        ];
+
+        const rawML = [
+            [5, 2500],
+            [10, 4000],
+            [12, 5000],
+            [14, 6000],
+            [18, 7000],
+            [19, 8000],
+            [28, 10000],
+            [36, 10500],
+            [38, 14000],
+            [44, 15000],
+            [50, 18000],
+            [56, 19000],
+            [59, 20000],
+            [74, 23000],
+            [78, 25000],
+            [85, 28000],
+            [92, 30000],
+            [100, 32000],
+            [144, 45000],
+            [170, 53000],
+            [222, 65000],
+            [240, 74000],
+            [278, 86000],
+            [296, 86000],
+            [370, 96000],
+            [966, 238500]
+        ];
+        rawML.sort((a, b) => a[1] - b[1]);
+        const mobileLegendsProducts = rawML.map(([diamond, harga]) => ({ nama: `Mobile Legends ${diamond} Diamonds`,
+            harga, img: "https://i.ibb.co.com/zTzk7D6D/1d229015a421e9ab344dfe1d61e2f082.jpg" }));
+
+        const aovProducts = [
+            { nama: "AOV 7 Voucher", harga: 4000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" },
+            { nama: "AOV 40 Voucher", harga: 11000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" },
+            { nama: "AOV 90 Voucher", harga: 20000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" },
+            { nama: "AOV 230 Voucher", harga: 47000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" },
+            { nama: "AOV 470 Voucher", harga: 100000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" },
+            { nama: "AOV 950 Voucher", harga: 184000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" },
+            { nama: "AOV 2390 Voucher", harga: 489000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" }
+        ];
+
+        const extraProducts = [
+            { nama: "IQYI 1BULAN", harga: 16000, img: "https://i.ibb.co.com/wrpRGBHQ/IMG-20260620-WA0040.jpg",
+                durasi: "1 Bulan", deskripsi: "Akses premium iQiyi 1 bulan", tipe: "iqiyi" },
+            { nama: "CapCut Pro 7 Hari", harga: 10000, img: "https://i.ibb.co.com/Vc31zWjy/c410c7c8c7bb31013500d214a7da8a8b.jpg",
+                durasi: "7 Hari", deskripsi: "Akses premium 7 hari", tipe: "capcut" },
+            { nama: "CapCut Pro 1 Bulan", harga: 33000, img: "https://i.ibb.co.com/Vc31zWjy/c410c7c8c7bb31013500d214a7da8a8b.jpg",
+                durasi: "30 Hari", deskripsi: "Akses premium 30 hari", tipe: "capcut" },
+            { nama: "Netflix Pro 1 Bulan", harga: 25000, img: "https://i.ibb.co.com/8nMwgnrf/72a0500ff35991d147a6b48e4bffc721.jpg",
+                durasi: "30 Hari", deskripsi: "Akses premium Netflix", tipe: "netflix" },
+            { nama: "Spotify Pro 1 Bulan", harga: 20000, img: "https://i.ibb.co.com/cjKWYZC/f396eb27ae5d20c91b04473360772710.jpg",
+                durasi: "30 Hari", deskripsi: "Akses premium Spotify 1 bulan", tipe: "spotify" },
+            { nama: "Canva Pro 1 Bulan", harga: 10000, img: "https://i.ibb.co.com/C5HqPJLG/b224bcfb58a1861dee8afc847a5d657d.jpg",
+                durasi: "30 Hari", deskripsi: "Akses premium Canva", tipe: "canva" },
+            { nama: "Alight Motion 1 Tahun", harga: 2000, img: "https://i.ibb.co.com/C3brrSqB/b81d4234e3172874f0d44e0cfa36c72a.jpg",
+                durasi: "1 Tahun", deskripsi: "Akses premium 1 tahun", tipe: "alightmotion" },
+            { nama: "Alight MONTION 6bulan", harga: 1000, img: "https://i.ibb.co.com/FLNrnQ8H/e3cc01eb99c39c56f88ec1f48839fb6a.jpg",
+                durasi: "6 Bulan", deskripsi: "Akses premium 6 bulan", tipe: "alightmotion" },
+            { nama: "Viu Pro 1 Bulan", harga: 10000, img: "https://i.ibb.co.com/k2P0ygJ1/af14e143bf6915b6ef27f8960747ea9f.jpg",
+                durasi: "30 Hari", deskripsi: "Akses premium Viu 30 hari", tipe: "viu" },
+            { nama: "WeTV Pro 1 Bulan", harga: 10000, img: "https://i.ibb.co.com/BK2rmDZY/75ae02175b1b217c89f9022ea2e51557.jpg",
+                durasi: "30 Hari", deskripsi: "Akses premium WeTV 30 hari", tipe: "wetv" },
+            { nama: "YOUKU PRO 1 Bulan", harga: 15000, img: "https://i.ibb.co.com/N2kk700d/c466286f76cbb3f2007c9af419a8127e.jpg",
+                durasi: "1 Bulan", deskripsi: "Akses premium YOUKU 1 bulan", tipe: "youku" },
+            { nama: "BANDLAB PRO 1 Bulan", harga: 15000, img: "https://i.ibb.co.com/mVKv1s2P/c92075f1fe24432274ed394347e2ca4e.jpg",
+                durasi: "1 Bulan", deskripsi: "Akses premium BANDLAB 1 bulan", tipe: "bandlab" },
+            { nama: "AI GEMINI PRO 3 Bulan", harga: 35000, img: "https://i.ibb.co.com/vxQ37F9x/2c4e2d188f5df936d954b9228a90d1f3.jpg",
+                durasi: "3 Bulan", deskripsi: "Akses premium AI Gemini 3 bulan", tipe: "gemini" },
+            { nama: "ChatGPT Pro 1 Bulan", harga: 35000, img: "https://i.ibb.co.com/FLF0X35s/b33f0d10bab5c0d68a006844f7eda264.jpg",
+                durasi: "1 Bulan", deskripsi: "Akses premium ChatGPT 1 bulan", tipe: "chatgpt" },
+            { nama: "APPLE MUSIC 1BULAN", harga: 15000, img: "https://i.ibb.co.com/PZBmbnp8/6f5fe5d261b0b2f59c14bfaa0517bb15.jpg",
+                durasi: "1 Bulan", deskripsi: "Apple Music Premium 1 bulan", tipe: "applemusic" }
+        ];
+
+        const botDatabase = {
+            kyybot: {
+                name: "Bot WhatsApp",
+                icon: "fas fa-robot",
+                categories: {
+                    biasa: {
+                        name: "Bot Biasa",
+                        icon: "fas fa-users",
+                        needLink: true,
+                        packages: [
+                            { id: "biasa1", name: "1 Bulan", price: 20000, specs: [{ icon: "fa-clock", text: "30 Hari" },
+                                { icon: "fa-gift", text: "Free 2 Nomor Premium" }] },
+                            { id: "biasa2", name: "2 Bulan", price: 30000, specs: [{ icon: "fa-clock", text: "60 Hari" },
+                                { icon: "fa-gift", text: "Free 3 Nomor Premium" }] },
+                            { id: "biasa3", name: "3 Bulan", price: 35000, badge: "popular", specs: [{ icon: "fa-clock",
+                                    text: "90 Hari" }, { icon: "fa-gift", text: "Free 4 Nomor Premium" }] },
+                            { id: "biasa4", name: "4 Bulan", price: 45000, badge: "best", specs: [{ icon: "fa-clock",
+                                    text: "120 Hari" }, { icon: "fa-gift", text: "Free 5 Nomor Premium" }] }
+                        ]
+                    },
+                    premium: {
+                        name: "Bot Premium",
+                        icon: "fas fa-crown",
+                        needLink: true,
+                        packages: [
+                            { id: "prem1", name: "1 Bulan", price: 25000, specs: [{ icon: "fa-clock", text: "30 Hari" },
+                                { icon: "fa-star", text: "Fitur Premium" }] },
+                            { id: "prem2", name: "2 Bulan", price: 35000, specs: [{ icon: "fa-clock", text: "60 Hari" },
+                                { icon: "fa-star", text: "Fitur Premium" }] },
+                            { id: "prem3", name: "3 Bulan", price: 45000, badge: "popular", specs: [{ icon: "fa-clock",
+                                    text: "90 Hari" }, { icon: "fa-star", text: "Premium+Support" }] },
+                            { id: "prem4", name: "4 Bulan", price: 55000, badge: "best", specs: [{ icon: "fa-clock",
+                                    text: "120 Hari" }, { icon: "fa-gem", text: "Prioritas" }] }
+                        ]
+                    },
+                    userpremium: {
+                        name: "User Premium",
+                        icon: "fas fa-user-check",
+                        needLink: false,
+                        packages: [
+                            { id: "user1", name: "1 Bulan", price: 15000, specs: [{ icon: "fa-clock", text: "30 Hari" },
+                                { icon: "fa-check", text: "Akses User Premium" }] },
+                            { id: "user2", name: "2 Bulan", price: 20000, specs: [{ icon: "fa-clock", text: "60 Hari" },
+                                { icon: "fa-check", text: "Akses User Premium" }] },
+                            { id: "user3", name: "3 Bulan", price: 25000, badge: "popular", specs: [{ icon: "fa-clock",
+                                    text: "90 Hari" }, { icon: "fa-chart-line", text: "Hemat" }] },
+                            { id: "user4", name: "4 Bulan", price: 30000, badge: "best", specs: [{ icon: "fa-clock",
+                                    text: "120 Hari" }, { icon: "fa-gem", text: "Best Value" }] }
+                        ]
+                    }
+                }
+            }
+        };
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let cart = JSON.parse(localStorage.getItem('rikyCart')) || [];
+        let orderHistory = JSON.parse(localStorage.getItem('rikyHistory')) || [];
+        let currentProductTemp = null;
+        let activeBotCategory = 'biasa';
+        let activeGame = 'ff';
+        let appliedVoucher = null;
+        let botFilter = 'all';
+        let allFilter = 'all';
+        const VOUCHER_CODE = "RIKYSTORE123";
+        const VOUCHER_DISCOUNT = 5000;
+        const validVouchers = [{ code: VOUCHER_CODE, discount: VOUCHER_DISCOUNT }];
+        const BOT_TOKEN = "8640664034:AAEhOswKTw0dp5aWBdY2lScSg8dSIKN9rPg";
+        const CHAT_ID = "8744341504";
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg, type = 'info') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+            t.innerHTML = `<i class="fas ${icons[type]}"></i><span>${msg}</span>`;
+            c.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0';
+                t.style.transform = 'translateX(100%)';
+                setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        function getUsers() { return JSON.parse(localStorage.getItem('rikyUsers')) || []; }
+
+        function saveUsers(u) { localStorage.setItem('rikyUsers', JSON.stringify(u)); }
+
+        function getLoggedInUser() {
+            const d = localStorage.getItem('rikyLoggedInUser');
+            return d ? JSON.parse(d) : null;
+        }
+
+        function setLoggedInUser(u) {
+            localStorage.setItem('rikyLoggedInUser', JSON.stringify(u));
+            localStorage.setItem('userLoggedIn', 'true');
+            updateAuthUI();
+        }
+
+        function clearLoggedInUser() {
+            localStorage.removeItem('rikyLoggedInUser');
+            localStorage.removeItem('userLoggedIn');
+            updateAuthUI();
+        }
+
+        function isLoggedIn() { return localStorage.getItem('userLoggedIn') === 'true'; }
+
+        function updateAuthUI() {
+            const user = getLoggedInUser();
+            const drawerUser = document.getElementById('drawerUser');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileContent = document.getElementById('profileContent');
+
+            if (user) {
+                const initial = user.nama ? user.nama.charAt(0).toUpperCase() : 'U';
+                const hasFoto = user.foto && user.foto.length > 50;
+
+                drawerUser.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-full flex items-center justify-center text-lg" style="background:${hasFoto?'transparent':'linear-gradient(135deg,#2563EB,#8B5CF6)'};border:2px solid var(--primary);">
+                                    ${hasFoto ? `<img src="${user.foto}" class="w-full h-full rounded-full object-cover">` : initial}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-sm" style="color:var(--text);">${user.nama}</p>
+                                    <p class="text-xs" style="color:var(--textSec);">@${user.username}</p>
+                                </div>
+                            </div>
+                            <button id="drawerLogoutBtn" class="mt-2.5 w-full btn-outline text-xs py-1.5"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+                        `;
+                document.getElementById('drawerLogoutBtn')?.addEventListener('click', () => {
+                    clearLoggedInUser();
+                    showToast('Logout berhasil', 'success');
+                });
+
+                if (profileBtn) {
+                    profileBtn.innerHTML = hasFoto ?
+                        `<img src="${user.foto}" class="w-7 h-7 rounded-full object-cover border-2 border-primary">` :
+                        `<div class="w-7 h-7 rounded-full bg-primary/30 flex items-center justify-center text-primary text-xs font-bold">${initial}</div>`;
+                }
+
+                if (profileContent) {
+                    profileContent.innerHTML = `
+                                <div class="flex flex-col items-center text-center py-2">
+                                    <div class="w-20 h-20 rounded-full flex items-center justify-center text-3xl mb-2 border-2 border-primary" style="background:${hasFoto?'transparent':'linear-gradient(135deg,#2563EB,#8B5CF6)'};">
+                                        ${hasFoto ? `<img src="${user.foto}" class="w-full h-full rounded-full object-cover">` : `<i class="fas fa-user text-white/60"></i>`}
+                                    </div>
+                                    <p class="text-lg font-extrabold" style="color:var(--text);">${user.nama}</p>
+                                    <p class="text-sm" style="color:var(--textSec);">@${user.username}</p>
+                                    <p class="text-xs mt-0.5" style="color:var(--textSec);">Bergabung: ${new Date().toLocaleDateString('id-ID')}</p>
+                                    <div class="flex gap-3 mt-2 text-xs">
+                                        <span class="badge badge-green"><i class="fas fa-check-circle"></i> Premium</span>
+                                        <span class="badge badge-blue"><i class="fas fa-shopping-bag"></i> ${orderHistory.length} Pesanan</span>
+                                    </div>
+                                    <div class="w-full mt-3 border-t pt-3 space-y-1.5" style="border-color:var(--border);">
+                                        <button class="w-full btn-outline text-sm py-1.5" onclick="showToast('Fitur favorit segera hadir','info')"><i class="fas fa-heart"></i> Favorit</button>
+                                        <button class="w-full btn-danger text-sm py-1.5 rounded-full font-semibold" style="background:rgba(239,68,68,0.15);color:#EF4444;border:1px solid rgba(239,68,68,0.3);" onclick="clearLoggedInUser();showToast('Logout berhasil','success');document.getElementById('profileModal').classList.remove('open');">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                }
+            } else {
+                drawerUser.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-user"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm" style="color:var(--text);">Guest</p>
+                                    <p class="text-xs" style="color:var(--textSec);">Login untuk akses penuh</p>
+                                </div>
+                            </div>
+                            <button id="drawerLoginBtn" class="mt-2.5 w-full btn-primary text-xs py-1.5"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
+                        `;
+                document.getElementById('drawerLoginBtn')?.addEventListener('click', () => {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    openAuthModal();
+                });
+
+                if (profileBtn) profileBtn.innerHTML = `<i class="fas fa-user text-sm"></i>`;
+                if (profileContent) {
+                    profileContent.innerHTML = `
+                                <div class="flex flex-col items-center text-center py-3">
+                                    <div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-primary text-4xl mb-2"><i class="fas fa-user"></i></div>
+                                    <p class="text-lg font-extrabold" style="color:var(--text);">Guest</p>
+                                    <p class="text-sm" style="color:var(--textSec);">Login untuk mengakses profil</p>
+                                    <button class="btn-primary mt-3 text-sm" onclick="document.getElementById('profileModal').classList.remove('open');openAuthModal();"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
+                                </div>
+                            `;
+                }
+            }
+        }
+
+        function openAuthModal(tab = 'login') {
+            Swal.fire({
+                title: tab === 'login' ? 'Masuk' : 'Daftar',
+                html: `
+                            <div class="text-left" style="max-width:340px;margin:0 auto;overflow:hidden;">
+                                ${tab === 'login' ? `
+                                    <div class="mb-2">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Username</label>
+                                        <input id="swalUsername" class="swal2-input" placeholder="Username" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Password</label>
+                                        <input id="swalPassword" type="password" class="swal2-input" placeholder="Password" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                ` : `
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Nama Lengkap</label>
+                                        <input id="swalNama" class="swal2-input" placeholder="Nama" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Email</label>
+                                        <input id="swalEmail" type="email" class="swal2-input" placeholder="Email" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Username</label>
+                                        <input id="swalRegUsername" class="swal2-input" placeholder="Username" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">WhatsApp</label>
+                                        <input id="swalWhatsapp" class="swal2-input" placeholder="628123456789" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Password</label>
+                                        <input id="swalRegPassword" type="password" class="swal2-input" placeholder="Min 6 karakter" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Konfirmasi Password</label>
+                                        <input id="swalRegConfirm" type="password" class="swal2-input" placeholder="Ulangi password" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                `}
+                                <div class="text-center mt-2">
+                                    <button class="text-xs text-primary font-semibold hover:underline" id="swalSwitchTab">
+                                        ${tab === 'login' ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Masuk'}
+                                    </button>
+                                </div>
+                            </div>
+                        `,
+                confirmButtonText: tab === 'login' ? 'Masuk' : 'Daftar',
+                cancelButtonText: 'Batal',
+                showCancelButton: true,
+                background: 'var(--surface)',
+                color: 'var(--text)',
+                confirmButtonColor: '#2563EB',
+                cancelButtonColor: '#64748B',
+                width: 380,
+                preConfirm: () => {
+                    if (tab === 'login') {
+                        const username = document.getElementById('swalUsername').value.trim();
+                        const password = document.getElementById('swalPassword').value.trim();
+                        if (!username || !password) { Swal.showValidationMessage('Isi semua field!'); return; }
+                        const users = getUsers();
+                        const found = users.find(u => u.username === username && u.password === password);
+                        if (!found) { Swal.showValidationMessage('Username atau password salah!'); return; }
+                        setLoggedInUser({ nama: found.nama, username: found.username, email: found.email,
+                            whatsapp: found.whatsapp, foto: found.foto || null });
+                        showToast(`Selamat datang, ${found.nama}!`, 'success');
+                        return true;
+                    } else {
+                        const nama = document.getElementById('swalNama').value.trim();
+                        const email = document.getElementById('swalEmail').value.trim();
+                        const username = document.getElementById('swalRegUsername').value.trim();
+                        const whatsapp = document.getElementById('swalWhatsapp').value.trim();
+                        const password = document.getElementById('swalRegPassword').value.trim();
+                        const confirm = document.getElementById('swalRegConfirm').value.trim();
+                        if (!nama || !email || !username || !whatsapp || !password || !confirm) { Swal
+                                .showValidationMessage('Semua field wajib diisi!'); return; }
+                        if (password.length < 6) { Swal.showValidationMessage('Password minimal 6 karakter!');
+                            return; }
+                        if (password !== confirm) { Swal.showValidationMessage('Password tidak cocok!'); return; }
+                        const users = getUsers();
+                        if (users.some(u => u.username === username)) { Swal.showValidationMessage(
+                                'Username sudah dipakai!'); return; }
+                        const newUser = { nama, email, username, whatsapp, password, voucherUsed: false };
+                        users.push(newUser);
+                        saveUsers(users);
+                        setLoggedInUser({ nama, username, email, whatsapp, foto: null });
+                        showToast(`Selamat datang, ${nama}!`, 'success');
+                        return true;
+                    }
+                },
+                didOpen: () => {
+                    document.getElementById('swalSwitchTab')?.addEventListener('click', () => {
+                        const current = tab;
+                        Swal.close();
+                        openAuthModal(current === 'login' ? 'register' : 'login');
+                    });
+                    // Pastikan modal tidak bisa di-scroll horizontal
+                    document.querySelector('.swal2-popup').style.overflowX = 'hidden';
+                }
+            });
+        }
+
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(`page-${page}`);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
+            const navBtn = document.querySelector(`.bottom-nav .nav-item[data-page="${page}"]`);
+            if (navBtn) navBtn.classList.add('active');
+
+            document.getElementById('drawer').classList.remove('open');
+            document.getElementById('drawerOverlay').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+            document.getElementById('searchResults').classList.add('hidden');
+        }
+
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                navigateTo(btn.dataset.page);
+            });
+        });
+
+        document.getElementById('menuBtn')?.addEventListener('click', () => {
+            document.getElementById('drawer').classList.toggle('open');
+            document.getElementById('drawerOverlay').classList.toggle('open');
+            document.body.classList.toggle('drawer-open');
+        });
+        document.getElementById('closeDrawer')?.addEventListener('click', () => {
+            document.getElementById('drawer').classList.remove('open');
+            document.getElementById('drawerOverlay').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+        });
+        document.getElementById('drawerOverlay')?.addEventListener('click', () => {
+            document.getElementById('drawer').classList.remove('open');
+            document.getElementById('drawerOverlay').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+        });
+
+        document.querySelectorAll('.drawer-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const page = link.dataset.page;
+                const action = link.dataset.action;
+                if (page) navigateTo(page);
+                else if (action === 'profile') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    document.getElementById('profileModal').classList.add('open');
+                } else if (action === 'cart') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    openCartModal();
+                } else if (action === 'orders') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    openOrdersModal();
+                } else if (action === 'history') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    openHistoryModal();
+                } else if (action === 'faq') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    openFaqModal();
+                } else if (action === 'ticket') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    openTicketModal();
+                } else if (action === 'guide') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    openGuideModal();
+                }
+            });
+        });
+
+        document.querySelectorAll('.quick-menu').forEach(el => {
+            el.addEventListener('click', () => {
+                const page = el.dataset.page;
+                const action = el.dataset.action;
+                if (page) navigateTo(page);
+                else if (action === 'cart') openCartModal();
+                else if (action === 'orders') openOrdersModal();
+                else if (action === 'ticket') openTicketModal();
+            });
+        });
+
+        // ============================================================
+        // SLIDER
+        // ============================================================
+        let slideIdx = 0;
+        const slides = document.querySelectorAll('.slide-home');
+        const dots = document.querySelectorAll('.home-dot');
+
+        function showSlide(i) {
+            slides.forEach((s, idx) => s.style.opacity = idx === i ? '1' : '0');
+            dots.forEach((d, idx) => {
+                if (idx === i) { d.style.width = '18px';
+                    d.style.backgroundColor = 'white'; } else { d.style.width = '8px';
+                    d.style.backgroundColor = 'rgba(255,255,255,0.5)'; }
+            });
+        }
+        dots.forEach((d, i) => d.addEventListener('click', () => { slideIdx = i;
+            showSlide(i); }));
+        showSlide(0);
+        setInterval(() => { slideIdx = (slideIdx + 1) % slides.length;
+            showSlide(slideIdx); }, 4000);
+
+        // ============================================================
+        // THEME - LANGSUNG BERUBAH SAAT REFRESH
+        // ============================================================
+        const themeBtn = document.getElementById('themeBtn');
+        let dark = true;
+
+        // Load theme from localStorage and apply immediately
+        const savedTheme = localStorage.getItem('riky-theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light');
+            dark = false;
+            themeBtn.innerHTML = '<i class="fas fa-sun text-sm"></i>';
+        } else {
+            document.body.classList.remove('light');
+            dark = true;
+            themeBtn.innerHTML = '<i class="fas fa-moon text-sm"></i>';
+        }
+
+        themeBtn?.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            dark = !document.body.classList.contains('light');
+            themeBtn.innerHTML = dark ? '<i class="fas fa-moon text-sm"></i>' :
+                '<i class="fas fa-sun text-sm"></i>';
+            localStorage.setItem('riky-theme', dark ? 'dark' : 'light');
+        });
+
+        // ============================================================
+        // ONLINE COUNT REAL-TIME
+        // ============================================================
+        function updateOnlineCount() {
+            const base = 342;
+            const variation = Math.floor(Math.random() * 60) - 30; // -30 s/d +30
+            const count = Math.max(200, base + variation);
+            const memberEl = document.getElementById('onlineMemberCount');
+            const headerEl = document.getElementById('onlineNumber');
+            const formatted = count.toLocaleString();
+            if (memberEl) memberEl.textContent = formatted;
+            if (headerEl) headerEl.textContent = formatted + 'k';
+        }
+
+        // Update setiap 5-8 detik
+        setInterval(updateOnlineCount, 5000 + Math.random() * 3000);
+        updateOnlineCount(); // pertama kali
+
+        // ============================================================
+        // SEARCH
+        // ============================================================
+        function buildSearchIndex() {
+            const index = [];
+            freeFireProducts.forEach(p => {
+                index.push({ nama: p.nama, harga: p.harga, kategori: 'Game', tipe: 'game', data: p, game: 'Free Fire' });
+            });
+            mobileLegendsProducts.forEach(p => {
+                index.push({ nama: p.nama, harga: p.harga, kategori: 'Game', tipe: 'game', data: p, game: 'MLBB' });
+            });
+            aovProducts.forEach(p => {
+                index.push({ nama: p.nama, harga: p.harga, kategori: 'Game', tipe: 'game', data: p, game: 'AOV' });
+            });
+            const bot = botDatabase.kyybot;
+            Object.keys(bot.categories).forEach(catKey => {
+                const cat = bot.categories[catKey];
+                cat.packages.forEach(p => {
+                    index.push({
+                        nama: `${p.name} - ${cat.name}`,
+                        harga: p.price,
+                        kategori: 'Bot WhatsApp',
+                        tipe: 'bot',
+                        data: { pkg: p, catKey },
+                        needLink: cat.needLink
+                    });
+                });
+            });
+            extraProducts.forEach(p => {
+                index.push({ nama: p.nama, harga: p.harga, kategori: 'APK Premium', tipe: 'premium', data: p });
+            });
+            return index;
+        }
+
+        const searchIndex = buildSearchIndex();
+        const searchInput = document.getElementById('homeSearch');
+        const searchResults = document.getElementById('searchResults');
+
+        function renderSearchResults(query) {
+            const q = query.trim().toLowerCase();
+            if (!q) { searchResults.classList.add('hidden'); return; }
+
+            const results = searchIndex.filter(item =>
+                item.nama.toLowerCase().includes(q) ||
+                item.kategori.toLowerCase().includes(q) ||
+                (item.game && item.game.toLowerCase().includes(q))
+            );
+
+            if (results.length === 0) {
+                searchResults.classList.remove('hidden');
+                searchResults.innerHTML = `<div class="text-center" style="color:var(--textSec);font-size:13px;padding:8px 0;">Tidak ditemukan untuk "${query}"</div>`;
+                return;
+            }
+
+            searchResults.classList.remove('hidden');
+            searchResults.innerHTML = results.slice(0, 10).map(item => {
+                let priceHtml = item.tipe === 'premium' || item.tipe === 'game' || item.tipe === 'bot' ?
+                    `<span class="price">Rp${item.harga.toLocaleString()}</span>` :
+                    `<span class="price layanan">Hubungi</span>`;
+                let badge = '';
+                if (item.tipe === 'game') badge = `<span class="badge badge-blue text-[8px]">${item.game||'Game'}</span>`;
+                else if (item.tipe === 'bot') badge = `<span class="badge badge-purple text-[8px]">Bot</span>`;
+                else if (item.tipe === 'premium') badge = `<span class="badge badge-green text-[8px]">Premium</span>`;
+                return `
+                            <div class="search-result" data-tipe="${item.tipe}" data-nama="${item.nama}" data-harga="${item.harga||0}" data-catkey="${item.catKey||''}" data-needlink="${item.needLink||false}" data-game="${item.game||''}">
+                                <div class="info">
+                                    <span class="name">${item.nama}</span>
+                                    <span class="cat">${item.kategori} ${badge}</span>
+                                </div>
+                                ${priceHtml}
+                            </div>
+                        `;
+            }).join('');
+
+            document.querySelectorAll('.search-result').forEach(el => {
+                el.addEventListener('click', function() {
+                    const tipe = this.dataset.tipe;
+                    const nama = this.dataset.nama;
+                    const harga = parseInt(this.dataset.harga) || 0;
+                    const catKey = this.dataset.catkey || '';
+                    const needLink = this.dataset.needlink === 'true';
+                    const game = this.dataset.game || '';
+
+                    searchResults.classList.add('hidden');
+                    searchInput.value = '';
+
+                    if (tipe === 'game') {
+                        openInputModal({ nama, harga, tipe: 'game', needLink: false });
+                    } else if (tipe === 'bot') {
+                        if (catKey === 'userpremium') {
+                            openInputModal({ nama, harga, tipe: 'bot', catKey, needLink: false });
+                        } else if (needLink) {
+                            openInputModal({ nama, harga, tipe: 'bot', catKey, needLink: true });
+                        }
+                    } else if (tipe === 'premium') {
+                        addToCart({ nama, harga, tipe: 'premium', userId: 'no-email' });
+                    }
+                });
+            });
+        }
+
+        searchInput?.addEventListener('input', function() {
+            renderSearchResults(this.value);
+        });
+
+        searchInput?.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const firstResult = document.querySelector('.search-result');
+                if (firstResult) firstResult.click();
+            }
+        });
+
+        document.getElementById('searchBtn')?.addEventListener('click', () => {
+            searchInput.focus();
+            navigateTo('home');
+        });
+
+        document.addEventListener('click', function(e) {
+            const searchContainer = document.querySelector('.relative');
+            if (searchContainer && !searchContainer.contains(e.target)) {
+                if (searchResults) searchResults.classList.add('hidden');
+            }
+        });
+
+        // ============================================================
+        // ALL PRODUCTS PAGE
+        // ============================================================
+        function getAllProducts(filter = 'all') {
+            let products = [];
+
+            if (filter === 'all' || filter === 'game') {
+                products = products.concat(freeFireProducts.map(p => ({ ...p, tipe: 'game', kategori: 'Game' })));
+                products = products.concat(mobileLegendsProducts.map(p => ({ ...p, tipe: 'game', kategori: 'Game' })));
+                products = products.concat(aovProducts.map(p => ({ ...p, tipe: 'game', kategori: 'Game' })));
+            }
+            if (filter === 'all' || filter === 'bot') {
+                const bot = botDatabase.kyybot;
+                Object.keys(bot.categories).forEach(catKey => {
+                    const cat = bot.categories[catKey];
+                    cat.packages.forEach(p => {
+                        products.push({
+                            nama: `${p.name} - ${cat.name}`,
+                            harga: p.price,
+                            tipe: 'bot',
+                            kategori: 'Bot WhatsApp',
+                            img: 'https://i.ibb.co.com/TxTS4YY0/file-000000009e2c7206825f8800acb714a1.png',
+                            catKey: catKey,
+                            needLink: cat.needLink
+                        });
+                    });
+                });
+            }
+            if (filter === 'all' || filter === 'premium') {
+                products = products.concat(extraProducts.map(p => ({ ...p, tipe: 'premium', kategori: 'APK Premium' })));
+            }
+
+            return products;
+        }
+
+        function renderAllProducts(filter = 'all') {
+            const container = document.getElementById('allProductsContainer');
+            if (!container) return;
+
+            const products = getAllProducts(filter);
+
+            if (products.length === 0) {
+                container.innerHTML = `<div class="text-center py-6" style="color:var(--textSec);">Tidak ada produk</div>`;
+                return;
+            }
+
+            container.innerHTML = products.map(p => `
+                        <div class="product-card" data-nama="${p.nama}" data-harga="${p.harga}" data-tipe="${p.tipe}" data-catkey="${p.catKey||''}" data-needlink="${p.needLink||false}">
+                            <div class="img-wrap"><img src="${p.img || 'https://i.ibb.co.com/TxTS4YY0/file-000000009e2c7206825f8800acb714a1.png'}"></div>
+                            <div class="body">
+                                <p class="name">${p.nama}</p>
+                                <p class="price">Rp${p.harga.toLocaleString()}</p>
+                                <span class="badge badge-blue text-[7px]">${p.kategori}</span>
+                                <button class="all-buy-btn text-[10px] px-3 py-1 rounded-full font-semibold mt-1" style="background:var(--primary);color:#fff;border:none;width:100%;">Beli</button>
+                            </div>
+                        </div>
+                    `).join('');
+
+            document.querySelectorAll('.all-buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('[data-nama]');
+                    const tipe = card.dataset.tipe;
+                    const nama = card.dataset.nama;
+                    const harga = parseInt(card.dataset.harga);
+                    const catKey = card.dataset.catkey || '';
+                    const needLink = card.dataset.needlink === 'true';
+
+                    if (tipe === 'game') {
+                        openInputModal({ nama, harga, tipe: 'game', needLink: false });
+                    } else if (tipe === 'bot') {
+                        if (catKey === 'userpremium') {
+                            openInputModal({ nama, harga, tipe: 'bot', catKey, needLink: false });
+                        } else if (needLink) {
+                            openInputModal({ nama, harga, tipe: 'bot', catKey, needLink: true });
+                        }
+                    } else if (tipe === 'premium') {
+                        addToCart({ nama, harga, tipe: 'premium', userId: 'no-email' });
+                    }
+                });
+            });
+        }
+
+        document.querySelectorAll('.all-filter').forEach(f => {
+            f.addEventListener('click', function() {
+                document.querySelectorAll('.all-filter').forEach(f2 => {
+                    f2.classList.remove('bg-primary', 'text-white');
+                    f2.classList.add('bg-card', 'border-borderColor');
+                    f2.style.color = 'var(--text)';
+                });
+                this.classList.add('bg-primary', 'text-white');
+                this.classList.remove('bg-card', 'border-borderColor');
+                allFilter = this.dataset.filter;
+                renderAllProducts(allFilter);
+            });
+        });
+
+        document.getElementById('allSearch')?.addEventListener('input', function() {
+            const q = this.value.trim().toLowerCase();
+            const products = getAllProducts(allFilter);
+            const filtered = products.filter(p => p.nama.toLowerCase().includes(q));
+            const container = document.getElementById('allProductsContainer');
+            if (!filtered.length) {
+                container.innerHTML = `<div class="text-center py-6" style="color:var(--textSec);">Tidak ditemukan untuk "${q}"</div>`;
+                return;
+            }
+            container.innerHTML = filtered.map(p => `
+                        <div class="product-card" data-nama="${p.nama}" data-harga="${p.harga}" data-tipe="${p.tipe}" data-catkey="${p.catKey||''}" data-needlink="${p.needLink||false}">
+                            <div class="img-wrap"><img src="${p.img || 'https://i.ibb.co.com/TxTS4YY0/file-000000009e2c7206825f8800acb714a1.png'}"></div>
+                            <div class="body">
+                                <p class="name">${p.nama}</p>
+                                <p class="price">Rp${p.harga.toLocaleString()}</p>
+                                <span class="badge badge-blue text-[7px]">${p.kategori}</span>
+                                <button class="all-buy-btn text-[10px] px-3 py-1 rounded-full font-semibold mt-1" style="background:var(--primary);color:#fff;border:none;width:100%;">Beli</button>
+                            </div>
+                        </div>
+                    `).join('');
+            document.querySelectorAll('.all-buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('[data-nama]');
+                    const tipe = card.dataset.tipe;
+                    const nama = card.dataset.nama;
+                    const harga = parseInt(card.dataset.harga);
+                    const catKey = card.dataset.catkey || '';
+                    const needLink = card.dataset.needlink === 'true';
+                    if (tipe === 'game') {
+                        openInputModal({ nama, harga, tipe: 'game', needLink: false });
+                    } else if (tipe === 'bot') {
+                        if (catKey === 'userpremium') {
+                            openInputModal({ nama, harga, tipe: 'bot', catKey, needLink: false });
+                        } else if (needLink) {
+                            openInputModal({ nama, harga, tipe: 'bot', catKey, needLink: true });
+                        }
+                    } else if (tipe === 'premium') {
+                        addToCart({ nama, harga, tipe: 'premium', userId: 'no-email' });
+                    }
+                });
+            });
+        });
+
+        // ============================================================
+        // BOT
+        // ============================================================
+        function renderBotProducts() {
+            const cat = botDatabase.kyybot.categories[activeBotCategory];
+            const container = document.getElementById('botProductsContainer');
+            if (!container) return;
+
+            let packages = cat.packages;
+
+            if (botFilter !== 'all') {
+                const filterNum = parseInt(botFilter);
+                packages = packages.filter(p => {
+                    const match = p.name.match(/(\d+)/);
+                    if (match) return parseInt(match[1]) === filterNum;
+                    return false;
+                });
+            }
+
+            if (packages.length === 0) {
+                container.innerHTML =
+                    `<div class="text-center py-4" style="color:var(--textSec);font-size:13px;">Tidak ada paket untuk filter ini</div>`;
+                return;
+            }
+
+            container.innerHTML = packages.map(p => `
+                        <div class="product-card" data-nama="${p.name}" data-harga="${p.price}" data-tipe="bot" data-catkey="${activeBotCategory}" data-needlink="${cat.needLink}">
+                            <div class="flex gap-3 p-3">
+                                <div class="w-16 h-16 rounded-xl overflow-hidden bg-card flex items-center justify-center flex-shrink-0"><i class="fas fa-robot text-3xl" style="color:var(--primary);"></i></div>
+                                <div class="flex-1">
+                                    <h3 class="font-bold text-sm" style="color:var(--text);">${p.name} - ${cat.name}</h3>
+                                    <div class="flex flex-wrap gap-1 mt-1">${p.specs.map(s => `<span class="text-[10px] bg-card px-2 py-0.5 rounded-full" style="color:var(--textSec);"><i class="fas ${s.icon}"></i> ${s.text}</span>`).join('')}</div>
+                                    <div class="flex justify-between items-center mt-2"><span class="font-bold text-primary">Rp${p.price.toLocaleString()}</span><button class="bot-buy-btn text-xs px-3 py-1 rounded-full font-semibold" style="background:var(--primary);color:#fff;border:none;">Beli</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+            document.querySelectorAll('.bot-buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('[data-nama]');
+                    const nama = card.dataset.nama;
+                    const harga = parseInt(card.dataset.harga);
+                    const catKey = card.dataset.catkey;
+                    const needLink = card.dataset.needlink === 'true';
+                    if (catKey === 'userpremium') openInputModal({ nama, harga, tipe: 'bot', catKey,
+                        needLink: false });
+                    else if (needLink) openInputModal({ nama, harga, tipe: 'bot', catKey, needLink: true });
+                });
+            });
+
+            updateBotDesc(activeBotCategory);
+        }
+
+        function updateBotDesc(catKey) {
+            const cat = botDatabase.kyybot.categories[catKey];
+            const title = document.getElementById('botDescTitle');
+            const text = document.getElementById('botDescText');
+            const icon = document.getElementById('botDescIcon');
+            if (!title || !text) return;
+            title.textContent = cat.name;
+            if (catKey === 'biasa') text.textContent =
+                'Sewa bot untuk grup dengan sistem limit penggunaan. Setiap anggota mendapatkan 20 limit per hari. Limit reset otomatis setiap hari.';
+            else if (catKey === 'premium') text.textContent =
+                'Sewa bot untuk grup dengan akses unlimited. Semua anggota grup dapat menggunakan fitur bot tanpa batas limit.';
+            else text.textContent =
+                'User Premium untuk nomor pribadi. Nomor yang didaftarkan akan mendapatkan akses premium melalui chat pribadi tanpa batas limit.';
+            if (icon) icon.className = `${cat.icon} text-primary text-base`;
+        }
+
+        document.querySelectorAll('#botTabs .tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('#botTabs .tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                activeBotCategory = tab.dataset.cat;
+                renderBotProducts();
+            });
+        });
+
+        document.querySelectorAll('.bot-filter').forEach(f => {
+            f.addEventListener('click', function() {
+                document.querySelectorAll('.bot-filter').forEach(f2 => {
+                    f2.classList.remove('bg-primary', 'text-white');
+                    f2.classList.add('bg-card', 'border-borderColor');
+                    f2.style.color = 'var(--text)';
+                });
+                this.classList.add('bg-primary', 'text-white');
+                this.classList.remove('bg-card', 'border-borderColor');
+                botFilter = this.dataset.filter || 'all';
+                renderBotProducts();
+                showToast(`Filter: ${this.textContent}`, 'info');
+            });
+        });
+
+        // ============================================================
+        // TOPUP
+        // ============================================================
+        function renderGameContent(game) {
+            const container = document.getElementById('gameContentContainer');
+            if (!container) return;
+            let products, title, img;
+            if (game === 'ff') { products = freeFireProducts;
+                title = 'Free Fire';
+                img = 'https://i.ibb.co.com/qFDJ2Xf2/fe9615eb2679df014e23ee96951457da.jpg'; } else if (game === 'ml') {
+                products = mobileLegendsProducts;
+                title = 'Mobile Legends';
+                img = 'https://i.ibb.co.com/zTzk7D6D/1d229015a421e9ab344dfe1d61e2f082.jpg'; } else if (game === 'aov') {
+                products = aovProducts;
+                title = 'Arena of Valor';
+                img = 'https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg'; } else { container.innerHTML =
+                    '<div class="text-center py-6" style="color:var(--textSec);">Game tidak ditemukan</div>'; return; }
+            container.innerHTML = `
+                        <div class="flex items-center gap-2.5 mb-3"><img src="${img}" class="w-9 h-9 rounded-full object-cover"><h3 class="text-base font-extrabold" style="color:var(--text);">${title}</h3><span class="badge badge-green text-[8px]">Ready</span></div>
+                        <div class="grid grid-cols-2 gap-2.5">${products.map(p => `
+                            <div class="product-card" data-nama="${p.nama}" data-harga="${p.harga}" data-tipe="game">
+                                <div class="img-wrap"><img src="${p.img}"></div>
+                                <div class="body">
+                                    <p class="name">${p.nama}</p>
+                                    <p class="price">Rp${p.harga.toLocaleString()}</p>
+                                    <button class="game-buy-btn text-[10px] px-3 py-1 rounded-full font-semibold mt-1" style="background:var(--primary);color:#fff;border:none;width:100%;">Beli</button>
+                                </div>
+                            </div>
+                        `).join('')}</div>
+                    `;
+            document.querySelectorAll('.game-buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('[data-nama]');
+                    openInputModal({ nama: card.dataset.nama, harga: parseInt(card.dataset.harga), tipe: 'game' });
+                });
+            });
+        }
+
+        document.querySelectorAll('.game-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.game-tab').forEach(t => { t.style.borderColor = 'var(--border)';
+                    t.style.background = 'var(--card)'; });
+                tab.style.borderColor = 'var(--primary)';
+                tab.style.background = 'rgba(37,99,235,0.08)';
+                activeGame = tab.dataset.game;
+                renderGameContent(activeGame);
+            });
+        });
+
+        document.getElementById('gameSearch')?.addEventListener('input', function() {
+            const q = this.value.trim().toLowerCase();
+            if (!q) { renderGameContent(activeGame); return; }
+            const all = [...freeFireProducts, ...mobileLegendsProducts, ...aovProducts];
+            const found = all.filter(p => p.nama.toLowerCase().includes(q));
+            const container = document.getElementById('gameContentContainer');
+            if (!found.length) { container.innerHTML =
+                `<div class="text-center py-6" style="color:var(--textSec);">Tidak ditemukan untuk "${q}"</div>`; return; }
+            container.innerHTML =
+                `<div class="grid grid-cols-2 gap-2.5">${found.map(p => `
+                    <div class="product-card" data-nama="${p.nama}" data-harga="${p.harga}" data-tipe="game">
+                        <div class="img-wrap"><img src="${p.img}"></div>
+                        <div class="body">
+                            <p class="name">${p.nama}</p>
+                            <p class="price">Rp${p.harga.toLocaleString()}</p>
+                            <button class="game-buy-btn text-[10px] px-3 py-1 rounded-full font-semibold mt-1" style="background:var(--primary);color:#fff;border:none;width:100%;">Beli</button>
+                        </div>
+                    </div>
+                `).join('')}</div>`;
+            document.querySelectorAll('.game-buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('[data-nama]');
+                    openInputModal({ nama: card.dataset.nama, harga: parseInt(card.dataset.harga),
+                        tipe: 'game' });
+                });
+            });
+        });
+
+        // ============================================================
+        // PREMIUM
+        // ============================================================
+        function renderPremiumProducts(filter = 'all') {
+            const container = document.getElementById('premiumProductsContainer');
+            if (!container) return;
+            let products = extraProducts;
+            if (filter !== 'all') {
+                const map = { 'streaming': ['iqiyi', 'netflix', 'viu', 'wetv', 'youku', 'applemusic'],
+                    'ai': ['gemini', 'chatgpt'], 'editing': ['capcut', 'alightmotion'], 'musik': ['spotify',
+                        'bandlab'
+                    ], 'produktivitas': ['canva'] };
+                const allowed = map[filter] || [];
+                products = extraProducts.filter(p => allowed.includes(p.tipe));
+            }
+            container.innerHTML = products.map(p => `
+                        <div class="product-card" data-nama="${p.nama}" data-harga="${p.harga}" data-tipe="premium">
+                            <div class="img-wrap"><img src="${p.img}"></div>
+                            <div class="body">
+                                <p class="name">${p.nama}</p>
+                                <p class="price">Rp${p.harga.toLocaleString()}</p>
+                                <span class="badge badge-blue text-[7px]">${p.durasi}</span>
+                                <button class="premium-buy-btn text-[10px] px-3 py-1 rounded-full font-semibold mt-1" style="background:var(--primary);color:#fff;border:none;width:100%;">Beli</button>
+                            </div>
+                        </div>
+                    `).join('');
+            document.querySelectorAll('.premium-buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('[data-nama]');
+                    addToCart({ nama: card.dataset.nama, harga: parseInt(card.dataset.harga), tipe: 'premium',
+                        userId: 'no-email' });
+                });
+            });
+        }
+
+        document.querySelectorAll('.premium-cat').forEach(cat => {
+            cat.addEventListener('click', function() {
+                document.querySelectorAll('.premium-cat').forEach(c => {
+                    c.classList.remove('bg-primary', 'text-white');
+                    c.classList.add('bg-card', 'border-borderColor');
+                    c.style.color = 'var(--text)';
+                });
+                this.classList.add('bg-primary', 'text-white');
+                this.classList.remove('bg-card', 'border-borderColor');
+                renderPremiumProducts(this.dataset.cat === 'all' ? 'all' : this.dataset.cat);
+            });
+        });
+
+        // ============================================================
+        // INPUT MODAL
+        // ============================================================
+        function openInputModal(product) {
+            currentProductTemp = product;
+            const modal = document.getElementById('inputModal');
+            const title = document.getElementById('modalTitle');
+            const info = document.getElementById('modalProductInfo');
+            const field = document.getElementById('modalInputField');
+            const guide = document.getElementById('modalGuide');
+
+            if (product.tipe === 'game') {
+                title.innerHTML = '<i class="fas fa-gamepad text-primary mr-2"></i> Masukkan ID Game';
+                info.textContent = `Produk: ${product.nama} - Rp${product.harga.toLocaleString()}`;
+                field.placeholder = 'contoh: 12345678';
+                guide.innerHTML =
+                    `<div class="flex items-start gap-2.5"><i class="fas fa-id-card text-primary text-sm"></i><div><p class="text-xs font-bold uppercase tracking-wide" style="color:var(--text);">Cara Mendapatkan ID</p><ul class="text-[11px] mt-0.5 space-y-0.5 list-disc list-inside" style="color:var(--textSec);"><li>Buka game → buka profil akun.</li><li>Salin User ID / Server ID (angka).</li><li>Pastikan ID benar agar topup tepat sasaran.</li></ul></div></div>`;
+            } else if (product.tipe === 'bot') {
+                if (product.catKey === 'userpremium') {
+                    title.innerHTML = '<i class="fab fa-whatsapp text-primary mr-2"></i> Masukkan Nomor WhatsApp';
+                    info.textContent = `Produk: ${product.nama} - Rp${product.harga.toLocaleString()}`;
+                    field.placeholder = '628123456789';
+                    guide.innerHTML =
+                        `<div class="flex items-start gap-2.5"><i class="fab fa-whatsapp text-primary text-sm"></i><div><p class="text-xs font-bold uppercase tracking-wide" style="color:var(--text);">Nomor WhatsApp Aktif</p><ul class="text-[11px] mt-0.5 space-y-0.5 list-disc list-inside" style="color:var(--textSec);"><li>Masukkan nomor WhatsApp untuk akses User Premium.</li><li>Gunakan format <span class="text-primary font-medium">628xxxxxxxxxx</span>.</li><li>Nomor harus aktif dan terdaftar di WhatsApp.</li></ul></div></div>`;
+                } else {
+                    title.innerHTML = '<i class="fas fa-link text-primary mr-2"></i> Masukkan Link Grup WhatsApp';
+                    info.textContent = `Produk: ${product.nama} - Rp${product.harga.toLocaleString()}`;
+                    field.placeholder = 'https://chat.whatsapp.com/...';
+                    guide.innerHTML =
+                        `<div class="flex items-start gap-2.5"><i class="fas fa-question text-primary text-sm"></i><div><p class="text-xs font-bold uppercase tracking-wide" style="color:var(--text);">Cara Mendapatkan Link Grup</p><ul class="text-[11px] mt-0.5 space-y-0.5 list-disc list-inside" style="color:var(--textSec);"><li>Buka grup WhatsApp → tekan nama grup.</li><li>Pilih <span class="text-primary font-medium">"Undang via tautan"</span> → <span class="text-primary font-medium">"Salin tautan"</span>.</li><li>Tempelkan tautan di atas.</li></ul></div></div>`;
+                }
+            } else if (product.tipe === 'premium') {
+                title.innerHTML = '<i class="fas fa-crown text-primary mr-2"></i> Konfirmasi Pembelian';
+                info.textContent = `Produk: ${product.nama} - Rp${product.harga.toLocaleString()}`;
+                field.style.display = 'none';
+                guide.innerHTML =
+                    `<div class="flex items-start gap-2.5"><i class="fas fa-info-circle text-primary text-sm"></i><div><p class="text-xs" style="color:var(--textSec);">Aktivasi langsung tanpa perlu input data. Klik Tambahkan untuk memasukkan ke keranjang.</p></div></div>`;
+                document.getElementById('modalConfirmBtn').onclick = function() {
+                    addToCart({ nama: product.nama, harga: product.harga, tipe: 'premium', userId: 'no-email' });
+                    document.getElementById('inputModal').classList.remove('open');
+                    field.style.display = '';
+                };
+                modal.classList.add('open');
+                return;
+            }
+
+            field.style.display = '';
+            field.value = '';
+            document.getElementById('modalConfirmBtn').onclick = function() {
+                const val = field.value.trim();
+                if (!val) { showToast('Harap isi data!', 'error'); return; }
+                if (currentProductTemp.tipe === 'game') {
+                    addToCart({ nama: currentProductTemp.nama, harga: currentProductTemp.harga, tipe: 'game',
+                        userId: val });
+                } else if (currentProductTemp.tipe === 'bot') {
+                    if (currentProductTemp.catKey === 'userpremium') {
+                        let phone = val;
+                        if (phone.startsWith('08')) phone = '62' + phone.slice(1);
+                        if (!phone.match(/^62[0-9]{8,13}$/)) { showToast('Nomor tidak valid!', 'error'); return; }
+                        addToCart({ nama: currentProductTemp.nama, harga: currentProductTemp.harga, tipe: 'bot',
+                            catKey: currentProductTemp.catKey, phone: phone, linkGrup: null });
+                    } else {
+                        if (!val.includes('chat.whatsapp.com')) { showToast('Link grup tidak valid!', 'error');
+                            return; }
+                        addToCart({ nama: currentProductTemp.nama, harga: currentProductTemp.harga, tipe: 'bot',
+                            catKey: currentProductTemp.catKey, linkGrup: val, phone: null });
+                    }
+                }
+                document.getElementById('inputModal').classList.remove('open');
+                field.value = '';
+            };
+            modal.classList.add('open');
+        }
+
+        // ============================================================
+        // CART
+        // ============================================================
+        function addToCart(item) {
+            const existing = cart.find(i =>
+                i.nama === item.nama && i.tipe === item.tipe &&
+                (i.userId === item.userId || (!i.userId && !item.userId)) &&
+                (i.phone === item.phone || (!i.phone && !item.phone)) &&
+                (i.linkGrup === item.linkGrup || (!i.linkGrup && !item.linkGrup))
+            );
+            if (existing) existing.qty = (existing.qty || 1) + 1;
+            else cart.push({ ...item, qty: 1 });
+            saveCart();
+            showToast(`${item.nama} ditambahkan ke keranjang`, 'success');
+        }
+
+        function saveCart() { localStorage.setItem('rikyCart', JSON.stringify(cart));
+            updateCartUI(); }
+
+        function updateCartUI() {
+            const count = cart.reduce((s, i) => s + (i.qty || 1), 0);
+            const b1 = document.getElementById('quickCartBadge');
+            const b2 = document.getElementById('bottomNavBadge');
+            const b3 = document.getElementById('drawerCartCount');
+            if (b1) { if (count > 0) { b1.textContent = count;
+                    b1.classList.remove('hidden'); } else b1.classList.add('hidden'); }
+            if (b2) { if (count > 0) { b2.textContent = count;
+                    b2.style.display = 'flex'; } else b2.style.display = 'none'; }
+            if (b3) b3.textContent = count;
+            if (document.getElementById('cartModal').classList.contains('open')) renderCartModal();
+        }
+
+        function renderCartModal() {
+            const container = document.getElementById('cartItemsList');
+            if (!container) return;
+            if (!cart.length) { container.innerHTML =
+                    `<div class="text-center py-5" style="color:var(--textSec);"><i class="fas fa-cart-plus text-3xl opacity-30"></i><p class="mt-1 text-sm">Keranjang kosong</p></div>`;
+                document.getElementById('cartTotal').textContent = 'Rp0'; return; }
+            let total = 0;
+            container.innerHTML = '';
+            cart.forEach((item, idx) => {
+                const qty = item.qty || 1;
+                total += item.harga * qty;
+                let detail = '';
+                if (item.tipe === 'game') detail = `ID: ${item.userId}`;
+                else if (item.tipe === 'bot') detail = item.linkGrup ? `Link Grup: ${item.linkGrup.substring(0,30)}...` :
+                    `No WA: ${item.phone}`;
+                else if (item.tipe === 'premium') detail = 'Aktivasi langsung';
+                const div = document.createElement('div');
+                div.className = 'flex items-start gap-2.5 p-2.5 rounded-xl bg-card border border-borderColor';
+                div.innerHTML = `
+                            <div class="flex-1"><p class="font-semibold text-sm" style="color:var(--text);">${item.nama}</p><p class="text-xs" style="color:var(--textSec);">${detail}</p><p class="font-bold text-sm mt-0.5 text-primary">Rp${(item.harga*qty).toLocaleString()}</p></div>
+                            <div class="flex items-center gap-1.5">
+                                <button class="cart-qty w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold bg-surface border border-borderColor" style="color:var(--text);" data-idx="${idx}" data-dir="-">−</button>
+                                <span class="w-5 text-center font-semibold text-sm" style="color:var(--text);">${qty}</span>
+                                <button class="cart-qty w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold bg-surface border border-borderColor" style="color:var(--text);" data-idx="${idx}" data-dir="+">+</button>
+                                <button class="cart-remove text-red-400 hover:text-red-300 ml-0.5" data-idx="${idx}"><i class="fas fa-trash text-sm"></i></button>
+                            </div>
+                        `;
+                container.appendChild(div);
+            });
+            document.getElementById('cartTotal').textContent = `Rp${total.toLocaleString()}`;
+            document.querySelectorAll('.cart-qty').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.idx);
+                    if (this.dataset.dir === '+') cart[idx].qty = (cart[idx].qty || 1) + 1;
+                    else { if (cart[idx].qty > 1) cart[idx].qty--;
+                        else cart.splice(idx, 1); }
+                    saveCart();
+                    renderCartModal();
+                });
+            });
+            document.querySelectorAll('.cart-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    cart.splice(parseInt(this.dataset.idx), 1);
+                    saveCart();
+                    renderCartModal();
+                });
+            });
+        }
+
+        function openCartModal() { renderCartModal();
+            document.getElementById('cartModal').classList.add('open'); }
+
+        // ============================================================
+        // ORDERS / HISTORY
+        // ============================================================
+        function openOrdersModal() {
+            const container = document.getElementById('ordersList');
+            if (!container) return;
+            if (!orderHistory.length) { container.innerHTML =
+                    `<div class="text-center py-5" style="color:var(--textSec);"><i class="fas fa-box-open text-3xl opacity-30"></i><p class="mt-1 text-sm">Belum ada pesanan</p></div>`;
+                document.getElementById('ordersModal').classList.add('open'); return; }
+            container.innerHTML = '';
+            orderHistory.forEach(o => {
+                const items = o.items.map(i => {
+                    let d = '';
+                    if (i.tipe === 'game') d = `ID: ${i.userId}`;
+                    else if (i.tipe === 'bot') d = i.linkGrup ? `Link Grup: ${i.linkGrup.substring(0,20)}...` :
+                        `No WA: ${i.phone}`;
+                    else if (i.tipe === 'premium') d = 'Aktivasi langsung';
+                    return `<span class="text-xs" style="color:var(--textSec);">• ${i.nama} x${i.qty||1}</span>`;
+                }).join(' ');
+                const div = document.createElement('div');
+                div.className = 'card p-3';
+                div.innerHTML =
+                    `<div class="flex justify-between items-start"><div><p class="text-xs" style="color:var(--textSec);">${o.tanggal}</p><p class="text-sm font-semibold" style="color:var(--text);">#${o.id}</p></div><span class="order-status text-xs"><span class="dot success"></span> Berhasil</span></div><div class="mt-1 flex flex-wrap gap-1">${items}</div><p class="text-sm font-bold mt-1.5 text-primary">Total: Rp${o.total.toLocaleString()}</p>`;
+                container.appendChild(div);
+            });
+            document.getElementById('ordersModal').classList.add('open');
+        }
+
+        function openHistoryModal() {
+            const container = document.getElementById('historyList');
+            if (!container) return;
+            if (!orderHistory.length) { container.innerHTML =
+                    `<div class="text-center py-5" style="color:var(--textSec);"><i class="fas fa-history text-3xl opacity-30"></i><p class="mt-1 text-sm">Belum ada riwayat</p></div>`;
+                document.getElementById('historyModal').classList.add('open'); return; }
+            container.innerHTML = '';
+            orderHistory.slice(0, 20).forEach(o => {
+                const div = document.createElement('div');
+                div.className = 'card p-3';
+                div.innerHTML =
+                    `<div class="flex justify-between"><span class="text-xs" style="color:var(--textSec);">${o.tanggal}</span><span class="text-xs font-semibold text-primary">Rp${o.total.toLocaleString()}</span></div><p class="text-xs" style="color:var(--textSec);">${o.items.length} item</p>`;
+                container.appendChild(div);
+            });
+            document.getElementById('historyModal').classList.add('open');
+        }
+
+        // ============================================================
+        // TICKET
+        // ============================================================
+        function openTicketModal() {
+            document.getElementById('ticketSubject').value = '';
+            document.getElementById('ticketMessage').value = '';
+            document.getElementById('ticketCategory').value = 'Bug';
+            document.getElementById('ticketModal').classList.add('open');
+        }
+
+        document.getElementById('ticketSendBtn')?.addEventListener('click', async function() {
+            const subject = document.getElementById('ticketSubject').value.trim();
+            const category = document.getElementById('ticketCategory').value;
+            const message = document.getElementById('ticketMessage').value.trim();
+            if (!subject || !message) { showToast('Isi subjek dan pesan!', 'error'); return; }
+            const user = getLoggedInUser();
+            const userInfo = user ? `${user.nama} (@${user.username})` : 'Tidak login';
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: `🎫 TICKET BARU\n👤 Pengirim: ${userInfo}\n📌 Kategori: ${category}\n📝 Subjek: ${subject}\n💬 Pesan: ${message}\n🕒 ${new Date().toLocaleString('id-ID')}`,
+                        parse_mode: 'HTML'
+                    })
+                });
+                showToast('Ticket terkirim!', 'success');
+                document.getElementById('ticketModal').classList.remove('open');
+            } catch (e) { showToast('Gagal kirim ticket', 'error'); }
+        });
+
+        // ============================================================
+        // FAQ
+        // ============================================================
+        const faqData = [
+            { q: "Apa saja produk yang dijual di RIKY STORE?", a: "RIKY STORE menyediakan top-up game (Free Fire, MLBB, AOV), sewa bot WhatsApp (Biasa, Premium, User Premium), aplikasi premium (iQiyi, CapCut, Netflix, Canva, Alight Motion, Viu, WeTV, Spotify, YOUKU, BANDLAB, AI Gemini, ChatGPT Pro, Apple Music), pulsa, tagihan, dan e-wallet." },
+            { q: "Bagaimana cara melakukan pembelian?", a: "Pilih produk → Masukkan data yang diperlukan (ID game, link grup, atau nomor WA) → Checkout → Transfer melalui QRIS/Bank → Upload bukti transfer → Pesanan diproses 1-15 menit." },
+            { q: "Apakah RIKY STORE aman dan terpercaya?", a: "Sangat aman! RIKY STORE telah melayani ratusan pelanggan dengan sistem keamanan berlapis. Data pribadi Anda tidak akan pernah dibagikan ke pihak ketiga." },
+            { q: "Bagaimana jika terjadi kegagalan transaksi?", a: "Kami memberikan jaminan refund 100% jika terjadi kegagalan transaksi. Hubungi admin melalui WhatsApp dengan menyertakan bukti transaksi." },
+            { q: "Metode pembayaran apa saja yang tersedia?", a: "Transfer bank (BCA, BRI, Mandiri, BNI) dan e-wallet (Dana, Gopay, Ovo, Shopeepay) melalui QRIS." },
+            { q: "Berapa lama proses pengiriman produk?", a: "Top-up game dan aktivasi bot: 1-15 menit. Aplikasi premium: 1-24 jam tergantung ketersediaan stok." },
+            { q: "Apakah saya bisa melihat riwayat pembelian?", a: "Ya! Setiap pesanan tersimpan dalam riwayat pesanan. Akses melalui menu 'Pesanan Saya' atau 'Riwayat'." },
+            { q: "Bagaimana cara menghubungi admin?", a: "WhatsApp: 6289507390286, Telegram: @Rikynurrohman, Instagram: @newkinky." },
+            { q: "Syarat khusus untuk menggunakan bot WhatsApp?", a: "Bot Grup: berikan link grup valid. User Premium: nomor WhatsApp aktif yang terdaftar." },
+            { q: "Apakah ada diskon untuk pelanggan setia?", a: "Ya! Pantau saluran WhatsApp dan Instagram kami untuk promo menarik. Pelanggan >5 pembelian berhak mendapatkan keanggotaan VIP." },
+            { q: "Apakah saya perlu membuat akun?", a: "Sangat disarankan untuk menyimpan riwayat dan mengelola keranjang. Namun checkout tanpa akun tetap bisa dilakukan." },
+            { q: "Bagaimana jika lupa password?", a: "Gunakan fitur 'Lupa kata sandi' di halaman login. Masukkan username atau email." },
+            { q: "Apakah produk aplikasi premium legal?", a: "Ya, semua aplikasi premium legal dan original. Kami bekerja sama dengan penyedia resmi." },
+            { q: "Kebijakan privasi data?", a: "Data pribadi tidak akan pernah kami bagikan ke pihak ketiga. Hanya digunakan untuk pemrosesan pesanan." },
+            { q: "Apa yang harus dilakukan jika menerima produk yang salah?", a: "Segera hubungi admin via WhatsApp dengan bukti pesanan. Kami akan mengganti atau merefund." },
+            { q: "Apakah ada batasan jumlah pembelian?", a: "Tidak ada batasan jumlah pembelian dalam satu transaksi." }
+        ];
+
+        function openFaqModal() {
+            const container = document.getElementById('faqContainer');
+            container.innerHTML = faqData.map((item, i) =>
+                `<div class="faq-item card p-3 mb-2 cursor-pointer hover:border-primary transition" data-faq="${i}">
+                    <div class="flex items-center justify-between"><span class="text-sm font-semibold" style="color:var(--text);">${item.q}</span><i class="fas fa-chevron-down" style="color:var(--textSec);"></i></div>
+                    <div class="faq-answer text-xs mt-1 hidden" style="color:var(--textSec);">${item.a}</div>
+                </div>`
+            ).join('');
+            container.querySelectorAll('.faq-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const ans = this.querySelector('.faq-answer');
+                    const icon = this.querySelector('.fa-chevron-down');
+                    if (ans.classList.contains('hidden')) { ans.classList.remove('hidden'); if (icon) icon.style
+                            .transform = 'rotate(180deg)'; } else { ans.classList.add('hidden'); if (icon) icon
+                            .style.transform = ''; }
+                });
+            });
+            document.getElementById('faqModal').classList.add('open');
+        }
+        document.getElementById('faqSeeAll')?.addEventListener('click', openFaqModal);
+
+        // ============================================================
+        // GUIDE
+        // ============================================================
+        function openGuideModal() {
+            document.getElementById('guideModal').classList.add('open');
+            document.querySelectorAll('.guide-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const ans = this.querySelector('.guide-answer');
+                    const icon = this.querySelector('.fa-chevron-down');
+                    if (ans.classList.contains('hidden')) { ans.classList.remove('hidden'); if (icon) icon.style
+                            .transform = 'rotate(180deg)'; } else { ans.classList.add('hidden'); if (icon) icon
+                            .style.transform = ''; }
+                });
+            });
+        }
+
+        // ============================================================
+        // CHECKOUT
+        // ============================================================
+        document.getElementById('cartCheckoutBtn')?.addEventListener('click', () => {
+            document.getElementById('cartModal').classList.remove('open');
+            openCheckoutModal();
+        });
+        document.getElementById('cartContinueBtn')?.addEventListener('click', () => {
+            document.getElementById('cartModal').classList.remove('open');
+        });
+
+        function openCheckoutModal() {
+            if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
+            if (!isLoggedIn()) { showToast('Login dulu untuk checkout', 'info');
+                openAuthModal(); return; }
+            let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+            const details = document.getElementById('checkoutDetails');
+            let html = '<div class="space-y-1.5">';
+            cart.forEach(item => {
+                let detail = '';
+                if (item.tipe === 'game') detail = `ID: ${item.userId}`;
+                else if (item.tipe === 'bot') detail = item.linkGrup ? `Link Grup: ${item.linkGrup.substring(0,30)}...` :
+                    `No WA: ${item.phone}`;
+                else if (item.tipe === 'premium') detail = 'Aktivasi langsung';
+                html +=
+                    `<div class="flex justify-between text-sm py-1 border-b" style="border-color:var(--border);"><span style="color:var(--text);">${item.nama} x${item.qty||1}</span><span style="color:var(--textSec);">Rp${(item.harga*(item.qty||1)).toLocaleString()}</span></div><div class="text-xs" style="color:var(--textSec);">${detail}</div>`;
+            });
+            html +=
+                `</div><div class="mt-3 pt-2.5 border-t flex justify-between font-bold text-base" style="border-color:var(--border);"><span>Total</span><span class="text-primary">Rp${total.toLocaleString()}</span></div>`;
+            details.innerHTML = html;
+            document.getElementById('checkoutTotal').textContent = `Rp${total.toLocaleString()}`;
+            document.getElementById('checkoutModal').classList.add('open');
+            appliedVoucher = null;
+            document.getElementById('checkoutVoucherInput').value = '';
+            document.getElementById('voucherMessage').innerHTML = '';
+            document.getElementById('voucherDetail').classList.add('hidden');
+        }
+
+        document.getElementById('checkoutVoucherApply')?.addEventListener('click', function() {
+            const code = document.getElementById('checkoutVoucherInput').value.trim().toUpperCase();
+            const msg = document.getElementById('voucherMessage');
+            if (!code) { msg.innerHTML = '<span style="color:#EF4444;">Masukkan kode voucher.</span>'; return; }
+            const user = getLoggedInUser();
+            if (!user) { msg.innerHTML = '<span style="color:#EF4444;">Login dulu untuk pakai voucher.</span>'; return; }
+            const users = getUsers();
+            const uData = users.find(u => u.username === user.username);
+            if (uData && uData.voucherUsed) { msg.innerHTML = '<span style="color:#EF4444;">Voucher sudah dipakai.</span>'; return; }
+            const voucher = validVouchers.find(v => v.code === code);
+            if (!voucher) { msg.innerHTML = '<span style="color:#EF4444;">Kode tidak valid.</span>'; return; }
+            const hasBot = cart.some(i => i.tipe === 'bot');
+            if (!hasBot) { msg.innerHTML = '<span style="color:#EF4444;">Voucher khusus produk bot.</span>'; return; }
+            const total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+            const disc = Math.min(voucher.discount, total);
+            const after = total - disc;
+            appliedVoucher = { code, discountAmount: disc, totalAfterDiscount: after };
+            msg.innerHTML = `<span style="color:#22C55E;">✓ Voucher berhasil! Potongan Rp${disc.toLocaleString()}</span>`;
+            const detail = document.getElementById('voucherDetail');
+            detail.classList.remove('hidden');
+            detail.innerHTML =
+                `<div class="flex justify-between text-xs py-0.5"><span style="color:var(--textSec);">Diskon</span><span style="color:#22C55E;">-Rp${disc.toLocaleString()}</span></div><div class="flex justify-between text-xs font-bold py-0.5 border-t" style="border-color:var(--border);"><span style="color:var(--text);">Total setelah diskon</span><span class="text-primary">Rp${after.toLocaleString()}</span></div><button class="text-xs text-red-400 hover:text-red-300 mt-0.5" id="removeVoucherBtn">Hapus Voucher</button>`;
+            document.getElementById('checkoutTotal').textContent = `Rp${after.toLocaleString()}`;
+            document.getElementById('removeVoucherBtn')?.addEventListener('click', () => {
+                appliedVoucher = null;
+                document.getElementById('voucherDetail').classList.add('hidden');
+                const t2 = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+                document.getElementById('checkoutTotal').textContent = `Rp${t2.toLocaleString()}`;
+                msg.innerHTML = '';
+                document.getElementById('checkoutVoucherInput').value = '';
+            });
+        });
+
+        document.getElementById('checkoutQrisBtn')?.addEventListener('click', () => {
+            if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
+            let total = appliedVoucher ? appliedVoucher.totalAfterDiscount : cart.reduce((s, i) => s + i.harga * (i.qty ||
+                1), 0);
+            document.getElementById('qrisTotal').textContent = `Rp${total.toLocaleString()}`;
+            document.getElementById('uploadNominal').textContent = `Rp${total.toLocaleString()}`;
+            document.getElementById('checkoutModal').classList.remove('open');
+            document.getElementById('qrisModal').classList.add('open');
+        });
+
+        document.getElementById('uploadBuktiBtn')?.addEventListener('click', () => {
+            document.getElementById('qrisModal').classList.remove('open');
+            document.getElementById('uploadModal').classList.add('open');
+        });
+
+        function previewBukti(input) {
+            const preview = document.getElementById('filePreviewName');
+            if (input.files && input.files[0]) { preview.textContent = `📎 ${input.files[0].name}`;
+                preview.classList.remove('hidden'); } else preview.classList.add('hidden');
+        }
+
+        document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
+            const wa = document.getElementById('buyerWa').value.trim();
+            const file = document.getElementById('buktiFile').files[0];
+            const note = document.getElementById('checkoutNote').value.trim();
+            if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
+            if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
+            let total = appliedVoucher ? appliedVoucher.totalAfterDiscount : cart.reduce((s, i) => s + i.harga * (i.qty ||
+                1), 0);
+            let caption = "✨ RIKY STORE - PESANAN BARU ✨\n\n";
+            cart.forEach(item => {
+                let d = '';
+                if (item.tipe === 'game') d = `ID: ${item.userId}`;
+                else if (item.tipe === 'bot') d = item.linkGrup ? `Link Grup: ${item.linkGrup}` :
+                `No WA: ${item.phone}`;
+                else if (item.tipe === 'premium') d = 'Aktivasi langsung';
+                caption += `📦 ${item.nama} x${item.qty||1} - Rp${(item.harga*(item.qty||1)).toLocaleString()}\n   ▸ ${d}\n\n`;
+            });
+            caption += `💎 TOTAL: Rp${total.toLocaleString()}\n`;
+            if (appliedVoucher) caption +=
+                `🎫 Voucher: ${appliedVoucher.code} (potongan Rp${appliedVoucher.discountAmount.toLocaleString()})\n`;
+            caption += `\n👤 Pembeli\n📱 WA: ${wa}\n`;
+            if (note) caption += `📝 Catatan: ${note}\n`;
+            caption += `\n⏳ Status: Menunggu Konfirmasi Admin`;
+            if (appliedVoucher) {
+                const user = getLoggedInUser();
+                if (user) {
+                    const users = getUsers();
+                    const idx = users.findIndex(u => u.username === user.username);
+                    if (idx !== -1) { users[idx].voucherUsed = true;
+                        saveUsers(users);
+                        user.voucherUsed = true;
+                        setLoggedInUser(user); }
+                }
+            }
+            const fd = new FormData();
+            fd.append('chat_id', CHAT_ID);
+            fd.append('caption', caption);
+            fd.append('photo', file);
+            fd.append('parse_mode', 'Markdown');
+            try {
+                this.textContent = 'Mengirim...';
+                this.disabled = true;
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST',
+                    body: fd });
+                const result = await res.json();
+                if (result.ok) {
+                    const historyOrder = { id: Date.now(), tanggal: new Date().toLocaleString('id-ID'), items: [
+                            ...cart
+                        ], total: total };
+                    orderHistory.unshift(historyOrder);
+                    localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
+                    cart = [];
+                    saveCart();
+                    document.getElementById('uploadModal').classList.remove('open');
+                    showToast('Pesanan berhasil! Admin akan segera proses.', 'success');
+                    appliedVoucher = null;
+                    document.getElementById('checkoutVoucherInput').value = '';
+                    document.getElementById('voucherDetail').classList.add('hidden');
+                    document.getElementById('voucherMessage').innerHTML = '';
+                } else showToast('Gagal kirim, coba lagi', 'error');
+            } catch (e) { showToast('Error jaringan, coba lagi', 'error'); } finally { this.textContent = 'Kirim';
+                this.disabled = false; }
+        });
+
+        // ============================================================
+        // MODAL CLOSE
+        // ============================================================
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = document.getElementById(this.dataset.modal);
+                if (modal) modal.classList.remove('open');
+            });
+        });
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('open');
+            });
+        });
+
+        // ============================================================
+        // WAJIB MODAL + SYARAT - LANGSUNG POPUP SAAT KLIK
+        // ============================================================
+        (function() {
+            const m = document.getElementById('wajibModal');
+            if (m) { m.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; }
+            document.getElementById('btnSetujuMasuk')?.addEventListener('click', function() {
+                if (m) m.style.display = 'none';
+                document.body.style.overflow = '';
+            });
+
+            // Syarat link langsung buka popup
+            document.getElementById('syaratLink')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                document.getElementById('syaratModal').classList.add('open');
+            });
+
+            document.querySelectorAll('[data-modal="syaratModal"]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('syaratModal').classList.remove('open');
+                });
+            });
+            document.getElementById('syaratModal')?.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('open');
+            });
+        })();
+
+        // ============================================================
+        // PROFILE BTN
+        // ============================================================
+        document.getElementById('profileBtn')?.addEventListener('click', () => {
+            document.getElementById('profileModal').classList.toggle('open');
+        });
+        document.getElementById('profileLoginBtn')?.addEventListener('click', () => {
+            document.getElementById('profileModal').classList.remove('open');
+            openAuthModal();
+        });
+
+        // ============================================================
+        // FAQ MINI
+        // ============================================================
+        document.querySelectorAll('.faq-mini').forEach(el => {
+            el.addEventListener('click', function() {
+                const ans = this.querySelector('.faq-answer');
+                const icon = this.querySelector('.fa-chevron-down');
+                if (ans.classList.contains('hidden')) { ans.classList.remove('hidden'); if (icon) icon.style
+                        .transform = 'rotate(180deg)'; } else { ans.classList.add('hidden'); if (icon) icon.style
+                        .transform = ''; }
+            });
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        function init() {
+            renderBotProducts();
+            renderGameContent('ff');
+            renderPremiumProducts('all');
+            renderAllProducts('all');
+            updateCartUI();
+            updateAuthUI();
+
+            const ffTab = document.querySelector('.game-tab[data-game="ff"]');
+            if (ffTab) { ffTab.style.borderColor = 'var(--primary)';
+                ffTab.style.background = 'rgba(37,99,235,0.08)'; }
+
+            document.querySelector('.bot-filter[data-filter="all"]')?.classList.add('bg-primary', 'text-white');
+            document.querySelector('.all-filter[data-filter="all"]')?.classList.add('bg-primary', 'text-white');
+        }
+        document.addEventListener('DOMContentLoaded', init);
+
+        // ============================================================
+        // EXPOSE
+        // ============================================================
+        window.navigateTo = navigateTo;
+        window.openAuthModal = openAuthModal;
+        window.openCartModal = openCartModal;
+        window.openOrdersModal = openOrdersModal;
+        window.openHistoryModal = openHistoryModal;
+        window.openTicketModal = openTicketModal;
+        window.openFaqModal = openFaqModal;
+        window.openGuideModal = openGuideModal;
+        window.showToast = showToast;
+        window.previewBukti = previewBukti;
+    </script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+// 🔴 GANTI DATA DI BAWAH INI DENGAN PUNYA KAMU
+const firebaseConfig = {
+  apiKey: "AIzaSy...",              // ganti dengan apiKey kamu
+  authDomain: "riky-store-push.firebaseapp.com",
+  projectId: "riky-store-push",
+  storageBucket: "riky-store-push.appspot.com",
+  messagingSenderId: "1234567890",   // ganti dengan senderId kamu
+  appId: "1:1234567890:web:abcdef"   // ganti dengan appId kamu
+};
+
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+const db = firebase.firestore();
+
+// 🔴 GANTI VAPID KEY DI BAWAH DENGAN PUNYA KAMU
+const VAPID_KEY = "BGVdmUlwAsQA04HuozJ5XmvNBO8wzq3ZPDqrqMp635aXjFnAkvQCIg4_IArVzZ7rcpieWe9N9sBGHxJyR8g5C-o";
+
+function requestNotificationPermission() {
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Izin notifikasi diberikan');
+      messaging.getToken({ vapidKey: VAPID_KEY }).then((token) => {
+        console.log('Token:', token);
+        saveTokenToFirestore(token);
+      }).catch(err => {
+        console.error('Gagal dapat token', err);
+      });
+    } else {
+      console.warn('Izin notifikasi ditolak');
+    }
+  });
+}
+
+function saveTokenToFirestore(token) {
+  let userId = localStorage.getItem('pushUserId');
+  if (!userId) {
+    userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+    localStorage.setItem('pushUserId', userId);
+  }
+
+  db.collection('tokens').doc(userId).set({
+    token: token,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    userAgent: navigator.userAgent
+  }).then(() => {
+    console.log('Token tersimpan di Firestore');
+  }).catch(err => {
+    console.error('Gagal simpan token', err);
+  });
+}
+
+// Jalankan saat halaman dimuat
+if ('Notification' in window && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then(() => {
+      console.log('Service Worker registered');
+      requestNotificationPermission();
+    })
+    .catch(err => console.error('SW registration failed', err));
+}
+</script>
+</body>
+</html>
