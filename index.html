@@ -3208,7 +3208,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
-// Konfigurasi Firebase (PASTI BENAR)
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
   authDomain: "riky-store-push.firebaseapp.com",
@@ -3224,7 +3224,7 @@ const db = firebase.firestore();
 
 const VAPID_KEY = "BGVdmUlwAsQA04HuozJ5XmvNBO8wzq3ZPDqrqMp635aXjFnAkvQCIg4_IArVzZ7rcpieWe9N9sBGHxJyR8g5C-o";
 
-// ===== INI KODE YANG BERHASIL SEBELUMNYA (Tanpa Alert) =====
+// Fungsi simpan token
 function saveToken(token) {
   let userId = localStorage.getItem('pushUserId') || 'user_' + Date.now();
   localStorage.setItem('pushUserId', userId);
@@ -3235,7 +3235,7 @@ function saveToken(token) {
   }).then(() => console.log('✅ Token tersimpan')).catch(err => console.error('❌ Gagal simpan', err));
 }
 
-// Daftar SW, lalu minta token (INI YANG BERHASIL!)
+// Registrasi SW dan minta izin
 if ('Notification' in window && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('/firebase-messaging-sw.js')
     .then(reg => {
@@ -3243,7 +3243,7 @@ if ('Notification' in window && 'serviceWorker' in navigator) {
       return navigator.serviceWorker.ready;
     })
     .then(() => {
-      console.log('✅ SW ready, minta izin...');
+      console.log('✅ SW ready');
       return Notification.requestPermission();
     })
     .then(perm => {
