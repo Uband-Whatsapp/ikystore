@@ -1,4 +1,4 @@
-// sw.js - RIKY STORE
+// sw.js - RIKY STORE (Kustom)
 const DEFAULT_URL = 'https://iky.store.ekkstore.web.id/';
 const DEFAULT_ICON = 'https://files.catbox.moe/kzg0nc.png';
 const DEFAULT_BADGE = 'https://files.catbox.moe/kzg0nc.png';
@@ -50,8 +50,6 @@ self.addEventListener('notificationclick', event => {
 
   if (action === 'open') {
     event.waitUntil(openWebsite(url));
-  } else if (action === 'close') {
-    // tutup saja
   } else {
     event.waitUntil(openWebsite(url));
   }
