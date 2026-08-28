@@ -1,41 +1,687 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upload Index</title>
+  <meta name="theme-color" content="#080d18" />
+  <title>Update Index.html</title>
+
   <style>
-    body { background: #0B1121; color: #F1F5F9; font-family: Inter, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 20px; }
-    h1 { color: #2563EB; }
-    textarea { width: 100%; height: 500px; background: #1E293B; border: 1px solid #334155; color: white; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 13px; }
-    input[type="password"] { width: 100%; padding: 10px; background: #1E293B; border: 1px solid #334155; color: white; border-radius: 8px; margin: 10px 0; }
-    button { background: #2563EB; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
-    #status { margin-top: 12px; padding: 10px; border-radius: 6px; white-space: pre-wrap; word-break: break-all; }
-    .success { background: #14532D; }
-    .error { background: #7F1D1D; }
-    .info { background: #1E3A5F; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #080d18;
+      --card: #0f1728;
+      --card-light: #131d30;
+      --input: #09111f;
+      --border: #22304a;
+      --border-light: #2b3b58;
+      --text: #f8fafc;
+      --muted: #8fa0b8;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --info: #3b82f6;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(37, 99, 235, 0.16),
+          transparent 38%
+        ),
+        var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      padding: 24px 15px 35px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2563eb, #1e40af);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 8px 25px rgba(37, 99, 235, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    }
+
+    .code-icon {
+      width: 24px;
+      height: 20px;
+      position: relative;
+    }
+
+    .code-icon::before,
+    .code-icon::after {
+      content: "";
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border-top: 2px solid white;
+      border-left: 2px solid white;
+      top: 4px;
+    }
+
+    .code-icon::before {
+      left: 0;
+      transform: rotate(-45deg);
+    }
+
+    .code-icon::after {
+      right: 0;
+      transform: rotate(135deg);
+    }
+
+    .brand-text h1 {
+      font-size: 23px;
+      line-height: 1.2;
+      font-weight: 750;
+      letter-spacing: -0.4px;
+    }
+
+    .brand-text p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* =========================
+       MAIN CARD
+    ========================= */
+
+    .card {
+      background: rgba(15, 23, 40, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+      backdrop-filter: blur(12px);
+    }
+
+    .card-top {
+      padding: 20px 21px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.018),
+          transparent
+        );
+    }
+
+    .top-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .top-title h2 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid rgba(34, 197, 94, 0.18);
+      background: rgba(34, 197, 94, 0.08);
+      color: #86efac;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+    }
+
+    .top-description {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    /* =========================
+       FORM AREA
+    ========================= */
+
+    .form-area {
+      padding: 21px;
+    }
+
+    .form-group {
+      margin-bottom: 19px;
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #dbe5f2;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .label-mark {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.55);
+    }
+
+    .required {
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    /* =========================
+       PASSWORD
+    ========================= */
+
+    .password-wrap {
+      position: relative;
+    }
+
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      height: 48px;
+      padding: 0 45px 0 14px;
+      background: var(--input);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #5f7089;
+    }
+
+    input:hover,
+    textarea:hover {
+      border-color: var(--border-light);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      background: #0b1527;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.11);
+    }
+
+    /* =========================
+       TEXTAREA
+    ========================= */
+
+    .editor-wrap {
+      position: relative;
+    }
+
+    textarea {
+      width: 100%;
+      height: 500px;
+      min-height: 300px;
+      resize: vertical;
+      display: block;
+      padding: 15px;
+      padding-bottom: 38px;
+      background: #080f1c;
+      color: #dbeafe;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        Menlo,
+        monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      tab-size: 2;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .editor-footer {
+      position: absolute;
+      bottom: 1px;
+      left: 1px;
+      right: 1px;
+      height: 34px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(8, 15, 28, 0.95)
+      );
+      border-radius: 0 0 11px 11px;
+    }
+
+    .editor-info {
+      color: #52647d;
+      font-size: 10px;
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    button {
+      width: 100%;
+      height: 50px;
+      margin-top: 3px;
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(
+        135deg,
+        var(--blue),
+        var(--blue-dark)
+      );
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      box-shadow: 0 9px 25px rgba(37, 99, 235, 0.2);
+      transition:
+        transform 0.15s ease,
+        filter 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 11px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    button:active {
+      transform: scale(0.985);
+    }
+
+    .upload-icon {
+      width: 15px;
+      height: 15px;
+      border: 2px solid white;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .upload-icon::before {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-left: 2px solid white;
+      border-top: 2px solid white;
+      transform: rotate(45deg);
+      left: 3px;
+      top: -4px;
+      background: var(--blue);
+    }
+
+    .upload-icon::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 9px;
+      background: white;
+      left: 5px;
+      top: -4px;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    #status {
+      display: none;
+      margin-top: 16px;
+      padding: 13px 15px;
+      border-radius: 11px;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+      border: 1px solid transparent;
+    }
+
+    #status:not(:empty) {
+      display: block;
+    }
+
+    .success {
+      background: rgba(20, 83, 45, 0.22);
+      border-color: rgba(34, 197, 94, 0.2) !important;
+      color: #86efac;
+    }
+
+    .error {
+      background: rgba(127, 29, 29, 0.22);
+      border-color: rgba(239, 68, 68, 0.2) !important;
+      color: #fca5a5;
+    }
+
+    .info {
+      background: rgba(30, 58, 95, 0.28);
+      border-color: rgba(59, 130, 246, 0.2) !important;
+      color: #93c5fd;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+      text-align: center;
+      color: #43536a;
+      font-size: 10px;
+      margin-top: 17px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+      body {
+        padding: 15px 10px 25px;
+      }
+
+      .brand-icon {
+        width: 43px;
+        height: 43px;
+        border-radius: 12px;
+      }
+
+      .brand-text h1 {
+        font-size: 20px;
+      }
+
+      .brand-text p {
+        font-size: 11px;
+      }
+
+      .card {
+        border-radius: 15px;
+      }
+
+      .card-top {
+        padding: 17px;
+      }
+
+      .form-area {
+        padding: 17px;
+      }
+
+      .top-title h2 {
+        font-size: 15px;
+      }
+
+      .status-badge {
+        font-size: 9px;
+        padding: 5px 8px;
+      }
+
+      textarea {
+        height: 430px;
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .top-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .status-badge {
+        align-self: flex-start;
+      }
+
+      textarea {
+        height: 380px;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <h1>📤 Update Index.html</h1>
-  <form id="uploadForm">
-    <label>🔑 Password</label>
-    <input type="password" id="adminPassword" placeholder="Masukkan password" required />
-    <label>📝 HTML Baru</label>
-    <textarea id="htmlContent" placeholder="Tempel kode HTML di sini..."></textarea>
-    <button type="submit">🚀 Update</button>
-  </form>
-  <div id="status"></div>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand">
+
+        <div class="brand-icon">
+          <div class="code-icon"></div>
+        </div>
+
+        <div class="brand-text">
+          <h1>Update Index.html</h1>
+          <p>Panel pengelolaan file utama website</p>
+        </div>
+
+      </div>
+    </header>
+
+
+    <!-- MAIN CARD -->
+    <main class="card">
+
+      <div class="card-top">
+
+        <div class="top-title">
+          <h2>HTML Editor</h2>
+
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            Ready
+          </div>
+        </div>
+
+        <p class="top-description">
+          Masukkan kode HTML baru untuk memperbarui file
+          <strong>index.html</strong>.
+        </p>
+
+      </div>
+
+
+      <div class="form-area">
+
+        <form id="uploadForm">
+
+          <!-- PASSWORD -->
+          <div class="form-group">
+
+            <div class="label-row">
+              <label>
+                <span class="label-mark"></span>
+                Password Admin
+              </label>
+
+              <span class="required">Wajib diisi</span>
+            </div>
+
+            <div class="password-wrap">
+
+              <input
+                type="password"
+                id="adminPassword"
+                placeholder="Masukkan password admin"
+                autocomplete="current-password"
+                required
+              />
+
+            </div>
+
+          </div>
+
+
+          <!-- HTML -->
+          <div class="form-group">
+
+            <div class="label-row">
+              <label>
+                <span class="label-mark"></span>
+                HTML Baru
+              </label>
+
+              <span class="required">Wajib diisi</span>
+            </div>
+
+            <div class="editor-wrap">
+
+              <textarea
+                id="htmlContent"
+                placeholder="Tempel kode HTML di sini..."
+              ></textarea>
+
+              <div class="editor-footer">
+                <span class="editor-info">
+                  index.html
+                </span>
+
+                <span class="editor-info">
+                  HTML
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- SUBMIT -->
+          <button type="submit">
+
+            <span class="upload-icon"></span>
+
+            Update Index.html
+
+          </button>
+
+        </form>
+
+
+        <!-- STATUS -->
+        <div id="status"></div>
+
+      </div>
+
+    </main>
+
+
+    <div class="footer">
+      Admin Panel · Index File Management
+    </div>
+
+  </div>
+
 
   <script>
     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const password = document.getElementById('adminPassword').value.trim();
       const html = document.getElementById('htmlContent').value.trim();
       const status = document.getElementById('status');
 
-      if (!password) { status.textContent = '❌ Password kosong!'; status.className = 'error'; return; }
-      if (!html) { status.textContent = '❌ HTML kosong!'; status.className = 'error'; return; }
+      if (!password) {
+        status.textContent = '❌ Password kosong!';
+        status.className = 'error';
+        return;
+      }
+
+      if (!html) {
+        status.textContent = '❌ HTML kosong!';
+        status.className = 'error';
+        return;
+      }
 
       status.textContent = '⏳ Mengirim...';
       status.className = 'info';
@@ -55,27 +701,40 @@
         console.log('Response:', text);
 
         let data;
+
         try {
           data = JSON.parse(text);
         } catch (e) {
-          status.textContent = '❌ Response bukan JSON: ' + text.substring(0, 200);
+          status.textContent =
+            '❌ Response bukan JSON: ' + text.substring(0, 200);
+
           status.className = 'error';
           return;
         }
 
         if (response.ok) {
-          status.textContent = '✅ ' + (data.message || 'Berhasil!');
+          status.textContent =
+            '✅ ' + (data.message || 'Berhasil!');
+
           status.className = 'success';
+
         } else {
-          status.textContent = '❌ ' + (data.error || 'Gagal');
+          status.textContent =
+            '❌ ' + (data.error || 'Gagal');
+
           status.className = 'error';
         }
+
       } catch (err) {
-        status.textContent = '❌ Error: ' + err.message;
+        status.textContent =
+          '❌ Error: ' + err.message;
+
         status.className = 'error';
+
         console.error(err);
       }
     });
   </script>
+
 </body>
 </html>
