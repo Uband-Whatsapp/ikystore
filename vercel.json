@@ -1,1 +1,7 @@
 
+{
+  "rewrites": [
+    { "source": "/admin-upload", "destination": "/admin-upload.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
