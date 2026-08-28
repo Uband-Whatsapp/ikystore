@@ -3204,6 +3204,7 @@
     </script>
 <!-- Firebase SDK -->
 <!-- Firebase SDK -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -3225,7 +3226,7 @@ const db = firebase.firestore();
 
 const VAPID_KEY = "BGVdmUlwAsQA04HuozJ5XmvNBO8wzq3ZPDqrqMp635aXjFnAkvQCIg4_IArVzZ7rcpieWe9N9sBGHxJyR8g5C-o";
 
-// Fungsi simpan token (hanya console log, tanpa pop-up)
+// Fungsi simpan token
 function saveToken(token) {
   let userId = localStorage.getItem('pushUserId') || 'user_' + Date.now();
   localStorage.setItem('pushUserId', userId);
@@ -3233,32 +3234,43 @@ function saveToken(token) {
     token: token,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     userAgent: navigator.userAgent
-  }).then(() => console.log('✅ Token tersimpan')).catch(err => console.error('❌ Gagal simpan', err));
+  })
+  .then(() => console.log('✅ Token tersimpan'))
+  .catch(err => console.error('❌ Gagal simpan ke Firestore:', err));
 }
 
-// Daftar SW, lalu minta token (TANPA ALERT / POP-UP)
+// Proses registrasi SW dan ambil token (TANPA POP-UP DI HALAMAN)
 if ('Notification' in window && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then(() => {
+    .then(reg => {
       console.log('✅ SW registered');
+      // Tunggu SW benar-benar siap
+      return navigator.serviceWorker.ready;
+    })
+    .then(() => {
+      console.log('✅ SW ready');
+      // Minta izin notifikasi (ini yang muncul sekali saja)
       return Notification.requestPermission();
     })
-    .then(perm => {
-      if (perm === 'granted') {
-        console.log('✅ Izin diberikan');
+    .then(permission => {
+      if (permission === 'granted') {
+        console.log('✅ Izin notifikasi diberikan');
+        // Ambil token
         return messaging.getToken({ vapidKey: VAPID_KEY });
       } else {
-        console.warn('⚠️ Izin ditolak');
+        console.warn('⚠️ Izin notifikasi ditolak');
         return null;
       }
     })
     .then(token => {
       if (token) {
-        console.log('✅ Token:', token);
+        console.log('✅ Token berhasil:', token);
         saveToken(token);
       }
     })
-    .catch(err => console.error('❌ Error:', err));
+    .catch(err => {
+      console.error('❌ Error di proses notifikasi:', err);
+    });
 }
 </script>
 </body>
