@@ -8,33 +8,40 @@ firebase.initializeApp({
   projectId: "riky-store-push",
   storageBucket: "riky-store-push.firebasestorage.app",
   messagingSenderId: "700709840952",
-  appId: "1:700709840952:web:d2efb042652f931d269ecd",
-  measurementId: "G-SCS91DNX9P"
+  appId: "1:700709840952:web:d2efb042652f931d269ecd"
 });
 
 const messaging = firebase.messaging();
 
-// Event ketika notifikasi diterima di background
+// Notifikasi background
 messaging.onBackgroundMessage((payload) => {
   console.log('📩 Notifikasi background:', payload);
-  const notificationTitle = payload.notification.title || 'RIKY STORE';
-  const notificationOptions = {
+  const title = payload.notification.title || 'RIKY STORE';
+  const options = {
     body: payload.notification.body || 'Ada notifikasi baru',
-    icon: '/icon.png', // ganti dengan icon jika ada
+    icon: '/icon.png',
+    badge: '/icon.png',
     tag: 'riky-store',
     data: payload.data || {}
   };
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  return self.registration.showNotification(title, options);
 });
 
-// Event ketika service worker diinstal
+// Event SW agar tetap aktif
 self.addEventListener('install', (event) => {
-  console.log('Service Worker installed');
+  console.log('✅ SW installed');
   self.skipWaiting();
 });
 
-// Event ketika service worker diaktifkan
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activated');
+  console.log('✅ SW activated');
   event.waitUntil(clients.claim());
 });
+
+// Tambahkan event fetch (biar SW tidak dianggap idle)
+self.addEventListener('fetch', (event) => {
+  // Tidak perlu melakukan apa-apa, cukup agar SW tetap hidup
+  event.respondWith(fetch(event.request));
+});
+
+console.log('🔥 Service Worker RIKY STORE siap!');
