@@ -3202,12 +3202,12 @@
         window.showToast = showToast;
         window.previewBukti = previewBukti;
     </script>
-<!-- Firebase SDK (tetap dipakai untuk Firestore) -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
-// ===== KONFIGURASI FIREBASE (PAKAI PUNYA KAMU) =====
+// ===== KONFIGURASI FIREBASE =====
 const firebaseConfig = {
   apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
   authDomain: "riky-store-push.firebaseapp.com",
@@ -3218,40 +3218,46 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-// Kita tetap pakai Firestore untuk simpan subscription
 const db = firebase.firestore();
 
-// ===== VAPID PUBLIC KEY (PAKAI PUNYA DEPLOY) =====
+// ===== VAPID PUBLIC KEY =====
 const VAPID_PUBLIC_KEY = 'BFcH-HuEIbgumvfYh8SXXIip0MCOndkFTovfImUmIwxU1NotrrQxdma7c7vt2PkZcQLHFCsCHPGAQqDKO_QDwCs';
 
-// ===== FUNGSI SUBSCRIBE =====
+// ===== FUNGSI SUBSCRIBE (PAKSA DAFTAR ULANG) =====
 async function subscribeUser() {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    console.warn('❌ Push not supported di browser ini');
+    console.warn('❌ Push not supported');
     return;
   }
 
   try {
-    // 1. Daftarkan Service Worker
+    // Daftarkan Service Worker
     const registration = await navigator.serviceWorker.register('/sw.js');
     console.log('✅ 1. SW terdaftar');
 
-    // 2. Minta izin notifikasi
+    // Minta izin notifikasi
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
-      console.warn('❌ 2. Izin notifikasi ditolak');
+      console.warn('❌ 2. Izin ditolak');
       return;
     }
     console.log('✅ 2. Izin diberikan');
 
-    // 3. Dapatkan subscription
+    // HAPUS SUBSCRIPTION LAMA (jika ada)
+    const existingSub = await registration.pushManager.getSubscription();
+    if (existingSub) {
+      await existingSub.unsubscribe();
+      console.log('🗑️ Subscription lama dihapus');
+    }
+
+    // Buat subscription baru
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: VAPID_PUBLIC_KEY
     });
-    console.log('✅ 3. Subscription berhasil didapat', subscription);
+    console.log('✅ 3. Subscription baru berhasil', subscription);
 
-    // 4. Simpan ke Firestore via API
+    // Simpan ke Firestore
     const anonId = localStorage.getItem('pushAnonId') || 'user_' + Date.now();
     localStorage.setItem('pushAnonId', anonId);
 
@@ -3261,34 +3267,26 @@ async function subscribeUser() {
       body: JSON.stringify({ anonId, subscription: subscription.toJSON() })
     });
 
-    const result = await response.json();
     if (response.ok) {
       console.log('✅ 4. Subscription tersimpan di Firestore!');
     } else {
-      console.error('❌ 4. Gagal simpan:', result.error || 'Unknown error');
+      const err = await response.json();
+      console.error('❌ 4. Gagal simpan:', err.error || 'Unknown');
     }
   } catch (err) {
     console.error('❌ Error subscribe:', err.message);
   }
 }
+
 // ===== JALANKAN SAAT HALAMAN DIMUAT =====
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js')
     .then(() => {
-      console.log('SW registered, cek subscription...');
-      return navigator.serviceWorker.ready;
+      console.log('SW registered, menjalankan subscribe...');
+      // 🔥 LANGSUNG PANGGIL, TANPA CEK SUBSCRIPTION LAMA
+      subscribeUser();
     })
-    .then(reg => {
-      return reg.pushManager.getSubscription();
-    })
-    .then(sub => {
-      if (!sub) {
-        subscribeUser(); // jika belum subscribe, daftarkan
-      } else {
-        console.log('✅ Sudah subscribe');
-      }
-    })
-    .catch(err => console.error('❌ Error:', err));
+    .catch(err => console.error('❌ SW registration gagal:', err));
 }
 </script>
 </body>
