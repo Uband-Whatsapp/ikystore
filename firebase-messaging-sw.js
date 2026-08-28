@@ -1,5 +1,3 @@
-
-// firebase-messaging-sw.js
 importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js');
 
@@ -15,7 +13,7 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log('📩 Notifikasi background:', payload);
+  console.log('📩 Background:', payload);
   const title = payload.notification.title || 'RIKY STORE';
   const options = {
     body: payload.notification.body || 'Ada notifikasi baru',
@@ -26,7 +24,6 @@ messaging.onBackgroundMessage((payload) => {
   self.registration.showNotification(title, options);
 });
 
-// Biar SW tetap hidup
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (event) => event.waitUntil(clients.claim()));
 self.addEventListener('fetch', (event) => event.respondWith(fetch(event.request)));
