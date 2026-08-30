@@ -3,44 +3,962 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Admin Reseller - RIKY STORE</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0B1121; color: #F1F5F9; padding: 20px; max-width: 800px; margin: auto; }
-        .card { background: #1E293B; border-radius: 16px; padding: 16px; margin-bottom: 12px; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        .pending { background: rgba(234,179,8,0.2); color: #EAB308; }
-        .approved { background: rgba(34,197,94,0.2); color: #22C55E; }
-        .rejected { background: rgba(239,68,68,0.2); color: #EF4444; }
-        .suspended { background: rgba(239,68,68,0.2); color: #EF4444; }
-        .customer { background: rgba(148,163,184,0.2); color: #94A3B8; }
-        button { padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
-        .btn-approve { background: #22C55E; color: white; }
-        .btn-reject { background: #EF4444; color: white; }
-        .btn-suspend { background: #F59E0B; color: white; }
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #070d18;
+            --bg-secondary: #0b1220;
+            --card: #101a2b;
+            --card-hover: #142035;
+            --input: #09111f;
+
+            --border: #22304a;
+            --border-light: #2c3d5a;
+
+            --text: #f1f5f9;
+            --muted: #8fa0b8;
+            --muted-dark: #64748b;
+
+            --blue: #2563eb;
+            --blue-hover: #1d4ed8;
+
+            --green: #22c55e;
+            --red: #ef4444;
+            --orange: #f59e0b;
+            --yellow: #eab308;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 14px 40px;
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 50% -10%,
+                    rgba(37, 99, 235, 0.18),
+                    transparent 35%
+                ),
+                var(--bg);
+
+            color: var(--text);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+
+            margin-bottom: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1e40af
+                );
+
+            box-shadow:
+                0 10px 30px rgba(37, 99, 235, 0.28),
+                inset 0 1px 0 rgba(255,255,255,0.15);
+
+            font-size: 20px;
+        }
+
+        .brand-title {
+            font-size: 22px;
+            font-weight: 750;
+            letter-spacing: -0.4px;
+            line-height: 1.2;
+        }
+
+        .brand-subtitle {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        .login-wrapper {
+            min-height: calc(100vh - 140px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+
+            padding: 24px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(20, 32, 53, 0.98),
+                    rgba(12, 21, 36, 0.98)
+                );
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.35),
+                inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+
+        .login-icon {
+            width: 56px;
+            height: 56px;
+
+            margin: 0 auto 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 17px;
+
+            background: rgba(37, 99, 235, 0.12);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+
+            color: #60a5fa;
+            font-size: 22px;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 750;
+        }
+
+        .login-card p {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 6px;
+            margin-bottom: 22px;
+        }
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 8px;
+
+            color: #dbe5f2;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+
+            left: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--muted-dark);
+            font-size: 14px;
+
+            pointer-events: none;
+        }
+
+        #admin-password {
+            width: 100%;
+
+            height: 50px;
+
+            padding: 0 15px 0 42px;
+
+            background: var(--input);
+            border: 1px solid var(--border);
+
+            color: white;
+
+            border-radius: 12px;
+            outline: none;
+
+            font-size: 14px;
+
+            transition:
+                border-color .2s,
+                box-shadow .2s,
+                background .2s;
+        }
+
+        #admin-password::placeholder {
+            color: #56657c;
+        }
+
+        #admin-password:focus {
+            border-color: var(--blue);
+
+            background: #0b1527;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .btn-login {
+            width: 100%;
+            height: 50px;
+
+            margin-top: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            border: none;
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--blue-hover)
+                );
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px rgba(37, 99, 235, 0.22);
+
+            transition:
+                transform .15s,
+                filter .2s;
+        }
+
+        .btn-login:hover {
+            filter: brightness(1.08);
+        }
+
+        .btn-login:active {
+            transform: scale(.985);
+        }
+
+        /* =========================
+           ADMIN TOPBAR
+        ========================= */
+
+        .admin-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+
+            padding: 18px;
+
+            background: rgba(16, 26, 43, 0.95);
+
+            border: 1px solid var(--border);
+            border-radius: 17px;
+
+            margin-bottom: 14px;
+
+            box-shadow:
+                0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-avatar {
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: rgba(37, 99, 235, 0.13);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+
+            color: #60a5fa;
+        }
+
+        .admin-info h2 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .admin-info p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .btn-logout {
+            min-height: 38px;
+
+            padding: 0 13px;
+
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            border-radius: 10px;
+
+            border: 1px solid rgba(239, 68, 68, 0.2);
+
+            background: rgba(239, 68, 68, 0.08);
+
+            color: #f87171;
+
+            font-size: 12px;
+            font-weight: 650;
+
+            cursor: pointer;
+
+            transition:
+                background .2s,
+                transform .15s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .btn-logout:active {
+            transform: scale(.97);
+        }
+
+        /* =========================
+           LIST HEADER
+        ========================= */
+
+        .list-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin: 18px 2px 12px;
+        }
+
+        .list-header h3 {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .list-header span {
+            color: var(--muted-dark);
+            font-size: 11px;
+        }
+
+        /* =========================
+           RESELLER CARD
+        ========================= */
+
+        .card {
+            position: relative;
+
+            padding: 17px;
+
+            margin-bottom: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(20, 32, 53, 0.98),
+                    rgba(13, 23, 39, 0.98)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            transition:
+                border-color .2s,
+                transform .2s,
+                background .2s;
+        }
+
+        .card:hover {
+            border-color: var(--border-light);
+            background: var(--card-hover);
+        }
+
+        .reseller-main {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .reseller-profile {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+
+            min-width: 0;
+        }
+
+        .reseller-avatar {
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: rgba(37, 99, 235, 0.12);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+
+            color: #60a5fa;
+
+            font-size: 15px;
+        }
+
+        .reseller-name {
+            font-size: 14px;
+            font-weight: 750;
+
+            word-break: break-word;
+        }
+
+        .reseller-username {
+            color: var(--muted);
+            font-size: 11px;
+
+            margin-top: 3px;
+
+            word-break: break-all;
+        }
+
+        .reseller-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            margin-top: 11px;
+        }
+
+        .detail-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 6px 9px;
+
+            border-radius: 8px;
+
+            background: rgba(148, 163, 184, 0.06);
+            border: 1px solid rgba(148, 163, 184, 0.08);
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .detail-item i {
+            color: #64748b;
+        }
+
+        /* =========================
+           BADGE
+        ========================= */
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        .badge::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .pending {
+            background: rgba(234,179,8,0.12);
+            border: 1px solid rgba(234,179,8,0.15);
+            color: #facc15;
+        }
+
+        .approved {
+            background: rgba(34,197,94,0.12);
+            border: 1px solid rgba(34,197,94,0.15);
+            color: #4ade80;
+        }
+
+        .rejected {
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.15);
+            color: #f87171;
+        }
+
+        .suspended {
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.15);
+            color: #fb7185;
+        }
+
+        .customer {
+            background: rgba(148,163,184,0.12);
+            border: 1px solid rgba(148,163,184,0.15);
+            color: #94a3b8;
+        }
+
+        /* =========================
+           ROLE BADGE
+        ========================= */
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            margin-top: 8px;
+
+            padding: 5px 9px;
+
+            border-radius: 8px;
+
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.12);
+
+            color: #93c5fd;
+
+            font-size: 10px;
+            font-weight: 650;
+        }
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            margin-top: 16px;
+
+            padding-top: 14px;
+
+            border-top: 1px solid rgba(148,163,184,0.08);
+        }
+
+        .action-buttons button {
+            min-height: 36px;
+
+            padding: 0 12px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+
+            border-radius: 9px;
+
+            font-size: 11px;
+            font-weight: 650;
+
+            cursor: pointer;
+
+            transition:
+                transform .15s,
+                filter .2s;
+        }
+
+        .action-buttons button:hover {
+            filter: brightness(1.08);
+        }
+
+        .action-buttons button:active {
+            transform: scale(.97);
+        }
+
+        .btn-approve {
+            background: rgba(34,197,94,0.14);
+            border: 1px solid rgba(34,197,94,0.22);
+            color: #86efac;
+        }
+
+        .btn-reject {
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.22);
+            color: #fca5a5;
+        }
+
+        .btn-suspend {
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.22);
+            color: #fcd34d;
+        }
+
+        /* =========================
+           LOADING / EMPTY
+        ========================= */
+
+        .state-card {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            background: rgba(16, 26, 43, 0.65);
+
+            border: 1px dashed var(--border);
+
+            border-radius: 16px;
+
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .state-card i {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #64748b;
+            font-size: 24px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            margin-top: 20px;
+
+            text-align: center;
+
+            color: #45556c;
+            font-size: 10px;
+        }
+
+        /* =========================
+           SWEET ALERT
+        ========================= */
+
+        .swal2-popup {
+            background: #111c2f !important;
+            color: #f1f5f9 !important;
+            border: 1px solid #263653 !important;
+            border-radius: 18px !important;
+        }
+
+        .swal2-title {
+            color: #f8fafc !important;
+        }
+
+        .swal2-html-container {
+            color: #94a3b8 !important;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 14px 10px 30px;
+            }
+
+            .page-header {
+                margin-bottom: 16px;
+            }
+
+            .brand-icon {
+                width: 45px;
+                height: 45px;
+                border-radius: 13px;
+            }
+
+            .brand-title {
+                font-size: 19px;
+            }
+
+            .admin-topbar {
+                padding: 14px;
+            }
+
+            .reseller-main {
+                flex-direction: column;
+            }
+
+            .reseller-main .badge {
+                align-self: flex-start;
+            }
+
+            .action-buttons {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .action-buttons button {
+                width: 100%;
+                padding: 0 7px;
+                font-size: 10px;
+            }
+
+            .detail-item {
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        @media (max-width: 390px) {
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-logout span {
+                display: none;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <h1 class="text-2xl font-bold mb-4">🔐 Admin Reseller</h1>
-    <div id="login-box">
-        <div class="card">
-            <input type="password" id="admin-password" placeholder="Password Admin" class="w-full p-2 rounded-lg bg-slate-700 text-white" />
-            <button onclick="loginAdmin()" class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">Masuk</button>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="page-header">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <div class="brand-title">
+                        Admin Reseller
+                    </div>
+
+                    <div class="brand-subtitle">
+                        RIKY STORE · Management Panel
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- LOGIN -->
+        <div id="login-box">
+
+            <div class="login-wrapper">
+
+                <div class="login-card">
+
+                    <div class="login-icon">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+
+                    <h2>Akses Administrator</h2>
+
+                    <p>
+                        Masukkan password administrator untuk mengakses
+                        panel pengelolaan reseller.
+                    </p>
+
+                    <label class="input-label">
+                        Password Admin
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-solid fa-key"></i>
+
+                        <input
+                            type="password"
+                            id="admin-password"
+                            placeholder="Masukkan password admin"
+                        />
+
+                    </div>
+
+                    <button
+                        onclick="loginAdmin()"
+                        class="btn-login"
+                    >
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Masuk ke Panel
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
-    </div>
-    <div id="admin-content" style="display:none;">
-        <div class="flex justify-between items-center">
-            <h2 class="text-xl font-semibold">Daftar Reseller</h2>
-            <button onclick="logout()" class="text-sm text-red-400">Logout</button>
+
+
+        <!-- ADMIN CONTENT -->
+        <div id="admin-content" style="display:none;">
+
+            <!-- ADMIN TOPBAR -->
+            <div class="admin-topbar">
+
+                <div class="admin-info">
+
+                    <div class="admin-avatar">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+
+                    <div>
+                        <h2>Panel Administrator</h2>
+
+                        <p>
+                            Kelola status dan akses reseller
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <button
+                    onclick="logout()"
+                    class="btn-logout"
+                >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+
+            </div>
+
+
+            <!-- LIST HEADER -->
+            <div class="list-header">
+
+                <h3>
+                    Daftar Reseller
+                </h3>
+
+                <span>
+                    Management Status
+                </span>
+
+            </div>
+
+
+            <!-- RESELLER LIST -->
+            <div id="reseller-list"></div>
+
         </div>
-        <div id="reseller-list" class="mt-4"></div>
+
+
+        <!-- FOOTER -->
+        <div class="footer">
+            RIKY STORE · Admin Management System
+        </div>
+
     </div>
 
+
     <script>
+
         // Konfigurasi Firebase (sama dengan website utama)
         const firebaseConfig = {
             apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
@@ -50,113 +968,380 @@
             messagingSenderId: "700709840952",
             appId: "1:700709840952:web:d2efb042652f931d269ecd"
         };
+
         firebase.initializeApp(firebaseConfig);
+
         const db = firebase.firestore();
+
         const USERS_COLLECTION = 'users';
-        const ADMIN_PASSWORD = 'admin123'; // Ganti dengan password yang kuat!
+
+        const ADMIN_PASSWORD = '1';
 
         let isAdmin = false;
 
+
         function showAdminPanel() {
+
             isAdmin = true;
+
             document.getElementById('login-box').style.display = 'none';
+
             document.getElementById('admin-content').style.display = 'block';
+
             loadResellers();
         }
 
+
         function loginAdmin() {
-            const password = document.getElementById('admin-password').value;
+
+            const password =
+                document.getElementById('admin-password').value;
+
             if (password === ADMIN_PASSWORD) {
-                sessionStorage.setItem('adminLoggedIn', 'true');
+
+                sessionStorage.setItem(
+                    'adminLoggedIn',
+                    'true'
+                );
+
                 showAdminPanel();
+
             } else {
-                Swal.fire('Gagal', 'Password salah', 'error');
+
+                Swal.fire(
+                    'Gagal',
+                    'Password salah',
+                    'error'
+                );
             }
         }
 
+
         function logout() {
+
             isAdmin = false;
+
             sessionStorage.removeItem('adminLoggedIn');
+
             document.getElementById('login-box').style.display = 'block';
+
             document.getElementById('admin-content').style.display = 'none';
         }
 
+
         async function loadResellers() {
+
             if (!isAdmin) return;
-            const listEl = document.getElementById('reseller-list');
-            listEl.innerHTML = '<p class="text-slate-400">Memuat data...</p>';
+
+            const listEl =
+                document.getElementById('reseller-list');
+
+
+            listEl.innerHTML = `
+                <div class="state-card">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Memuat data reseller...
+                </div>
+            `;
+
+
             try {
-                const snapshot = await db.collection(USERS_COLLECTION)
-                    .where('role', 'in', ['reseller_free', 'reseller_premium'])
-                    .get();
+
+                const snapshot =
+                    await db.collection(USERS_COLLECTION)
+                        .where(
+                            'role',
+                            'in',
+                            [
+                                'reseller_free',
+                                'reseller_premium'
+                            ]
+                        )
+                        .get();
+
 
                 let docs = [];
+
+
                 snapshot.forEach(doc => {
-                    docs.push({ id: doc.id, data: doc.data() });
+
+                    docs.push({
+                        id: doc.id,
+                        data: doc.data()
+                    });
+
                 });
+
 
                 // Urutkan manual berdasarkan updatedAt (jika ada)
                 docs.sort((a, b) => {
-                    const timeA = a.data.updatedAt && a.data.updatedAt.toMillis ? a.data.updatedAt.toMillis() : 0;
-                    const timeB = b.data.updatedAt && b.data.updatedAt.toMillis ? b.data.updatedAt.toMillis() : 0;
+
+                    const timeA =
+                        a.data.updatedAt &&
+                        a.data.updatedAt.toMillis
+                            ? a.data.updatedAt.toMillis()
+                            : 0;
+
+
+                    const timeB =
+                        b.data.updatedAt &&
+                        b.data.updatedAt.toMillis
+                            ? b.data.updatedAt.toMillis()
+                            : 0;
+
+
                     return timeB - timeA;
+
                 });
 
+
                 listEl.innerHTML = '';
+
+
                 if (docs.length === 0) {
-                    listEl.innerHTML = '<p class="text-slate-400">Tidak ada reseller.</p>';
+
+                    listEl.innerHTML = `
+                        <div class="state-card">
+                            <i class="fa-solid fa-users-slash"></i>
+                            Tidak ada reseller.
+                        </div>
+                    `;
+
                     return;
                 }
 
+
                 docs.forEach(doc => {
+
                     const data = doc.data;
+
                     const username = doc.id;
-                    const card = document.createElement('div');
+
+                    const card =
+                        document.createElement('div');
+
+
                     card.className = 'card';
+
+
                     card.innerHTML = `
-                        <div class="flex justify-between items-start">
+
+                        <div class="reseller-main">
+
                             <div>
-                                <p class="font-bold">${data.nama} (@${username})</p>
-                                <p class="text-sm text-slate-400">${data.whatsapp || '-'} | Toko: ${data.namaToko || '-'}</p>
-                                <p class="text-sm">Role: ${data.role === 'reseller_premium' ? 'Premium' : 'Gratis'}</p>
-                                <span class="badge ${data.resellerStatus}">${data.resellerStatus}</span>
+
+                                <div class="reseller-profile">
+
+                                    <div class="reseller-avatar">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="reseller-name">
+                                            ${data.nama || '-'}
+                                        </div>
+
+
+                                        <div class="reseller-username">
+                                            @${username}
+                                        </div>
+
+
+                                        <div class="role-badge">
+
+                                            <i class="fa-solid fa-store"></i>
+
+                                            ${data.role === 'reseller_premium'
+                                                ? 'Reseller Premium'
+                                                : 'Reseller Gratis'
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="reseller-details">
+
+                                    <div class="detail-item">
+
+                                        <i class="fa-brands fa-whatsapp"></i>
+
+                                        ${data.whatsapp || '-'}
+
+                                    </div>
+
+
+                                    <div class="detail-item">
+
+                                        <i class="fa-solid fa-shop"></i>
+
+                                        ${data.namaToko || '-'}
+
+                                    </div>
+
+                                </div>
+
                             </div>
-                            <div class="flex gap-1">
-                                ${data.resellerStatus !== 'approved' ? `<button class="btn-approve" onclick="changeStatus('${username}', 'approved')">Approve</button>` : ''}
-                                ${data.resellerStatus !== 'rejected' ? `<button class="btn-reject" onclick="changeStatus('${username}', 'rejected')">Reject</button>` : ''}
-                                <button class="btn-suspend" onclick="changeStatus('${username}', 'suspended')">Suspend</button>
-                            </div>
+
+
+                            <span
+                                class="badge ${data.resellerStatus}"
+                            >
+                                ${data.resellerStatus}
+                            </span>
+
                         </div>
+
+
+                        <div class="action-buttons">
+
+                            ${data.resellerStatus !== 'approved'
+                                ? `
+                                    <button
+                                        class="btn-approve"
+                                        onclick="changeStatus('${username}', 'approved')"
+                                    >
+                                        <i class="fa-solid fa-check"></i>
+                                        Approve
+                                    </button>
+                                `
+                                : ''
+                            }
+
+
+                            ${data.resellerStatus !== 'rejected'
+                                ? `
+                                    <button
+                                        class="btn-reject"
+                                        onclick="changeStatus('${username}', 'rejected')"
+                                    >
+                                        <i class="fa-solid fa-xmark"></i>
+                                        Reject
+                                    </button>
+                                `
+                                : ''
+                            }
+
+
+                            <button
+                                class="btn-suspend"
+                                onclick="changeStatus('${username}', 'suspended')"
+                            >
+                                <i class="fa-solid fa-ban"></i>
+                                Suspend
+                            </button>
+
+                        </div>
+
                     `;
+
+
                     listEl.appendChild(card);
+
                 });
+
+
             } catch (err) {
+
                 console.error(err);
-                listEl.innerHTML = '<p class="text-red-400">Gagal memuat data. Periksa aturan Firestore dan koneksi.</p>';
+
+
+                listEl.innerHTML = `
+                    <div class="state-card"
+                        style="
+                            border-color: rgba(239,68,68,.25);
+                            color: #fca5a5;
+                        "
+                    >
+                        <i
+                            class="fa-solid fa-triangle-exclamation"
+                            style="color:#ef4444;"
+                        ></i>
+
+                        Gagal memuat data. Periksa aturan Firestore
+                        dan koneksi.
+                    </div>
+                `;
+
             }
+
         }
 
-        async function changeStatus(username, newStatus) {
+
+        async function changeStatus(
+            username,
+            newStatus
+        ) {
+
             if (!isAdmin) return;
+
+
             try {
-                await db.collection(USERS_COLLECTION).doc(username).update({
-                    resellerStatus: newStatus,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                Swal.fire('Berhasil', `Status ${username} diubah menjadi ${newStatus}`, 'success');
+
+                await db.collection(USERS_COLLECTION)
+                    .doc(username)
+                    .update({
+
+                        resellerStatus: newStatus,
+
+                        updatedAt:
+                            firebase.firestore
+                                .FieldValue
+                                .serverTimestamp()
+
+                    });
+
+
+                Swal.fire(
+                    'Berhasil',
+                    `Status ${username} diubah menjadi ${newStatus}`,
+                    'success'
+                );
+
+
                 loadResellers();
+
+
             } catch (err) {
+
                 console.error(err);
-                Swal.fire('Gagal', 'Terjadi kesalahan', 'error');
+
+
+                Swal.fire(
+                    'Gagal',
+                    'Terjadi kesalahan',
+                    'error'
+                );
+
             }
+
         }
+
 
         // Cek auto-login saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-                showAdminPanel();
+        document.addEventListener(
+            'DOMContentLoaded',
+            () => {
+
+                if (
+                    sessionStorage.getItem(
+                        'adminLoggedIn'
+                    ) === 'true'
+                ) {
+
+                    showAdminPanel();
+
+                }
+
             }
-        });
+        );
+
     </script>
+
 </body>
 </html>
