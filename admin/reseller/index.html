@@ -81,9 +81,20 @@
             listEl.innerHTML = '<p class="text-slate-400">Memuat data...</p>';
             try {
                 const snapshot = await db.collection(USERS_COLLECTION)
-                    .where('role', 'in', ['reseller_free', 'reseller_premium'])
-                    .orderBy('updatedAt', 'desc')
-                    .get();
+    .where('role', 'in', ['reseller_free', 'reseller_premium'])
+    .get();
+
+let docs = [];
+snapshot.forEach(doc => {
+    docs.push({ id: doc.id, data: doc.data() });
+});
+
+// Urutkan manual berdasarkan updatedAt (jika ada)
+docs.sort((a, b) => {
+    const timeA = a.data.updatedAt ? a.data.updatedAt.toMillis() : 0;
+    const timeB = b.data.updatedAt ? b.data.updatedAt.toMillis() : 0;
+    return timeB - timeA;
+});
                 listEl.innerHTML = '';
                 if (snapshot.empty) {
                     listEl.innerHTML = '<p class="text-slate-400">Tidak ada reseller.</p>';
