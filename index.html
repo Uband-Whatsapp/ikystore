@@ -2348,14 +2348,30 @@ async function fetchUserFromFirestore(username) {
 // Update data user di localStorage setelah login atau refresh
 async function refreshUserFromFirestore(username) {
     const data = await fetchUserFromFirestore(username);
-    if (data) {
-        const user = getLoggedInUser();
-        if (user && user.username === username) {
-            // Gabungkan data Firestore ke localStorage (utamakan Firestore)
+    const user = getLoggedInUser();
+    if (user && user.username === username) {
+        if (data) {
             const updatedUser = { ...user, ...data };
             localStorage.setItem('rikyLoggedInUser', JSON.stringify(updatedUser));
             updateAuthUI();
             return updatedUser;
+        } else {
+            // Data tidak ada di Firestore, reset status reseller
+            user.role = 'customer';
+            user.resellerStatus = 'none';
+            user.namaToko = '';
+            localStorage.setItem('rikyLoggedInUser', JSON.stringify(user));
+            // Juga update di array users
+            const users = getUsers();
+            const idx = users.findIndex(u => u.username === username);
+            if (idx !== -1) {
+                users[idx].role = 'customer';
+                users[idx].resellerStatus = 'none';
+                users[idx].namaToko = '';
+                saveUsers(users);
+            }
+            updateAuthUI();
+            return user;
         }
     }
     return null;
@@ -2390,10 +2406,14 @@ async function refreshUserFromFirestore(username) {
             }
         }
 
-        function openResellerPage() {
-            navigateTo('reseller');
-            updateResellerView();
-        }
+        async function openResellerPage() {
+    const user = getLoggedInUser();
+    if (user && user.username) {
+        await refreshUserFromFirestore(user.username);
+    }
+    navigateTo('reseller');
+    updateResellerView();
+}
 
         function openResellerForm(type) {
             const user = getLoggedInUser();
