@@ -2406,6 +2406,11 @@ updateResellerView();
             // Status card
             let statusText = '';
             if (user.resellerStatus === 'pending') statusText = '<span class="reseller-badge pending">PENDING</span> Menunggu persetujuan admin.';
+            if (user.resellerStatus === 'pending') {
+    statusText = '<span class="reseller-badge pending">PENDING</span> Menunggu persetujuan admin.';
+    // Tambahan tombol sinkronisasi
+    statusText += '<div class="mt-2"><button class="btn-outline text-xs py-1 px-2" onclick="syncUserToFirestore(getLoggedInUser()); showToast(\'Data dikirim ke admin\', \'success\');">Kirim Ulang ke Admin</button></div>';
+}
             else if (user.resellerStatus === 'approved') statusText = user.role === 'reseller_premium' ? '<span class="reseller-badge premium">PREMIUM AKTIF</span> Diskon 20% aktif!' : '<span class="reseller-badge gratis">GRATIS AKTIF</span> Anda bisa mulai berjualan.';
             else if (user.resellerStatus === 'rejected') statusText = '<span class="reseller-badge rejected">DITOLAK</span> Pengajuan ditolak.';
             else if (user.resellerStatus === 'suspended') statusText = '<span class="reseller-badge suspended">SUSPENDED</span> Akun dinonaktifkan.';
