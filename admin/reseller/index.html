@@ -57,13 +57,18 @@
 
         let isAdmin = false;
 
+        function showAdminPanel() {
+            isAdmin = true;
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            loadResellers();
+        }
+
         function loginAdmin() {
             const password = document.getElementById('admin-password').value;
             if (password === ADMIN_PASSWORD) {
-                isAdmin = true;
-                document.getElementById('login-box').style.display = 'none';
-                document.getElementById('admin-content').style.display = 'block';
-                loadResellers();
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showAdminPanel();
             } else {
                 Swal.fire('Gagal', 'Password salah', 'error');
             }
@@ -71,6 +76,7 @@
 
         function logout() {
             isAdmin = false;
+            sessionStorage.removeItem('adminLoggedIn');
             document.getElementById('login-box').style.display = 'block';
             document.getElementById('admin-content').style.display = 'none';
         }
@@ -81,41 +87,44 @@
             listEl.innerHTML = '<p class="text-slate-400">Memuat data...</p>';
             try {
                 const snapshot = await db.collection(USERS_COLLECTION)
-    .where('role', 'in', ['reseller_free', 'reseller_premium'])
-    .get();
+                    .where('role', 'in', ['reseller_free', 'reseller_premium'])
+                    .get();
 
-let docs = [];
-snapshot.forEach(doc => {
-    docs.push({ id: doc.id, data: doc.data() });
-});
+                let docs = [];
+                snapshot.forEach(doc => {
+                    docs.push({ id: doc.id, data: doc.data() });
+                });
 
-// Urutkan manual berdasarkan updatedAt (jika ada)
-docs.sort((a, b) => {
-    const timeA = a.data.updatedAt ? a.data.updatedAt.toMillis() : 0;
-    const timeB = b.data.updatedAt ? b.data.updatedAt.toMillis() : 0;
-    return timeB - timeA;
-});
+                // Urutkan manual berdasarkan updatedAt (jika ada)
+                docs.sort((a, b) => {
+                    const timeA = a.data.updatedAt && a.data.updatedAt.toMillis ? a.data.updatedAt.toMillis() : 0;
+                    const timeB = b.data.updatedAt && b.data.updatedAt.toMillis ? b.data.updatedAt.toMillis() : 0;
+                    return timeB - timeA;
+                });
+
                 listEl.innerHTML = '';
-                if (snapshot.empty) {
+                if (docs.length === 0) {
                     listEl.innerHTML = '<p class="text-slate-400">Tidak ada reseller.</p>';
                     return;
                 }
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+
+                docs.forEach(doc => {
+                    const data = doc.data;
+                    const username = doc.id;
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="font-bold">${data.nama} (@${doc.id})</p>
+                                <p class="font-bold">${data.nama} (@${username})</p>
                                 <p class="text-sm text-slate-400">${data.whatsapp || '-'} | Toko: ${data.namaToko || '-'}</p>
                                 <p class="text-sm">Role: ${data.role === 'reseller_premium' ? 'Premium' : 'Gratis'}</p>
                                 <span class="badge ${data.resellerStatus}">${data.resellerStatus}</span>
                             </div>
                             <div class="flex gap-1">
-                                ${data.resellerStatus !== 'approved' ? `<button class="btn-approve" onclick="changeStatus('${doc.id}', 'approved')">Approve</button>` : ''}
-                                ${data.resellerStatus !== 'rejected' ? `<button class="btn-reject" onclick="changeStatus('${doc.id}', 'rejected')">Reject</button>` : ''}
-                                <button class="btn-suspend" onclick="changeStatus('${doc.id}', 'suspended')">Suspend</button>
+                                ${data.resellerStatus !== 'approved' ? `<button class="btn-approve" onclick="changeStatus('${username}', 'approved')">Approve</button>` : ''}
+                                ${data.resellerStatus !== 'rejected' ? `<button class="btn-reject" onclick="changeStatus('${username}', 'rejected')">Reject</button>` : ''}
+                                <button class="btn-suspend" onclick="changeStatus('${username}', 'suspended')">Suspend</button>
                             </div>
                         </div>
                     `;
@@ -123,7 +132,7 @@ docs.sort((a, b) => {
                 });
             } catch (err) {
                 console.error(err);
-                listEl.innerHTML = '<p class="text-red-400">Gagal memuat data. Pastikan aturan Firestore benar.</p>';
+                listEl.innerHTML = '<p class="text-red-400">Gagal memuat data. Periksa aturan Firestore dan koneksi.</p>';
             }
         }
 
@@ -142,23 +151,12 @@ docs.sort((a, b) => {
             }
         }
 
-        // Cek apakah sudah login
+        // Cek auto-login saat halaman dimuat
         document.addEventListener('DOMContentLoaded', () => {
             if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-                loginAdmin();
+                showAdminPanel();
             }
         });
-        // Simpan status login di sessionStorage
-        const originalLogin = loginAdmin;
-        loginAdmin = function() {
-            originalLogin();
-            if (isAdmin) sessionStorage.setItem('adminLoggedIn', 'true');
-        };
-        const originalLogout = logout;
-        logout = function() {
-            originalLogout();
-            sessionStorage.removeItem('adminLoggedIn');
-        };
     </script>
 </body>
 </html>
