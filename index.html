@@ -2256,7 +2256,64 @@
             }
             return '';
         }
+// ============================================================
+// FIRESTORE SYNC (RESELLER)
+// ============================================================
+const USERS_COLLECTION = 'users';
 
+// Simpan atau update data user di Firestore
+async function syncUserToFirestore(user) {
+    if (!user || !user.username) return;
+    try {
+        const docRef = db.collection(USERS_COLLECTION).doc(user.username);
+        await docRef.set({
+            nama: user.nama || '',
+            email: user.email || '',
+            whatsapp: user.whatsapp || '',
+            password: user.password || '',
+            foto: user.foto || null,
+            voucherUsed: user.voucherUsed || false,
+            role: user.role || 'customer',
+            resellerStatus: user.resellerStatus || 'none',
+            namaToko: user.namaToko || '',
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        console.log('✅ User synced to Firestore:', user.username);
+    } catch (err) {
+        console.error('❌ Gagal sync user ke Firestore:', err);
+    }
+}
+
+// Ambil data user terbaru dari Firestore berdasarkan username
+async function fetchUserFromFirestore(username) {
+    try {
+        const docRef = db.collection(USERS_COLLECTION).doc(username);
+        const doc = await docRef.get();
+        if (doc.exists) {
+            return doc.data();
+        }
+        return null;
+    } catch (err) {
+        console.error('❌ Gagal fetch user dari Firestore:', err);
+        return null;
+    }
+}
+
+// Update data user di localStorage setelah login atau refresh
+async function refreshUserFromFirestore(username) {
+    const data = await fetchUserFromFirestore(username);
+    if (data) {
+        const user = getLoggedInUser();
+        if (user && user.username === username) {
+            // Gabungkan data Firestore ke localStorage (utamakan Firestore)
+            const updatedUser = { ...user, ...data };
+            localStorage.setItem('rikyLoggedInUser', JSON.stringify(updatedUser));
+            updateAuthUI();
+            return updatedUser;
+        }
+    }
+    return null;
+}
         function updateResellerView() {
             const user = getLoggedInUser();
             const guestView = document.getElementById('resellerGuestView');
@@ -2321,19 +2378,21 @@
             const idx = users.findIndex(u => u.username === username);
             if (idx === -1) { showToast('User tidak ditemukan', 'error'); return; }
             users[idx].role = type === 'free' ? 'reseller_free' : 'reseller_premium';
-            users[idx].resellerStatus = 'pending';
-            users[idx].namaToko = toko || '';
-            saveUsers(users);
-            const user = getLoggedInUser();
-            if (user && user.username === username) {
-                user.role = users[idx].role;
-                user.resellerStatus = 'pending';
-                user.namaToko = toko || '';
-                setLoggedInUser(user);
-            }
-            showToast('Pengajuan terkirim, menunggu persetujuan admin', 'success');
-            document.getElementById('resellerFormModal').classList.remove('open');
-            updateResellerView();
+users[idx].resellerStatus = 'pending';
+users[idx].namaToko = toko || '';
+saveUsers(users);
+const user = getLoggedInUser();
+if (user && user.username === username) {
+    user.role = users[idx].role;
+    user.resellerStatus = 'pending';
+    user.namaToko = toko || '';
+    setLoggedInUser(user);
+}
+// Sync ke Firestore
+syncUserToFirestore(users[idx]);
+showToast('Pengajuan terkirim, menunggu persetujuan admin', 'success');
+document.getElementById('resellerFormModal').classList.remove('open');
+updateResellerView();
         }
 
         function renderResellerDashboard() {
@@ -3782,17 +3841,19 @@
                         if (!found) { Swal.showValidationMessage('Username atau password salah!'); return; }
                         // Simpan data lengkap termasuk role & resellerStatus
                         setLoggedInUser({
-                            nama: found.nama,
-                            username: found.username,
-                            email: found.email,
-                            whatsapp: found.whatsapp,
-                            foto: found.foto || null,
-                            role: found.role || 'customer',
-                            resellerStatus: found.resellerStatus || 'none',
-                            namaToko: found.namaToko || ''
-                        });
-                        showToast(`Selamat datang, ${found.nama}!`, 'success');
-                        return true;
+    nama: found.nama,
+    username: found.username,
+    email: found.email,
+    whatsapp: found.whatsapp,
+    foto: found.foto || null,
+    role: found.role || 'customer',
+    resellerStatus: found.resellerStatus || 'none',
+    namaToko: found.namaToko || ''
+});
+// Ambil data terbaru dari Firestore (jika ada)
+refreshUserFromFirestore(found.username);
+showToast(`Selamat datang, ${found.nama}!`, 'success');
+return true;
                     } else {
                         const nama = document.getElementById('swalNama').value.trim();
                         const email = document.getElementById('swalEmail').value.trim();
@@ -3809,13 +3870,15 @@
                         if (users.some(u => u.username === username)) { Swal.showValidationMessage(
                                 'Username sudah dipakai!'); return; }
                         const newUser = { nama, email, username, whatsapp, password, voucherUsed: false,
-                            role: 'customer', resellerStatus: 'none', namaToko: '' };
-                        users.push(newUser);
-                        saveUsers(users);
-                        setLoggedInUser({ nama, username, email, whatsapp, foto: null, role: 'customer',
-                            resellerStatus: 'none', namaToko: '' });
-                        showToast(`Selamat datang, ${nama}!`, 'success');
-                        return true;
+    role: 'customer', resellerStatus: 'none', namaToko: '' };
+users.push(newUser);
+saveUsers(users);
+setLoggedInUser({ nama, username, email, whatsapp, foto: null, role: 'customer',
+    resellerStatus: 'none', namaToko: '' });
+// Sync ke Firestore
+syncUserToFirestore(newUser);
+showToast(`Selamat datang, ${nama}!`, 'success');
+return true;
                     }
                 },
                 didOpen: () => {
@@ -3847,6 +3910,11 @@
             renderAllProducts('all');
             updateCartUI();
             updateAuthUI();
+// Refresh data user dari Firestore saat pertama kali dimuat (jika login)
+const loggedInUser = getLoggedInUser();
+if (loggedInUser && loggedInUser.username) {
+    refreshUserFromFirestore(loggedInUser.username);
+}
 
             const ffTab = document.querySelector('.game-tab[data-game="ff"]');
             if (ffTab) { ffTab.style.borderColor = 'var(--primary)';
