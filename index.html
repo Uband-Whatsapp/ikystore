@@ -1899,6 +1899,13 @@
     <div class="card p-3">
         <p class="text-sm font-bold" style="color:var(--text);">Biaya Premium: Rp50.000</p>
         <p class="text-xs mt-1" style="color:var(--textSec);">Silakan transfer ke QRIS yang sama dengan total pembayaran. Setelah upload bukti, admin akan verifikasi.</p>
+
+        <div class="mt-2">
+            <button type="button" class="btn-outline text-xs py-1.5 px-3" onclick="showResellerQris()">
+                <i class="fas fa-qrcode"></i> Lihat QRIS
+            </button>
+        </div>
+
         <div class="mt-2">
             <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Upload Bukti Transfer</label>
             <label class="flex flex-col items-center justify-center w-full p-2 border-2 border-dashed border-borderColor rounded-xl cursor-pointer hover:border-primary transition bg-card">
@@ -2272,6 +2279,27 @@ function previewResellerBukti(input) {
     } else {
         preview.classList.add('hidden');
     }
+}
+function showResellerQris() {
+    Swal.fire({
+        title: 'Pembayaran Reseller Premium',
+        html: `
+            <div style="text-align:center;">
+                <p style="margin-bottom:10px;font-size:14px;font-weight:600;color:var(--text);">Total: <span style="color:var(--primary);">Rp50.000</span></p>
+                <img src="https://i.ibb.co.com/wFG0M4xj/IMG-20260825-WA0016.jpg" alt="QRIS" style="width:220px;max-width:100%;border-radius:12px;background:white;padding:8px;">
+                <p style="margin-top:10px;font-size:11px;color:var(--textSec);">NMID: ID1025430095246 | RIKY STORE</p>
+                <p style="font-size:10px;color:var(--textSec);">Scan QRIS di atas menggunakan aplikasi pembayaran.</p>
+            </div>
+        `,
+        confirmButtonText: 'Sudah Transfer',
+        confirmButtonColor: '#2563EB',
+        background: 'var(--surface)',
+        color: 'var(--text)',
+        width: 360,
+        didOpen: () => {
+            document.querySelector('.swal2-popup').style.overflowX = 'hidden';
+        }
+    });
 }
 // ============================================================
 // FIRESTORE SYNC (RESELLER)
