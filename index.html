@@ -1896,13 +1896,20 @@
                         <input type="text" id="resellerToko" class="input-modern text-sm" placeholder="Nama toko (boleh kosong)">
                     </div>
                     <div id="resellerPremiumInfo" style="display:none;">
-                        <div class="card p-3">
-                            <p class="text-sm font-bold" style="color:var(--text);">Biaya Premium: Rp50.000</p>
-                            <p class="text-xs mt-1" style="color:var(--textSec);">Silakan transfer ke QRIS yang sama dengan total pembayaran. Setelah upload bukti, admin akan verifikasi.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="card p-3">
+        <p class="text-sm font-bold" style="color:var(--text);">Biaya Premium: Rp50.000</p>
+        <p class="text-xs mt-1" style="color:var(--textSec);">Silakan transfer ke QRIS yang sama dengan total pembayaran. Setelah upload bukti, admin akan verifikasi.</p>
+        <div class="mt-2">
+            <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Upload Bukti Transfer</label>
+            <label class="flex flex-col items-center justify-center w-full p-2 border-2 border-dashed border-borderColor rounded-xl cursor-pointer hover:border-primary transition bg-card">
+                <i class="fas fa-cloud-upload-alt text-lg" style="color:var(--textSec);"></i>
+                <span class="text-[10px] mt-0.5" style="color:var(--textSec);">Klik untuk pilih foto</span>
+                <input type="file" id="resellerBuktiFile" accept="image/*" class="hidden" onchange="previewResellerBukti(this)">
+                <div id="resellerFilePreviewName" class="hidden text-xs font-semibold mt-0.5" style="color:var(--text);"></div>
+            </label>
+        </div>
+    </div>
+</div>
             <div class="modal-footer">
                 <button class="btn-outline text-sm flex-1 modal-close" data-modal="resellerFormModal">Batal</button>
                 <button class="btn-primary text-sm flex-1" id="resellerSubmitBtn">Kirim Pengajuan</button>
@@ -2256,6 +2263,16 @@
             }
             return '';
         }
+// Fungsi untuk preview nama file bukti transfer reseller
+function previewResellerBukti(input) {
+    const preview = document.getElementById('resellerFilePreviewName');
+    if (input.files && input.files[0]) {
+        preview.textContent = '📎 ' + input.files[0].name;
+        preview.classList.remove('hidden');
+    } else {
+        preview.classList.add('hidden');
+    }
+}
 // ============================================================
 // FIRESTORE SYNC (RESELLER)
 // ============================================================
@@ -2368,32 +2385,74 @@ async function refreshUserFromFirestore(username) {
             document.getElementById('resellerFormModal').classList.add('open');
         }
 
-        function submitResellerForm(type) {
-            const nama = document.getElementById('resellerNama').value.trim();
-            const username = document.getElementById('resellerUsername').value.trim();
-            const wa = document.getElementById('resellerWa').value.trim();
-            const toko = document.getElementById('resellerToko').value.trim();
-            if (!nama || !wa) { showToast('Lengkapi data', 'error'); return; }
-            const users = getUsers();
-            const idx = users.findIndex(u => u.username === username);
-            if (idx === -1) { showToast('User tidak ditemukan', 'error'); return; }
-            users[idx].role = type === 'free' ? 'reseller_free' : 'reseller_premium';
-users[idx].resellerStatus = 'pending';
-users[idx].namaToko = toko || '';
-saveUsers(users);
-const user = getLoggedInUser();
-if (user && user.username === username) {
-    user.role = users[idx].role;
-    user.resellerStatus = 'pending';
-    user.namaToko = toko || '';
-    setLoggedInUser(user);
-}
-// Sync ke Firestore
-syncUserToFirestore(users[idx]);
-showToast('Pengajuan terkirim, menunggu persetujuan admin', 'success');
-document.getElementById('resellerFormModal').classList.remove('open');
-updateResellerView();
+        async function submitResellerForm(type) {
+    const nama = document.getElementById('resellerNama').value.trim();
+    const username = document.getElementById('resellerUsername').value.trim();
+    const wa = document.getElementById('resellerWa').value.trim();
+    const toko = document.getElementById('resellerToko').value.trim();
+
+    if (!nama || !wa) {
+        showToast('Lengkapi data', 'error');
+        return;
+    }
+
+    // Validasi bukti transfer untuk Reseller Premium
+    let buktiFile = null;
+    if (type === 'premium') {
+        buktiFile = document.getElementById('resellerBuktiFile').files[0];
+        if (!buktiFile) {
+            showToast('Upload bukti transfer terlebih dahulu!', 'error');
+            return;
         }
+    }
+
+    const users = getUsers();
+    const idx = users.findIndex(u => u.username === username);
+    if (idx === -1) {
+        showToast('User tidak ditemukan', 'error');
+        return;
+    }
+
+    // Update data user di localStorage
+    users[idx].role = type === 'free' ? 'reseller_free' : 'reseller_premium';
+    users[idx].resellerStatus = 'pending';
+    users[idx].namaToko = toko || '';
+    saveUsers(users);
+
+    // Update data user yang sedang login
+    const user = getLoggedInUser();
+    if (user && user.username === username) {
+        user.role = users[idx].role;
+        user.resellerStatus = 'pending';
+        user.namaToko = toko || '';
+        setLoggedInUser(user);
+    }
+
+    // Kirim data user ke Firestore
+    syncUserToFirestore(users[idx]);
+
+    // Jika premium, kirim bukti transfer ke Telegram
+    if (type === 'premium' && buktiFile) {
+        const caption = `📋 PENGAJUAN RESELLER PREMIUM\n\n👤 Nama: ${nama}\n🆔 Username: @${username}\n📱 WA: ${wa}\n🏪 Toko: ${toko || '-'}\n\nSilakan cek dan verifikasi.`;
+        const fd = new FormData();
+        fd.append('chat_id', CHAT_ID);
+        fd.append('caption', caption);
+        fd.append('photo', buktiFile);
+        try {
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+            const result = await res.json();
+            if (!result.ok) {
+                console.error('Gagal kirim bukti:', result.description);
+            }
+        } catch (err) {
+            console.error('Error kirim bukti:', err);
+        }
+    }
+
+    showToast('Pengajuan terkirim, menunggu persetujuan admin', 'success');
+    document.getElementById('resellerFormModal').classList.remove('open');
+    updateResellerView();
+}
 
         function renderResellerDashboard() {
             const user = getLoggedInUser();
