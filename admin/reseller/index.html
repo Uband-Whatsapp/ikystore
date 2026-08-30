@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Reseller - RIKY STORE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0B1121; color: #F1F5F9; padding: 20px; max-width: 800px; margin: auto; }
+        .card { background: #1E293B; border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .pending { background: rgba(234,179,8,0.2); color: #EAB308; }
+        .approved { background: rgba(34,197,94,0.2); color: #22C55E; }
+        .rejected { background: rgba(239,68,68,0.2); color: #EF4444; }
+        .suspended { background: rgba(239,68,68,0.2); color: #EF4444; }
+        .customer { background: rgba(148,163,184,0.2); color: #94A3B8; }
+        button { padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+        .btn-approve { background: #22C55E; color: white; }
+        .btn-reject { background: #EF4444; color: white; }
+        .btn-suspend { background: #F59E0B; color: white; }
+    </style>
+</head>
+<body>
+    <h1 class="text-2xl font-bold mb-4">🔐 Admin Reseller</h1>
+    <div id="login-box">
+        <div class="card">
+            <input type="password" id="admin-password" placeholder="Password Admin" class="w-full p-2 rounded-lg bg-slate-700 text-white" />
+            <button onclick="loginAdmin()" class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">Masuk</button>
+        </div>
+    </div>
+    <div id="admin-content" style="display:none;">
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold">Daftar Reseller</h2>
+            <button onclick="logout()" class="text-sm text-red-400">Logout</button>
+        </div>
+        <div id="reseller-list" class="mt-4"></div>
+    </div>
+
+    <script>
+        // Konfigurasi Firebase (sama dengan website utama)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
+            authDomain: "riky-store-push.firebaseapp.com",
+            projectId: "riky-store-push",
+            storageBucket: "riky-store-push.firebasestorage.app",
+            messagingSenderId: "700709840952",
+            appId: "1:700709840952:web:d2efb042652f931d269ecd"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const USERS_COLLECTION = 'users';
+        const ADMIN_PASSWORD = 'admin123'; // Ganti dengan password yang kuat!
+
+        let isAdmin = false;
+
+        function loginAdmin() {
+            const password = document.getElementById('admin-password').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                loadResellers();
+            } else {
+                Swal.fire('Gagal', 'Password salah', 'error');
+            }
+        }
+
+        function logout() {
+            isAdmin = false;
+            document.getElementById('login-box').style.display = 'block';
+            document.getElementById('admin-content').style.display = 'none';
+        }
+
+        async function loadResellers() {
+            if (!isAdmin) return;
+            const listEl = document.getElementById('reseller-list');
+            listEl.innerHTML = '<p class="text-slate-400">Memuat data...</p>';
+            try {
+                const snapshot = await db.collection(USERS_COLLECTION)
+                    .where('role', 'in', ['reseller_free', 'reseller_premium'])
+                    .orderBy('updatedAt', 'desc')
+                    .get();
+                listEl.innerHTML = '';
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p class="text-slate-400">Tidak ada reseller.</p>';
+                    return;
+                }
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-bold">${data.nama} (@${doc.id})</p>
+                                <p class="text-sm text-slate-400">${data.whatsapp || '-'} | Toko: ${data.namaToko || '-'}</p>
+                                <p class="text-sm">Role: ${data.role === 'reseller_premium' ? 'Premium' : 'Gratis'}</p>
+                                <span class="badge ${data.resellerStatus}">${data.resellerStatus}</span>
+                            </div>
+                            <div class="flex gap-1">
+                                ${data.resellerStatus !== 'approved' ? `<button class="btn-approve" onclick="changeStatus('${doc.id}', 'approved')">Approve</button>` : ''}
+                                ${data.resellerStatus !== 'rejected' ? `<button class="btn-reject" onclick="changeStatus('${doc.id}', 'rejected')">Reject</button>` : ''}
+                                <button class="btn-suspend" onclick="changeStatus('${doc.id}', 'suspended')">Suspend</button>
+                            </div>
+                        </div>
+                    `;
+                    listEl.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+                listEl.innerHTML = '<p class="text-red-400">Gagal memuat data. Pastikan aturan Firestore benar.</p>';
+            }
+        }
+
+        async function changeStatus(username, newStatus) {
+            if (!isAdmin) return;
+            try {
+                await db.collection(USERS_COLLECTION).doc(username).update({
+                    resellerStatus: newStatus,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                Swal.fire('Berhasil', `Status ${username} diubah menjadi ${newStatus}`, 'success');
+                loadResellers();
+            } catch (err) {
+                console.error(err);
+                Swal.fire('Gagal', 'Terjadi kesalahan', 'error');
+            }
+        }
+
+        // Cek apakah sudah login
+        document.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                loginAdmin();
+            }
+        });
+        // Simpan status login di sessionStorage
+        const originalLogin = loginAdmin;
+        loginAdmin = function() {
+            originalLogin();
+            if (isAdmin) sessionStorage.setItem('adminLoggedIn', 'true');
+        };
+        const originalLogout = logout;
+        logout = function() {
+            originalLogout();
+            sessionStorage.removeItem('adminLoggedIn');
+        };
+    </script>
+</body>
+</html>
