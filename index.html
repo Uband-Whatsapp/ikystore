@@ -728,6 +728,180 @@
         body.drawer-open {
             overflow: hidden;
         }
+
+        /* ===== RESELLER CSS ===== */
+        .reseller-page .plan-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .reseller-page .plan-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadowSm);
+        }
+        .reseller-page .plan-card.recommended {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+        .reseller-page .plan-card .badge-recommended {
+            position: absolute;
+            top: 12px;
+            right: -30px;
+            transform: rotate(45deg);
+            background: var(--primary);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 30px;
+            letter-spacing: 0.5px;
+        }
+        .reseller-page .plan-price {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .reseller-page .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+            text-align: left;
+        }
+        .reseller-page .plan-features li {
+            padding: 6px 0;
+            font-size: 13px;
+            color: var(--textSec);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .reseller-page .plan-features li i {
+            color: var(--primary);
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+        }
+        .reseller-dashboard .stat-card {
+            background: var(--card);
+            border-radius: var(--radiusSm);
+            padding: 14px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .reseller-dashboard .stat-card:hover {
+            border-color: var(--primary);
+        }
+        .reseller-dashboard .stat-card .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .reseller-dashboard .stat-card .stat-label {
+            font-size: 10px;
+            color: var(--textSec);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .reseller-price-editor .product-row {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: var(--radiusSm);
+            background: var(--card);
+            border: 1px solid var(--border);
+            margin-bottom: 8px;
+        }
+        .reseller-price-editor .product-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .reseller-price-editor .product-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text);
+        }
+        .reseller-price-editor .product-base-price {
+            font-size: 11px;
+            color: var(--textSec);
+        }
+        .reseller-price-editor .product-profit {
+            font-size: 11px;
+            font-weight: 600;
+            color: #22C55E;
+        }
+        .reseller-price-editor .price-input-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .reseller-price-editor .price-input {
+            width: 80px;
+            text-align: right;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 8px;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .reseller-price-editor .save-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .reseller-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .reseller-badge.gratis {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22C55E;
+        }
+        .reseller-badge.premium {
+            background: rgba(168, 85, 247, 0.15);
+            color: #A855F7;
+        }
+        .reseller-badge.pending {
+            background: rgba(234, 179, 8, 0.15);
+            color: #EAB308;
+        }
+        .reseller-badge.rejected {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+        }
+        .reseller-badge.suspended {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+        }
+        .reseller-badge.none {
+            background: rgba(148, 163, 184, 0.15);
+            color: var(--textSec);
+        }
+
+        @media (max-width: 480px) {
+            .reseller-page .plans-container {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -866,11 +1040,7 @@
                     <button id="closeDrawer" class="text-2xl" style="color:var(--textSec);">&times;</button>
                 </div>
                 <div id="drawerUser" class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center text-primary text-lg"><i class="fas fa-user"></i></div>
-                    <div>
-                        <p class="font-bold text-sm" style="color:var(--text);">Guest</p>
-                        <p class="text-xs" style="color:var(--textSec);">Login untuk akses penuh</p>
-                    </div>
+                    <!-- Isi diupdate oleh updateAuthUI() -->
                 </div>
             </div>
 
@@ -892,6 +1062,8 @@
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="cart"><i class="fas fa-shopping-cart text-primary w-5 text-center"></i> Keranjang <span class="ml-auto text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full" id="drawerCartCount">0</span></button>
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="orders"><i class="fas fa-receipt text-primary w-5 text-center"></i> Pesanan</button>
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="history"><i class="fas fa-clock-rotate-left text-primary w-5 text-center"></i> Riwayat</button>
+                    <!-- RESELLER: Menu Reseller di bagian Akun -->
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="reseller"><i class="fas fa-store text-primary w-5 text-center"></i> Reseller</button>
                 </div>
             </div>
 
@@ -1311,6 +1483,80 @@
     </div>
 
     <!-- ============================================================
+    PAGE: RESELLER (Baru)
+    ============================================================ -->
+    <div class="page" id="page-reseller">
+        <div class="mt-3 reseller-page">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-extrabold" style="color:var(--text);">🏪 Program Reseller</h2>
+                <button class="btn-outline text-xs py-1 px-2" id="resellerDashboardBtn" style="display:none;">Dashboard</button>
+            </div>
+            <p class="text-sm mt-1" style="color:var(--textSec);">Jadilah bagian dari RIKY STORE dan dapatkan keuntungan.</p>
+
+            <!-- Tampilan untuk user yang belum login -->
+            <div id="resellerGuestView">
+                <div class="card p-4 mt-3 text-center">
+                    <i class="fas fa-lock text-3xl" style="color:var(--textSec);"></i>
+                    <p class="text-sm mt-2" style="color:var(--text);">Login untuk mendaftar sebagai reseller</p>
+                    <button class="btn-primary mt-2 text-sm" onclick="openAuthModal()">Login / Daftar</button>
+                </div>
+            </div>
+
+            <!-- Tampilan untuk user yang sudah login tapi belum daftar reseller -->
+            <div id="resellerNonMemberView" style="display:none;">
+                <div class="plans-container flex flex-col sm:flex-row gap-4 mt-4">
+                    <!-- Paket Gratis -->
+                    <div class="plan-card flex-1">
+                        <h3 class="font-bold text-lg" style="color:var(--text);">RESELLER GRATIS</h3>
+                        <div class="plan-price mt-2">Rp0</div>
+                        <ul class="plan-features mt-3">
+                            <li><i class="fas fa-check-circle"></i> Tanpa biaya pendaftaran</li>
+                            <li><i class="fas fa-check-circle"></i> Bisa menjual kembali produk</li>
+                            <li><i class="fas fa-check-circle"></i> Bisa mengatur harga jual sendiri</li>
+                            <li><i class="fas fa-check-circle"></i> Mendapatkan keuntungan dari selisih harga</li>
+                        </ul>
+                        <button class="btn-primary w-full mt-3" onclick="openResellerForm('free')">GABUNG GRATIS</button>
+                    </div>
+                    <!-- Paket Premium -->
+                    <div class="plan-card flex-1 recommended">
+                        <div class="badge-recommended">REKOMENDASI</div>
+                        <h3 class="font-bold text-lg" style="color:var(--text);">RESELLER PREMIUM</h3>
+                        <div class="plan-price mt-2">Rp50.000</div>
+                        <ul class="plan-features mt-3">
+                            <li><i class="fas fa-check-circle"></i> Diskon produk 20%</li>
+                            <li><i class="fas fa-check-circle"></i> Harga modal lebih murah</li>
+                            <li><i class="fas fa-check-circle"></i> Bisa mengatur harga jual sendiri</li>
+                            <li><i class="fas fa-check-circle"></i> Potensi keuntungan lebih besar</li>
+                            <li><i class="fas fa-check-circle"></i> Dashboard Reseller Premium</li>
+                        </ul>
+                        <button class="btn-primary w-full mt-3" onclick="openResellerForm('premium')">JADI RESELLER PREMIUM</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tampilan untuk user yang sudah menjadi reseller (pending/approved/dll) -->
+            <div id="resellerMemberView" style="display:none;">
+                <div id="resellerStatusCard" class="card p-4 mt-3"></div>
+                <div class="mt-4" id="resellerDashboardContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: RESELLER PRICES (Atur Harga Jual) - Baru
+    ============================================================ -->
+    <div class="page" id="page-reseller-prices">
+        <div class="mt-3 reseller-price-editor">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg font-extrabold" style="color:var(--text);">💰 Atur Harga Jual</h2>
+                <button class="btn-outline text-xs py-1 px-2" onclick="navigateTo('reseller')">Kembali</button>
+            </div>
+            <p class="text-sm" style="color:var(--textSec);">Tentukan harga jual Anda untuk setiap produk.</p>
+            <div class="mt-3" id="resellerPriceList"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
     PAGE: MENU (empty - untuk bottom nav)
     ============================================================ -->
     <div class="page" id="page-menu"></div>
@@ -1406,12 +1652,7 @@
                 <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="profileModal">&times;</button>
             </div>
             <div class="modal-body" id="profileContent">
-                <div class="flex flex-col items-center text-center py-3">
-                    <div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-primary text-4xl mb-2"><i class="fas fa-user"></i></div>
-                    <p class="text-lg font-extrabold" style="color:var(--text);">Guest</p>
-                    <p class="text-sm" style="color:var(--textSec);">Login untuk mengakses profil</p>
-                    <button class="btn-primary mt-3 text-sm" id="profileLoginBtn"><i class="fas fa-sign-in-alt"></i> Login / Daftar</button>
-                </div>
+                <!-- Diupdate oleh updateAuthUI() -->
             </div>
         </div>
     </div>
@@ -1497,6 +1738,24 @@
                             <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
                         </div>
                         <div class="guide-answer text-xs mt-1 hidden" style="color:var(--textSec);">Via WhatsApp: 6289507390286, Telegram: @Rikynurrohman, Instagram: @newkinky.</div>
+                    </div>
+                    <!-- RESELLER: Panduan Reseller -->
+                    <div class="guide-item card p-3 cursor-pointer hover:border-primary transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold" style="color:var(--text);">Cara Menjadi Reseller</span>
+                            <i class="fas fa-chevron-down" style="color:var(--textSec);"></i>
+                        </div>
+                        <div class="guide-answer text-xs mt-1 hidden" style="color:var(--textSec);">
+                            1. Pilih jenis reseller (Gratis/Premium).<br>
+                            2. Lengkapi pendaftaran.<br>
+                            3. Tunggu persetujuan admin.<br>
+                            4. Setelah aktif, buka Dashboard Reseller.<br>
+                            5. Atur harga jual produk.<br>
+                            6. Pilih produk yang ingin dijual.<br>
+                            7. Gunakan harga modal sesuai tipe reseller.<br>
+                            8. Dapatkan keuntungan dari selisih harga.<br>
+                            Untuk Premium: Diskon 20% otomatis aktif setelah status Reseller Premium disetujui.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1611,6 +1870,60 @@
         </div>
     </div>
 
+    <!-- RESELLER FORM MODAL (Baru) -->
+    <div class="modal-overlay" id="resellerFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-store text-primary mr-2"></i>Pendaftaran Reseller</h3>
+                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="resellerFormModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Nama Lengkap</label>
+                        <input type="text" id="resellerNama" class="input-modern text-sm" placeholder="Nama Anda">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Username</label>
+                        <input type="text" id="resellerUsername" class="input-modern text-sm" placeholder="Username" readonly>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Nomor WhatsApp</label>
+                        <input type="tel" id="resellerWa" class="input-modern text-sm" placeholder="628123456789">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Nama Toko (Opsional)</label>
+                        <input type="text" id="resellerToko" class="input-modern text-sm" placeholder="Nama toko (boleh kosong)">
+                    </div>
+                    <div id="resellerPremiumInfo" style="display:none;">
+                        <div class="card p-3">
+                            <p class="text-sm font-bold" style="color:var(--text);">Biaya Premium: Rp50.000</p>
+                            <p class="text-xs mt-1" style="color:var(--textSec);">Silakan transfer ke QRIS yang sama dengan total pembayaran. Setelah upload bukti, admin akan verifikasi.</p>
+                            <div class="mt-2">
+                                <button type="button" class="btn-outline text-xs py-1.5 px-3" onclick="showResellerQris()">
+                                    <i class="fas fa-qrcode"></i> Lihat QRIS
+                                </button>
+                            </div>
+                            <div class="mt-2">
+                                <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Upload Bukti Transfer</label>
+                                <label class="flex flex-col items-center justify-center w-full p-2 border-2 border-dashed border-borderColor rounded-xl cursor-pointer hover:border-primary transition bg-card">
+                                    <i class="fas fa-cloud-upload-alt text-lg" style="color:var(--textSec);"></i>
+                                    <span class="text-[10px] mt-0.5" style="color:var(--textSec);">Klik untuk pilih foto</span>
+                                    <input type="file" id="resellerBuktiFile" accept="image/*" class="hidden" onchange="previewResellerBukti(this)">
+                                    <div id="resellerFilePreviewName" class="hidden text-xs font-semibold mt-0.5" style="color:var(--text);"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline text-sm flex-1 modal-close" data-modal="resellerFormModal">Batal</button>
+                <button class="btn-primary text-sm flex-1" id="resellerSubmitBtn">Kirim Pengajuan</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ============================================================
     JAVASCRIPT
     ============================================================ -->
@@ -1675,6 +1988,7 @@
             { nama: "AOV 2390 Voucher", harga: 489000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" }
         ];
 
+        // ===== PERUBAHAN HARGA CAPCUT DI SINI =====
         const extraProducts = [
             { nama: "IQYI 1BULAN", harga: 16000, img: "https://i.ibb.co.com/wrpRGBHQ/IMG-20260620-WA0040.jpg",
                 durasi: "1 Bulan", deskripsi: "Akses premium iQiyi 1 bulan", tipe: "iqiyi" },
@@ -1854,6 +2168,7 @@
                 }
 
                 if (profileContent) {
+                    const roleBadge = getResellerBadgeHTML(user);
                     profileContent.innerHTML = `
                                 <div class="flex flex-col items-center text-center py-2">
                                     <div class="w-20 h-20 rounded-full flex items-center justify-center text-3xl mb-2 border-2 border-primary" style="background:${hasFoto?'transparent':'linear-gradient(135deg,#2563EB,#8B5CF6)'};">
@@ -1862,8 +2177,8 @@
                                     <p class="text-lg font-extrabold" style="color:var(--text);">${user.nama}</p>
                                     <p class="text-sm" style="color:var(--textSec);">@${user.username}</p>
                                     <p class="text-xs mt-0.5" style="color:var(--textSec);">Bergabung: ${new Date().toLocaleDateString('id-ID')}</p>
-                                    <div class="flex gap-3 mt-2 text-xs">
-                                        <span class="badge badge-green"><i class="fas fa-check-circle"></i> Premium</span>
+                                    <div class="flex gap-2 mt-2 flex-wrap justify-center">
+                                        ${roleBadge}
                                         <span class="badge badge-blue"><i class="fas fa-shopping-bag"></i> ${orderHistory.length} Pesanan</span>
                                     </div>
                                     <div class="w-full mt-3 border-t pt-3 space-y-1.5" style="border-color:var(--border);">
@@ -1904,108 +2219,491 @@
                             `;
                 }
             }
+            // Update reseller views
+            updateResellerView();
         }
 
-        function openAuthModal(tab = 'login') {
+        // ============================================================
+        // RESELLER FUNCTIONS
+        // ============================================================
+        function getResellerPrices() {
+            return JSON.parse(localStorage.getItem('rikyResellerPrices')) || {};
+        }
+
+        function saveResellerPrice(username, productName, price) {
+            const all = getResellerPrices();
+            if (!all[username]) all[username] = {};
+            all[username][productName] = price;
+            localStorage.setItem('rikyResellerPrices', JSON.stringify(all));
+        }
+
+        function getResellerPriceFor(username, productName) {
+            const all = getResellerPrices();
+            if (all[username] && all[username][productName] !== undefined) {
+                return all[username][productName];
+            }
+            return null;
+        }
+
+        function getEffectivePrice(basePrice, user) {
+            if (!user) return basePrice;
+            if (user.role === 'reseller_premium' && user.resellerStatus === 'approved') {
+                return Math.floor(basePrice * 0.8);
+            } else if (user.role === 'reseller_free' && user.resellerStatus === 'approved') {
+                return basePrice; // Harga modal sama dengan normal
+            } else {
+                return basePrice;
+            }
+        }
+
+        function getResellerBadgeHTML(user) {
+            if (!user) return '';
+            if (user.role === 'reseller_free') {
+                if (user.resellerStatus === 'approved') return '<span class="reseller-badge gratis"><i class="fas fa-store"></i> RESELLER GRATIS</span>';
+                else if (user.resellerStatus === 'pending') return '<span class="reseller-badge pending"><i class="fas fa-clock"></i> PENGAJUAN RESELLER</span>';
+                else if (user.resellerStatus === 'rejected') return '<span class="reseller-badge rejected"><i class="fas fa-times"></i> DITOLAK</span>';
+                else if (user.resellerStatus === 'suspended') return '<span class="reseller-badge suspended"><i class="fas fa-ban"></i> SUSPENDED</span>';
+            } else if (user.role === 'reseller_premium') {
+                if (user.resellerStatus === 'approved') return '<span class="reseller-badge premium"><i class="fas fa-crown"></i> RESELLER PREMIUM</span>';
+                else if (user.resellerStatus === 'pending') return '<span class="reseller-badge pending"><i class="fas fa-clock"></i> PENGAJUAN PREMIUM</span>';
+                else if (user.resellerStatus === 'rejected') return '<span class="reseller-badge rejected"><i class="fas fa-times"></i> DITOLAK</span>';
+                else if (user.resellerStatus === 'suspended') return '<span class="reseller-badge suspended"><i class="fas fa-ban"></i> SUSPENDED</span>';
+            }
+            return '';
+        }
+
+        function previewResellerBukti(input) {
+            const preview = document.getElementById('resellerFilePreviewName');
+            if (input.files && input.files[0]) {
+                preview.textContent = '📎 ' + input.files[0].name;
+                preview.classList.remove('hidden');
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
+
+        function showResellerQris() {
             Swal.fire({
-                title: tab === 'login' ? 'Masuk' : 'Daftar',
+                title: 'Pembayaran Reseller Premium',
                 html: `
-                            <div class="text-left" style="max-width:340px;margin:0 auto;overflow:hidden;">
-                                ${tab === 'login' ? `
-                                    <div class="mb-2">
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Username</label>
-                                        <input id="swalUsername" class="swal2-input" placeholder="Username" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                    <div class="mb-2">
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Password</label>
-                                        <input id="swalPassword" type="password" class="swal2-input" placeholder="Password" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                ` : `
-                                    <div class="mb-1.5">
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Nama Lengkap</label>
-                                        <input id="swalNama" class="swal2-input" placeholder="Nama" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                    <div class="mb-1.5">
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Email</label>
-                                        <input id="swalEmail" type="email" class="swal2-input" placeholder="Email" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                    <div class="mb-1.5">
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Username</label>
-                                        <input id="swalRegUsername" class="swal2-input" placeholder="Username" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                    <div class="mb-1.5">
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">WhatsApp</label>
-                                        <input id="swalWhatsapp" class="swal2-input" placeholder="628123456789" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                    <div class="mb-1.5">
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Password</label>
-                                        <input id="swalRegPassword" type="password" class="swal2-input" placeholder="Min 6 karakter" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                    <div>
-                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Konfirmasi Password</label>
-                                        <input id="swalRegConfirm" type="password" class="swal2-input" placeholder="Ulangi password" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
-                                    </div>
-                                `}
-                                <div class="text-center mt-2">
-                                    <button class="text-xs text-primary font-semibold hover:underline" id="swalSwitchTab">
-                                        ${tab === 'login' ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Masuk'}
-                                    </button>
-                                </div>
+                            <div style="text-align:center; padding: 0 16px;">
+                                <p style="margin-bottom:10px;font-size:14px;font-weight:600;color:var(--text);">Total: <span style="color:var(--primary);">Rp50.000</span></p>
+                                <img src="https://i.ibb.co.com/wFG0M4xj/IMG-20260825-WA0016.jpg" alt="QRIS" style="width:220px; max-width:100%; border-radius:12px; background:white; padding:8px; margin: 0 auto;">
+                                <p style="margin-top:10px;font-size:11px;color:var(--textSec);">NMID: ID1025430095246 | RIKY STORE</p>
+                                <p style="font-size:10px;color:var(--textSec);">Scan QRIS di atas menggunakan aplikasi pembayaran.</p>
                             </div>
                         `,
-                confirmButtonText: tab === 'login' ? 'Masuk' : 'Daftar',
-                cancelButtonText: 'Batal',
-                showCancelButton: true,
+                confirmButtonText: 'Sudah Transfer',
+                confirmButtonColor: '#2563EB',
                 background: 'var(--surface)',
                 color: 'var(--text)',
-                confirmButtonColor: '#2563EB',
-                cancelButtonColor: '#64748B',
-                width: 380,
-                preConfirm: () => {
-                    if (tab === 'login') {
-                        const username = document.getElementById('swalUsername').value.trim();
-                        const password = document.getElementById('swalPassword').value.trim();
-                        if (!username || !password) { Swal.showValidationMessage('Isi semua field!'); return; }
-                        const users = getUsers();
-                        const found = users.find(u => u.username === username && u.password === password);
-                        if (!found) { Swal.showValidationMessage('Username atau password salah!'); return; }
-                        setLoggedInUser({ nama: found.nama, username: found.username, email: found.email,
-                            whatsapp: found.whatsapp, foto: found.foto || null });
-                        showToast(`Selamat datang, ${found.nama}!`, 'success');
-                        return true;
-                    } else {
-                        const nama = document.getElementById('swalNama').value.trim();
-                        const email = document.getElementById('swalEmail').value.trim();
-                        const username = document.getElementById('swalRegUsername').value.trim();
-                        const whatsapp = document.getElementById('swalWhatsapp').value.trim();
-                        const password = document.getElementById('swalRegPassword').value.trim();
-                        const confirm = document.getElementById('swalRegConfirm').value.trim();
-                        if (!nama || !email || !username || !whatsapp || !password || !confirm) { Swal
-                                .showValidationMessage('Semua field wajib diisi!'); return; }
-                        if (password.length < 6) { Swal.showValidationMessage('Password minimal 6 karakter!');
-                            return; }
-                        if (password !== confirm) { Swal.showValidationMessage('Password tidak cocok!'); return; }
-                        const users = getUsers();
-                        if (users.some(u => u.username === username)) { Swal.showValidationMessage(
-                                'Username sudah dipakai!'); return; }
-                        const newUser = { nama, email, username, whatsapp, password, voucherUsed: false };
-                        users.push(newUser);
-                        saveUsers(users);
-                        setLoggedInUser({ nama, username, email, whatsapp, foto: null });
-                        showToast(`Selamat datang, ${nama}!`, 'success');
-                        return true;
-                    }
-                },
+                width: 360,
                 didOpen: () => {
-                    document.getElementById('swalSwitchTab')?.addEventListener('click', () => {
-                        const current = tab;
-                        Swal.close();
-                        openAuthModal(current === 'login' ? 'register' : 'login');
-                    });
-                    // Pastikan modal tidak bisa di-scroll horizontal
                     document.querySelector('.swal2-popup').style.overflowX = 'hidden';
                 }
             });
+        }
+
+        // ============================================================
+        // FIRESTORE SYNC (RESELLER)
+        // ============================================================
+        const USERS_COLLECTION = 'users';
+
+        async function syncUserToFirestore(user) {
+            if (!user || !user.username) return;
+            try {
+                const docRef = db.collection(USERS_COLLECTION).doc(user.username);
+                await docRef.set({
+                    nama: user.nama || '',
+                    email: user.email || '',
+                    whatsapp: user.whatsapp || '',
+                    password: user.password || '',
+                    foto: user.foto || null,
+                    voucherUsed: user.voucherUsed || false,
+                    role: user.role || 'customer',
+                    resellerStatus: user.resellerStatus || 'none',
+                    namaToko: user.namaToko || '',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                console.log('✅ User synced to Firestore:', user.username);
+            } catch (err) {
+                console.error('❌ Gagal sync user ke Firestore:', err);
+            }
+        }
+
+        async function fetchUserFromFirestore(username) {
+            try {
+                const docRef = db.collection(USERS_COLLECTION).doc(username);
+                const doc = await docRef.get();
+                if (doc.exists) {
+                    return doc.data();
+                }
+                return null;
+            } catch (err) {
+                console.error('❌ Gagal fetch user dari Firestore:', err);
+                return null;
+            }
+        }
+
+        async function refreshUserFromFirestore(username) {
+            const data = await fetchUserFromFirestore(username);
+            const user = getLoggedInUser();
+            if (user && user.username === username) {
+                if (data) {
+                    const updatedUser = { ...user, ...data };
+                    localStorage.setItem('rikyLoggedInUser', JSON.stringify(updatedUser));
+                    updateAuthUI();
+                    return updatedUser;
+                } else {
+                    user.role = 'customer';
+                    user.resellerStatus = 'none';
+                    user.namaToko = '';
+                    localStorage.setItem('rikyLoggedInUser', JSON.stringify(user));
+                    const users = getUsers();
+                    const idx = users.findIndex(u => u.username === username);
+                    if (idx !== -1) {
+                        users[idx].role = 'customer';
+                        users[idx].resellerStatus = 'none';
+                        users[idx].namaToko = '';
+                        saveUsers(users);
+                    }
+                    updateAuthUI();
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        function updateResellerView() {
+            const user = getLoggedInUser();
+            const guestView = document.getElementById('resellerGuestView');
+            const nonMemberView = document.getElementById('resellerNonMemberView');
+            const memberView = document.getElementById('resellerMemberView');
+            const dashboardBtn = document.getElementById('resellerDashboardBtn');
+
+            if (!user) {
+                if (guestView) guestView.style.display = 'block';
+                if (nonMemberView) nonMemberView.style.display = 'none';
+                if (memberView) memberView.style.display = 'none';
+                if (dashboardBtn) dashboardBtn.style.display = 'none';
+                return;
+            }
+
+            if (guestView) guestView.style.display = 'none';
+
+            const isReseller = (user.role === 'reseller_free' || user.role === 'reseller_premium') && user.resellerStatus && user.resellerStatus !== 'none';
+            if (isReseller) {
+                if (nonMemberView) nonMemberView.style.display = 'none';
+                if (memberView) memberView.style.display = 'block';
+                if (dashboardBtn) dashboardBtn.style.display = 'inline-flex';
+                renderResellerDashboard();
+            } else {
+                if (nonMemberView) nonMemberView.style.display = 'block';
+                if (memberView) memberView.style.display = 'none';
+                if (dashboardBtn) dashboardBtn.style.display = 'none';
+            }
+        }
+
+        async function openResellerPage() {
+            const user = getLoggedInUser();
+            if (user && user.username) {
+                await refreshUserFromFirestore(user.username);
+            }
+            navigateTo('reseller');
+            updateResellerView();
+        }
+
+        function openResellerForm(type) {
+            const user = getLoggedInUser();
+            if (!user) { showToast('Login dulu', 'error');
+                openAuthModal(); return; }
+            if (user.role && user.role !== 'customer' && user.resellerStatus && user.resellerStatus !== 'none') {
+                showToast('Anda sudah terdaftar sebagai reseller', 'info');
+                updateResellerView();
+                return;
+            }
+            document.getElementById('resellerNama').value = user.nama || '';
+            document.getElementById('resellerUsername').value = user.username || '';
+            document.getElementById('resellerWa').value = user.whatsapp || '';
+            document.getElementById('resellerToko').value = '';
+            const premiumInfo = document.getElementById('resellerPremiumInfo');
+            premiumInfo.style.display = type === 'premium' ? 'block' : 'none';
+            document.getElementById('resellerSubmitBtn').onclick = () => submitResellerForm(type);
+            document.getElementById('resellerFormModal').classList.add('open');
+        }
+
+        async function submitResellerForm(type) {
+            const nama = document.getElementById('resellerNama').value.trim();
+            const username = document.getElementById('resellerUsername').value.trim();
+            const wa = document.getElementById('resellerWa').value.trim();
+            const toko = document.getElementById('resellerToko').value.trim();
+
+            if (!nama || !wa) {
+                showToast('Lengkapi data', 'error');
+                return;
+            }
+
+            let buktiFile = null;
+            if (type === 'premium') {
+                buktiFile = document.getElementById('resellerBuktiFile').files[0];
+                if (!buktiFile) {
+                    showToast('Upload bukti transfer terlebih dahulu!', 'error');
+                    return;
+                }
+            }
+
+            const users = getUsers();
+            const idx = users.findIndex(u => u.username === username);
+            if (idx === -1) {
+                showToast('User tidak ditemukan', 'error');
+                return;
+            }
+
+            users[idx].role = type === 'free' ? 'reseller_free' : 'reseller_premium';
+            users[idx].resellerStatus = 'pending';
+            users[idx].namaToko = toko || '';
+            saveUsers(users);
+
+            const user = getLoggedInUser();
+            if (user && user.username === username) {
+                user.role = users[idx].role;
+                user.resellerStatus = 'pending';
+                user.namaToko = toko || '';
+                setLoggedInUser(user);
+            }
+
+            syncUserToFirestore(users[idx]);
+
+            if (type === 'premium' && buktiFile) {
+                const caption = `📋 PENGAJUAN RESELLER PREMIUM\n\n👤 Nama: ${nama}\n🆔 Username: @${username}\n📱 WA: ${wa}\n🏪 Toko: ${toko || '-'}\n\nSilakan cek dan verifikasi.`;
+                const fd = new FormData();
+                fd.append('chat_id', CHAT_ID);
+                fd.append('caption', caption);
+                fd.append('photo', buktiFile);
+                try {
+                    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+                    const result = await res.json();
+                    if (!result.ok) {
+                        console.error('Gagal kirim bukti:', result.description);
+                    }
+                } catch (err) {
+                    console.error('Error kirim bukti:', err);
+                }
+            }
+
+            showToast('Pengajuan terkirim, menunggu persetujuan admin', 'success');
+            document.getElementById('resellerFormModal').classList.remove('open');
+            updateResellerView();
+        }
+
+        function renderResellerDashboard() {
+            const user = getLoggedInUser();
+            if (!user || (user.role !== 'reseller_free' && user.role !== 'reseller_premium')) return;
+
+            const container = document.getElementById('resellerDashboardContent');
+            const statusCard = document.getElementById('resellerStatusCard');
+            if (!container || !statusCard) return;
+
+            let statusText = '';
+            if (user.resellerStatus === 'pending') {
+                statusText = '<span class="reseller-badge pending">PENDING</span> Menunggu persetujuan admin.';
+                statusText += '<div class="mt-2"><button class="btn-outline text-xs py-1 px-2" onclick="syncUserToFirestore(getLoggedInUser()); showToast(\'Data dikirim ke admin\', \'success\');">Kirim Ulang ke Admin</button></div>';
+            } else if (user.resellerStatus === 'approved') {
+                statusText = user.role === 'reseller_premium' ? '<span class="reseller-badge premium">PREMIUM AKTIF</span> Diskon 20% aktif!' : '<span class="reseller-badge gratis">GRATIS AKTIF</span> Anda bisa mulai berjualan.';
+            } else if (user.resellerStatus === 'rejected') {
+                statusText = '<span class="reseller-badge rejected">DITOLAK</span> Pengajuan ditolak.';
+            } else if (user.resellerStatus === 'suspended') {
+                statusText = '<span class="reseller-badge suspended">SUSPENDED</span> Akun dinonaktifkan.';
+            }
+            statusCard.innerHTML = `<div class="flex items-center gap-2">${statusText}</div>`;
+
+            if (user.resellerStatus !== 'approved') {
+                container.innerHTML = `<p class="text-sm text-center mt-2" style="color:var(--textSec);">Fitur reseller akan aktif setelah disetujui admin.</p>`;
+                return;
+            }
+
+            const userHistory = orderHistory.filter(o => o.username === user.username);
+            const totalOrders = userHistory.length;
+            const totalSpent = userHistory.reduce((sum, o) => sum + o.total, 0);
+            let totalSavings = 0;
+            userHistory.forEach(o => {
+                o.items.forEach(item => {
+                    const normalPrice = item.normalPrice || item.harga;
+                    const paidPrice = item.harga;
+                    if (normalPrice > paidPrice) totalSavings += (normalPrice - paidPrice) * (item.qty || 1);
+                });
+            });
+            const roleLabel = user.role === 'reseller_premium' ? 'Reseller Premium' : 'Reseller Gratis';
+            const joinDate = new Date().toLocaleDateString('id-ID');
+
+            container.innerHTML = `
+                        <div class="grid grid-cols-2 gap-2.5 mt-3">
+                            <div class="stat-card">
+                                <div class="stat-value">${roleLabel}</div>
+                                <div class="stat-label">Tipe</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${totalOrders}</div>
+                                <div class="stat-label">Total Pesanan</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">Rp${totalSpent.toLocaleString()}</div>
+                                <div class="stat-label">Total Transaksi</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">Rp${totalSavings.toLocaleString()}</div>
+                                <div class="stat-label">Total Penghematan</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <button class="w-full btn-outline text-sm justify-start" onclick="navigateTo('reseller-prices')"><i class="fas fa-tag"></i> Atur Harga Jual</button>
+                            <button class="w-full btn-outline text-sm justify-start" onclick="showResellerOrders()"><i class="fas fa-receipt"></i> Pesanan Reseller</button>
+                            <button class="w-full btn-outline text-sm justify-start" onclick="showResellerHistory()"><i class="fas fa-clock-rotate-left"></i> Riwayat Transaksi</button>
+                            <button class="w-full btn-outline text-sm justify-start" onclick="showResellerGuide()"><i class="fas fa-book"></i> Panduan Reseller</button>
+                        </div>
+                    `;
+        }
+
+        function showResellerOrders() {
+            const user = getLoggedInUser();
+            if (!user) return;
+            const userOrders = orderHistory.filter(o => o.username === user.username);
+            if (!userOrders.length) { showToast('Belum ada pesanan', 'info'); return; }
+            let msg = userOrders.map(o => `#${o.id} - ${o.tanggal} - Rp${o.total.toLocaleString()}`).join('\n');
+            Swal.fire({
+                title: 'Pesanan Reseller',
+                text: msg || 'Tidak ada pesanan',
+                icon: 'info',
+                confirmButtonText: 'OK',
+                background: 'var(--surface)',
+                color: 'var(--text)'
+            });
+        }
+
+        function showResellerHistory() {
+            const user = getLoggedInUser();
+            if (!user) return;
+            const userOrders = orderHistory.filter(o => o.username === user.username);
+            if (!userOrders.length) { showToast('Belum ada riwayat', 'info'); return; }
+            let msg = userOrders.slice(0, 10).map(o => `${o.tanggal} - Rp${o.total.toLocaleString()}`).join('\n');
+            Swal.fire({
+                title: 'Riwayat Transaksi',
+                text: msg || 'Tidak ada',
+                icon: 'info',
+                confirmButtonText: 'OK',
+                background: 'var(--surface)',
+                color: 'var(--text)'
+            });
+        }
+
+        function showResellerGuide() {
+            Swal.fire({
+                title: 'Panduan Reseller',
+                html: `<div style="text-align:left;font-size:13px;color:var(--text);">
+                            1. Pilih jenis reseller (Gratis/Premium).<br>
+                            2. Lengkapi pendaftaran.<br>
+                            3. Tunggu persetujuan admin.<br>
+                            4. Setelah aktif, buka Dashboard Reseller.<br>
+                            5. Atur harga jual produk.<br>
+                            6. Pilih produk yang ingin dijual.<br>
+                            7. Gunakan harga modal sesuai tipe reseller.<br>
+                            8. Dapatkan keuntungan dari selisih harga.<br>
+                            Untuk Premium: Diskon 20% otomatis aktif setelah status Reseller Premium disetujui.
+                        </div>`,
+                confirmButtonText: 'OK',
+                background: 'var(--surface)',
+                color: 'var(--text)',
+                width: 400
+            });
+        }
+
+        function renderResellerPriceEditor() {
+            const user = getLoggedInUser();
+            if (!user || user.resellerStatus !== 'approved') {
+                showToast('Anda belum menjadi reseller aktif', 'error');
+                navigateTo('reseller');
+                return;
+            }
+            const container = document.getElementById('resellerPriceList');
+            const allProducts = getAllProducts();
+            if (!allProducts.length) {
+                container.innerHTML = '<div class="text-center py-4">Tidak ada produk</div>';
+                return;
+            }
+
+            let html = '';
+            allProducts.forEach(p => {
+                const basePrice = p.harga;
+                const modalPrice = getEffectivePrice(basePrice, user);
+                const savedPrice = getResellerPriceFor(user.username, p.nama);
+                const currentPrice = savedPrice !== null ? savedPrice : modalPrice;
+                const profit = currentPrice - modalPrice;
+                html += `
+                            <div class="product-row">
+                                <div class="product-info">
+                                    <div class="product-name">${p.nama}</div>
+                                    <div class="product-base-price">Modal: Rp${modalPrice.toLocaleString()}</div>
+                                    <div class="product-profit">Keuntungan: Rp${profit.toLocaleString()}</div>
+                                </div>
+                                <div class="price-input-group">
+                                    <span style="font-size:12px;color:var(--textSec);">Rp</span>
+                                    <input type="number" class="price-input" value="${currentPrice}" data-product="${p.nama}" data-modal="${modalPrice}">
+                                    <button class="save-btn" data-product="${p.nama}">Simpan</button>
+                                </div>
+                            </div>
+                        `;
+            });
+            container.innerHTML = html;
+
+            document.querySelectorAll('.save-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productName = this.dataset.product;
+                    const input = this.parentElement.querySelector('.price-input');
+                    const newPrice = parseInt(input.value);
+                    if (isNaN(newPrice) || newPrice <= 0) {
+                        showToast('Harga tidak valid', 'error');
+                        return;
+                    }
+                    const modalPrice = parseInt(input.dataset.modal);
+                    if (newPrice < modalPrice) {
+                        showToast('Harga jual tidak boleh kurang dari harga modal', 'error');
+                        return;
+                    }
+                    saveResellerPrice(user.username, productName, newPrice);
+                    showToast('Harga jual disimpan', 'success');
+                    const profitEl = btn.closest('.product-row').querySelector('.product-profit');
+                    profitEl.textContent = `Keuntungan: Rp${(newPrice - modalPrice).toLocaleString()}`;
+                });
+            });
+        }
+
+        // ============================================================
+        // MODIFIKASI addToCart untuk gunakan harga efektif
+        // ============================================================
+        function addToCart(item) {
+            const user = getLoggedInUser();
+            let finalPrice = item.harga;
+            let normalPrice = item.harga;
+            if (user && (user.role === 'reseller_free' || user.role === 'reseller_premium') && user.resellerStatus === 'approved') {
+                finalPrice = getEffectivePrice(item.harga, user);
+                normalPrice = item.harga;
+            }
+            const newItem = {
+                ...item,
+                harga: finalPrice,
+                normalPrice: normalPrice,
+                qty: 1
+            };
+            const existing = cart.find(i =>
+                i.nama === newItem.nama && i.tipe === newItem.tipe &&
+                (i.userId === newItem.userId || (!i.userId && !newItem.userId)) &&
+                (i.phone === newItem.phone || (!i.phone && !newItem.phone)) &&
+                (i.linkGrup === newItem.linkGrup || (!i.linkGrup && !newItem.linkGrup))
+            );
+            if (existing) existing.qty = (existing.qty || 1) + 1;
+            else cart.push(newItem);
+            saveCart();
+            showToast(`${newItem.nama} ditambahkan ke keranjang`, 'success');
         }
 
         // ============================================================
@@ -2024,6 +2722,14 @@
             document.getElementById('drawerOverlay').classList.remove('open');
             document.body.classList.remove('drawer-open');
             document.getElementById('searchResults').classList.add('hidden');
+
+            if (page === 'reseller') {
+                updateResellerView();
+            }
+            if (page === 'reseller-prices') {
+                if (getLoggedInUser()) renderResellerPriceEditor();
+                else navigateTo('reseller');
+            }
         }
 
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
@@ -2088,6 +2794,11 @@
                     document.getElementById('drawerOverlay').classList.remove('open');
                     document.body.classList.remove('drawer-open');
                     openGuideModal();
+                } else if (action === 'reseller') {
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
+                    openResellerPage();
                 }
             });
         });
@@ -2101,6 +2812,10 @@
                 else if (action === 'orders') openOrdersModal();
                 else if (action === 'ticket') openTicketModal();
             });
+        });
+
+        document.getElementById('resellerDashboardBtn')?.addEventListener('click', () => {
+            updateResellerView();
         });
 
         // ============================================================
@@ -2130,7 +2845,6 @@
         const themeBtn = document.getElementById('themeBtn');
         let dark = true;
 
-        // Load theme from localStorage and apply immediately
         const savedTheme = localStorage.getItem('riky-theme');
         if (savedTheme === 'light') {
             document.body.classList.add('light');
@@ -2155,7 +2869,7 @@
         // ============================================================
         function updateOnlineCount() {
             const base = 342;
-            const variation = Math.floor(Math.random() * 60) - 30; // -30 s/d +30
+            const variation = Math.floor(Math.random() * 60) - 30;
             const count = Math.max(200, base + variation);
             const memberEl = document.getElementById('onlineMemberCount');
             const headerEl = document.getElementById('onlineNumber');
@@ -2164,9 +2878,8 @@
             if (headerEl) headerEl.textContent = formatted + 'k';
         }
 
-        // Update setiap 5-8 detik
         setInterval(updateOnlineCount, 5000 + Math.random() * 3000);
-        updateOnlineCount(); // pertama kali
+        updateOnlineCount();
 
         // ============================================================
         // SEARCH
@@ -2727,19 +3440,6 @@
         // ============================================================
         // CART
         // ============================================================
-        function addToCart(item) {
-            const existing = cart.find(i =>
-                i.nama === item.nama && i.tipe === item.tipe &&
-                (i.userId === item.userId || (!i.userId && !item.userId)) &&
-                (i.phone === item.phone || (!i.phone && !item.phone)) &&
-                (i.linkGrup === item.linkGrup || (!i.linkGrup && !item.linkGrup))
-            );
-            if (existing) existing.qty = (existing.qty || 1) + 1;
-            else cart.push({ ...item, qty: 1 });
-            saveCart();
-            showToast(`${item.nama} ditambahkan ke keranjang`, 'success');
-        }
-
         function saveCart() { localStorage.setItem('rikyCart', JSON.stringify(cart));
             updateCartUI(); }
 
@@ -3082,9 +3782,10 @@
                     body: fd });
                 const result = await res.json();
                 if (result.ok) {
+                    const user = getLoggedInUser();
                     const historyOrder = { id: Date.now(), tanggal: new Date().toLocaleString('id-ID'), items: [
                             ...cart
-                        ], total: total };
+                        ], total: total, username: user ? user.username : 'guest' };
                     orderHistory.unshift(historyOrder);
                     localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
                     cart = [];
@@ -3127,7 +3828,6 @@
                 document.body.style.overflow = '';
             });
 
-            // Syarat link langsung buka popup
             document.getElementById('syaratLink')?.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -3169,6 +3869,130 @@
         });
 
         // ============================================================
+        // OPEN AUTH MODAL (duplicate definition fix)
+        // ============================================================
+        function openAuthModal(tab = 'login') {
+            Swal.fire({
+                title: tab === 'login' ? 'Masuk' : 'Daftar',
+                html: `
+                            <div class="text-left" style="max-width:340px;margin:0 auto;overflow:hidden;">
+                                ${tab === 'login' ? `
+                                    <div class="mb-2">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Username</label>
+                                        <input id="swalUsername" class="swal2-input" placeholder="Username" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Password</label>
+                                        <input id="swalPassword" type="password" class="swal2-input" placeholder="Password" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                ` : `
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Nama Lengkap</label>
+                                        <input id="swalNama" class="swal2-input" placeholder="Nama" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Email</label>
+                                        <input id="swalEmail" type="email" class="swal2-input" placeholder="Email" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Username</label>
+                                        <input id="swalRegUsername" class="swal2-input" placeholder="Username" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">WhatsApp</label>
+                                        <input id="swalWhatsapp" class="swal2-input" placeholder="628123456789" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div class="mb-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Password</label>
+                                        <input id="swalRegPassword" type="password" class="swal2-input" placeholder="Min 6 karakter" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold uppercase tracking-wider block mb-0.5" style="color:var(--textSec);">Konfirmasi Password</label>
+                                        <input id="swalRegConfirm" type="password" class="swal2-input" placeholder="Ulangi password" style="background:var(--card);color:var(--text);border-color:var(--border);padding:8px 12px;font-size:13px;border-radius:8px;width:100%;">
+                                    </div>
+                                `}
+                                <div class="text-center mt-2">
+                                    <button class="text-xs text-primary font-semibold hover:underline" id="swalSwitchTab">
+                                        ${tab === 'login' ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Masuk'}
+                                    </button>
+                                </div>
+                            </div>
+                        `,
+                confirmButtonText: tab === 'login' ? 'Masuk' : 'Daftar',
+                cancelButtonText: 'Batal',
+                showCancelButton: true,
+                background: 'var(--surface)',
+                color: 'var(--text)',
+                confirmButtonColor: '#2563EB',
+                cancelButtonColor: '#64748B',
+                width: 380,
+                preConfirm: () => {
+                    if (tab === 'login') {
+                        const username = document.getElementById('swalUsername').value.trim();
+                        const password = document.getElementById('swalPassword').value.trim();
+                        if (!username || !password) { Swal.showValidationMessage('Isi semua field!'); return; }
+                        const users = getUsers();
+                        const found = users.find(u => u.username === username && u.password === password);
+                        if (!found) { Swal.showValidationMessage('Username atau password salah!'); return; }
+                        setLoggedInUser({
+                            nama: found.nama,
+                            username: found.username,
+                            email: found.email,
+                            whatsapp: found.whatsapp,
+                            foto: found.foto || null,
+                            role: found.role || 'customer',
+                            resellerStatus: found.resellerStatus || 'none',
+                            namaToko: found.namaToko || ''
+                        });
+                        refreshUserFromFirestore(found.username);
+                        showToast(`Selamat datang, ${found.nama}!`, 'success');
+                        return true;
+                    } else {
+                        const nama = document.getElementById('swalNama').value.trim();
+                        const email = document.getElementById('swalEmail').value.trim();
+                        const username = document.getElementById('swalRegUsername').value.trim();
+                        const whatsapp = document.getElementById('swalWhatsapp').value.trim();
+                        const password = document.getElementById('swalRegPassword').value.trim();
+                        const confirm = document.getElementById('swalRegConfirm').value.trim();
+                        if (!nama || !email || !username || !whatsapp || !password || !confirm) { Swal
+                                .showValidationMessage('Semua field wajib diisi!'); return; }
+                        if (password.length < 6) { Swal.showValidationMessage('Password minimal 6 karakter!');
+                            return; }
+                        if (password !== confirm) { Swal.showValidationMessage('Password tidak cocok!'); return; }
+                        const users = getUsers();
+                        if (users.some(u => u.username === username)) { Swal.showValidationMessage(
+                                'Username sudah dipakai!'); return; }
+                        const newUser = { nama, email, username, whatsapp, password, voucherUsed: false,
+                            role: 'customer', resellerStatus: 'none', namaToko: '' };
+                        users.push(newUser);
+                        saveUsers(users);
+                        setLoggedInUser({ nama, username, email, whatsapp, foto: null, role: 'customer',
+                            resellerStatus: 'none', namaToko: '' });
+                        syncUserToFirestore(newUser);
+                        showToast(`Selamat datang, ${nama}!`, 'success');
+                        return true;
+                    }
+                },
+                didOpen: () => {
+                    document.getElementById('swalSwitchTab')?.addEventListener('click', () => {
+                        const current = tab;
+                        Swal.close();
+                        openAuthModal(current === 'login' ? 'register' : 'login');
+                    });
+                    document.querySelector('.swal2-popup').style.overflowX = 'hidden';
+                }
+            });
+        }
+
+        // ============================================================
+        // EXPOSE FUNGSI RESELLER (tambahan)
+        // ============================================================
+        window.openResellerForm = openResellerForm;
+        window.openResellerPage = openResellerPage;
+        window.renderResellerPriceEditor = renderResellerPriceEditor;
+        window.updateResellerView = updateResellerView;
+
+        // ============================================================
         // INIT
         // ============================================================
         function init() {
@@ -3178,6 +4002,10 @@
             renderAllProducts('all');
             updateCartUI();
             updateAuthUI();
+            const loggedInUser = getLoggedInUser();
+            if (loggedInUser && loggedInUser.username) {
+                refreshUserFromFirestore(loggedInUser.username);
+            }
 
             const ffTab = document.querySelector('.game-tab[data-game="ff"]');
             if (ffTab) { ffTab.style.borderColor = 'var(--primary)';
@@ -3185,6 +4013,8 @@
 
             document.querySelector('.bot-filter[data-filter="all"]')?.classList.add('bg-primary', 'text-white');
             document.querySelector('.all-filter[data-filter="all"]')?.classList.add('bg-primary', 'text-white');
+
+            updateResellerView();
         }
         document.addEventListener('DOMContentLoaded', init);
 
@@ -3201,93 +4031,90 @@
         window.openGuideModal = openGuideModal;
         window.showToast = showToast;
         window.previewBukti = previewBukti;
+        window.openResellerPage = openResellerPage;
+        window.openResellerForm = openResellerForm;
+        window.renderResellerPriceEditor = renderResellerPriceEditor;
     </script>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<script>
-// ===== KONFIGURASI FIREBASE =====
-const firebaseConfig = {
-  apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
-  authDomain: "riky-store-push.firebaseapp.com",
-  projectId: "riky-store-push",
-  storageBucket: "riky-store-push.firebasestorage.app",
-  messagingSenderId: "700709840952",
-  appId: "1:700709840952:web:d2efb042652f931d269ecd"
-};
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+    <script>
+        // ===== KONFIGURASI FIREBASE =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
+            authDomain: "riky-store-push.firebaseapp.com",
+            projectId: "riky-store-push",
+            storageBucket: "riky-store-push.firebasestorage.app",
+            messagingSenderId: "700709840952",
+            appId: "1:700709840952:web:d2efb042652f931d269ecd"
+        };
 
-// ===== VAPID PUBLIC KEY =====
-const VAPID_PUBLIC_KEY = 'BFcH-HuEIbgumvfYh8SXXIip0MCOndkFTovfImUmIwxU1NotrrQxdma7c7vt2PkZcQLHFCsCHPGAQqDKO_QDwCs';
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-// ===== FUNGSI SUBSCRIBE (PAKSA DAFTAR ULANG) =====
-async function subscribeUser() {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    console.warn('❌ Push not supported');
-    return;
-  }
+        // ===== VAPID PUBLIC KEY =====
+        const VAPID_PUBLIC_KEY = 'BFcH-HuEIbgumvfYh8SXXIip0MCOndkFTovfImUmIwxU1NotrrQxdma7c7vt2PkZcQLHFCsCHPGAQqDKO_QDwCs';
 
-  try {
-    // Daftarkan Service Worker
-    const registration = await navigator.serviceWorker.register('/sw.js');
-    console.log('✅ 1. SW terdaftar');
+        // ===== FUNGSI SUBSCRIBE (PAKSA DAFTAR ULANG) =====
+        async function subscribeUser() {
+            if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+                console.warn('❌ Push not supported');
+                return;
+            }
 
-    // Minta izin notifikasi
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') {
-      console.warn('❌ 2. Izin ditolak');
-      return;
-    }
-    console.log('✅ 2. Izin diberikan');
+            try {
+                const registration = await navigator.serviceWorker.register('/sw.js');
+                console.log('✅ 1. SW terdaftar');
 
-    // HAPUS SUBSCRIPTION LAMA (jika ada)
-    const existingSub = await registration.pushManager.getSubscription();
-    if (existingSub) {
-      await existingSub.unsubscribe();
-      console.log('🗑️ Subscription lama dihapus');
-    }
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') {
+                    console.warn('❌ 2. Izin ditolak');
+                    return;
+                }
+                console.log('✅ 2. Izin diberikan');
 
-    // Buat subscription baru
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: VAPID_PUBLIC_KEY
-    });
-    console.log('✅ 3. Subscription baru berhasil', subscription);
+                const existingSub = await registration.pushManager.getSubscription();
+                if (existingSub) {
+                    await existingSub.unsubscribe();
+                    console.log('🗑️ Subscription lama dihapus');
+                }
 
-    // Simpan ke Firestore
-    const anonId = localStorage.getItem('pushAnonId') || 'user_' + Date.now();
-    localStorage.setItem('pushAnonId', anonId);
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: VAPID_PUBLIC_KEY
+                });
+                console.log('✅ 3. Subscription baru berhasil', subscription);
 
-    const response = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ anonId, subscription: subscription.toJSON() })
-    });
+                const anonId = localStorage.getItem('pushAnonId') || 'user_' + Date.now();
+                localStorage.setItem('pushAnonId', anonId);
 
-    if (response.ok) {
-      console.log('✅ 4. Subscription tersimpan di Firestore!');
-    } else {
-      const err = await response.json();
-      console.error('❌ 4. Gagal simpan:', err.error || 'Unknown');
-    }
-  } catch (err) {
-    console.error('❌ Error subscribe:', err.message);
-  }
-}
+                const response = await fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ anonId, subscription: subscription.toJSON() })
+                });
 
-// ===== JALANKAN SAAT HALAMAN DIMUAT =====
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .then(() => {
-      console.log('SW registered, menjalankan subscribe...');
-      // 🔥 LANGSUNG PANGGIL, TANPA CEK SUBSCRIPTION LAMA
-      subscribeUser();
-    })
-    .catch(err => console.error('❌ SW registration gagal:', err));
-}
-</script>
+                if (response.ok) {
+                    console.log('✅ 4. Subscription tersimpan di Firestore!');
+                } else {
+                    const err = await response.json();
+                    console.error('❌ 4. Gagal simpan:', err.error || 'Unknown');
+                }
+            } catch (err) {
+                console.error('❌ Error subscribe:', err.message);
+            }
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => {
+                    console.log('SW registered, menjalankan subscribe...');
+                    subscribeUser();
+                })
+                .catch(err => console.error('❌ SW registration gagal:', err));
+        }
+    </script>
 </body>
 </html>
