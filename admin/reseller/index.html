@@ -691,6 +691,13 @@
             color: #fcd34d;
         }
 
+        /* Tambahan untuk tombol hapus */
+        .btn-delete {
+            background: rgba(148, 163, 184, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #cbd5e1;
+        }
+
         /* =========================
            LOADING / EMPTY
         ========================= */
@@ -975,7 +982,7 @@
 
         const USERS_COLLECTION = 'users';
 
-        const ADMIN_PASSWORD = '1';
+        const ADMIN_PASSWORD = 'admin123';
 
         let isAdmin = false;
 
@@ -1236,6 +1243,15 @@
                                 Suspend
                             </button>
 
+
+                            <button
+                                class="btn-delete"
+                                onclick="deleteReseller('${username}')"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                                Hapus
+                            </button>
+
                         </div>
 
                     `;
@@ -1320,6 +1336,35 @@
 
             }
 
+        }
+
+
+        async function deleteReseller(username) {
+            if (!isAdmin) return;
+
+            const confirm = await Swal.fire({
+                title: 'Hapus Reseller?',
+                text: `Data ${username} akan dihapus permanen dari Firestore.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                background: '#111c2f',
+                color: '#f1f5f9'
+            });
+
+            if (!confirm.isConfirmed) return;
+
+            try {
+                await db.collection(USERS_COLLECTION).doc(username).delete();
+                Swal.fire('Berhasil', `Data ${username} dihapus`, 'success');
+                loadResellers();
+            } catch (err) {
+                console.error(err);
+                Swal.fire('Gagal', 'Terjadi kesalahan', 'error');
+            }
         }
 
 
