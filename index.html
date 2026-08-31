@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -4324,6 +4325,10 @@
 // RIKY COIN - FUNGSI DAN LOGIKA (FINAL)
 // ============================================================
 
+// ============================================================
+// RIKY COIN - SISTEM FINAL (BERFUNGSI)
+// ============================================================
+
 function getUserCoinData(username) {
     const users = getUsers();
     const user = users.find(u => u.username === username);
@@ -4377,7 +4382,10 @@ function getCoinBalance(username) {
 
 function updateCoinUI() {
     const user = getLoggedInUser();
-    if (!user) { document.getElementById('drawerCoinBalance').textContent = '0'; return; }
+    if (!user) {
+        document.getElementById('drawerCoinBalance').textContent = '0';
+        return;
+    }
     const balance = getCoinBalance(user.username);
     document.getElementById('drawerCoinBalance').textContent = balance;
     const pb = document.getElementById('profileCoinBalance');
@@ -4416,7 +4424,7 @@ function setupCoinHistoryListener() {
     });
 }
 
-// ===== CHECKOUT COIN =====
+// ===== COIN CHECKOUT =====
 let coinUseMode = 'no';
 let coinAmount = 0;
 let maxCoinAllowed = 0;
@@ -4428,6 +4436,7 @@ function renderCoinCheckoutOptions() {
     const balance = getCoinBalance(user.username);
     const balEl = document.getElementById('checkoutCoinBalance');
     if (balEl) balEl.textContent = balance;
+
     const subtotal = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
     checkoutSubtotal = subtotal;
     maxCoinAllowed = Math.floor(subtotal * 0.20);
@@ -4435,30 +4444,53 @@ function renderCoinCheckoutOptions() {
     document.getElementById('maxCoinDisplay').textContent = maxAvailable;
     const input = document.getElementById('coinAmountInput');
     if (input) { input.max = maxAvailable; input.value = 0; }
+
     coinUseMode = 'no';
     coinAmount = 0;
     document.getElementById('coinAmountSection').style.display = 'none';
     document.getElementById('coinDiscountDisplay').textContent = 'Potongan: Rp0';
+
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.use === 'no');
     });
+
     updateCheckoutTotal();
+    // Pasang listener ulang setiap kali modal dibuka
     setupCoinCheckoutListeners();
 }
 
 function setupCoinCheckoutListeners() {
+    // Toggle
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
         btn.removeEventListener('click', coinToggleHandler);
         btn.addEventListener('click', coinToggleHandler);
     });
+
+    // Tombol - dan +
     const dec = document.getElementById('coinDecBtn');
     const inc = document.getElementById('coinIncBtn');
     const maxBtn = document.getElementById('coinMaxBtn');
     const input = document.getElementById('coinAmountInput');
-    if (dec) { dec.removeEventListener('click', coinDecHandler); dec.addEventListener('click', coinDecHandler); }
-    if (inc) { inc.removeEventListener('click', coinIncHandler); inc.addEventListener('click', coinIncHandler); }
-    if (maxBtn) { maxBtn.removeEventListener('click', coinMaxHandler); maxBtn.addEventListener('click', coinMaxHandler); }
-    if (input) { input.removeEventListener('input', coinInputHandler); input.addEventListener('input', coinInputHandler); }
+
+    if (dec) {
+        dec.removeEventListener('click', coinDecHandler);
+        dec.addEventListener('click', coinDecHandler);
+    }
+    if (inc) {
+        inc.removeEventListener('click', coinIncHandler);
+        inc.addEventListener('click', coinIncHandler);
+    }
+    if (maxBtn) {
+        maxBtn.removeEventListener('click', coinMaxHandler);
+        maxBtn.addEventListener('click', coinMaxHandler);
+    }
+    if (input) {
+        input.removeEventListener('input', coinInputHandler);
+        input.addEventListener('input', coinInputHandler);
+        // Biar bisa diisi manual
+        input.removeEventListener('change', coinInputHandler);
+        input.addEventListener('change', coinInputHandler);
+    }
 }
 
 function coinToggleHandler(e) {
@@ -4467,6 +4499,7 @@ function coinToggleHandler(e) {
     coinUseMode = use;
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
     this.classList.add('active');
+
     if (use === 'yes') {
         document.getElementById('coinAmountSection').style.display = 'block';
         const user = getLoggedInUser();
@@ -4543,6 +4576,7 @@ const originalOpenCheckout = window.openCheckoutModal;
 window.openCheckoutModal = function() {
     if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
     if (!isLoggedIn()) { showToast('Login dulu untuk checkout', 'info'); openAuthModal(); return; }
+
     const details = document.getElementById('checkoutDetails');
     let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
     let html = '<div class="space-y-1.5">';
@@ -4555,7 +4589,10 @@ window.openCheckoutModal = function() {
     });
     html += `</div>`;
     details.innerHTML = html;
+
     document.getElementById('checkoutModal').classList.add('open');
+
+    // Reset coin
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
     document.querySelector('.coin-toggle-group .toggle-btn[data-use="no"]').classList.add('active');
     document.getElementById('coinAmountSection').style.display = 'none';
@@ -4567,13 +4604,17 @@ window.openCheckoutModal = function() {
     document.getElementById('maxCoinDisplay').textContent = max;
     document.getElementById('coinAmountInput').max = max;
     updateCheckoutTotal();
-    setTimeout(setupCoinCheckoutListeners, 50);
+
+    // Pasang listener setelah modal terbuka
+    setTimeout(setupCoinCheckoutListeners, 100);
+
     appliedVoucher = null;
     document.getElementById('checkoutVoucherInput').value = '';
     document.getElementById('voucherMessage').innerHTML = '';
     document.getElementById('voucherDetail').classList.add('hidden');
 };
 
+// === Override QRIS dan Kirim Bukti ===
 document.getElementById('checkoutQrisBtn')?.addEventListener('click', function() {
     if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
     let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
@@ -4603,10 +4644,12 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
     if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
     const user = getLoggedInUser();
     if (!user) { showToast('Login dulu!', 'error'); return; }
+
     let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
     let coinUsed = window._checkoutCoinUsed || 0;
     let coinDiscount = window._checkoutCoinDiscount || 0;
     let finalTotal = total - coinDiscount;
+
     if (coinUsed > 0) {
         const balance = getCoinBalance(user.username);
         if (coinUsed > balance) { showToast('Saldo coin tidak mencukupi!', 'error'); return; }
@@ -4614,6 +4657,7 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
         const success = useCoinFromUser(user.username, coinUsed, `Digunakan untuk pesanan #${Date.now()}`, Date.now());
         if (!success) { showToast('Gagal menggunakan coin!', 'error'); return; }
     }
+
     const orderId = Date.now();
     const order = {
         id: orderId,
@@ -4629,6 +4673,7 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
         buyerWa: wa,
         note: note || ''
     };
+
     let caption = `✨ RIKY STORE - PESANAN BARU ✨\n\n`;
     cart.forEach(item => {
         let d = '';
@@ -4642,11 +4687,13 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
     caption += `\n👤 Pembeli\n📱 WA: ${wa}\n`;
     if (note) caption += `📝 Catatan: ${note}\n`;
     caption += `\n🆔 ID Pesanan: #${orderId}\n⏳ Status: Menunggu Verifikasi`;
+
     const fd = new FormData();
     fd.append('chat_id', CHAT_ID);
     fd.append('caption', caption);
     fd.append('photo', file);
     fd.append('parse_mode', 'Markdown');
+
     try {
         this.textContent = 'Mengirim...';
         this.disabled = true;
@@ -4682,6 +4729,7 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
     }
 });
 
+// === Integrasi dengan Auth UI ===
 const originalUpdateAuthUI = window.updateAuthUI;
 window.updateAuthUI = function() {
     originalUpdateAuthUI();
@@ -4689,6 +4737,7 @@ window.updateAuthUI = function() {
     setTimeout(setupCoinHistoryListener, 100);
 };
 
+// === Klik menu RIKY COIN di drawer ===
 document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('click', function(e) {
     e.preventDefault();
     document.getElementById('drawer').classList.remove('open');
@@ -4701,6 +4750,7 @@ document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('c
     }, 300);
 });
 
+// === Inisialisasi awal ===
 setTimeout(() => {
     updateCoinUI();
     setupCoinHistoryListener();
