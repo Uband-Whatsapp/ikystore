@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Admin Coin - RIKY STORE</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -17,8 +23,8 @@
         :root {
             --bg: #070d19;
             --bg-secondary: #0b1220;
+
             --card: rgba(15, 23, 42, 0.92);
-            --card-hover: rgba(20, 30, 50, 0.98);
             --border: rgba(148, 163, 184, 0.14);
             --border-strong: rgba(148, 163, 184, 0.22);
 
@@ -46,6 +52,7 @@
         body {
             margin: 0;
             min-height: 100vh;
+
             background:
                 radial-gradient(
                     circle at top center,
@@ -59,6 +66,7 @@
                 );
 
             color: var(--text);
+
             font-family:
                 Inter,
                 ui-sans-serif,
@@ -71,6 +79,7 @@
             padding: 20px 14px 40px;
         }
 
+
         /* =========================
            CONTAINER
         ========================= */
@@ -80,6 +89,7 @@
             max-width: 850px;
             margin: 0 auto;
         }
+
 
         /* =========================
            HEADER
@@ -98,7 +108,9 @@
         .brand-area {
             display: flex;
             align-items: center;
+
             gap: 13px;
+
             min-width: 0;
         }
 
@@ -121,7 +133,8 @@
                     #1d4ed8
                 );
 
-            border: 1px solid rgba(255,255,255,0.12);
+            border:
+                1px solid rgba(255,255,255,0.12);
 
             box-shadow:
                 0 10px 30px rgba(37,99,235,0.25);
@@ -139,6 +152,7 @@
 
             font-size: 20px;
             font-weight: 800;
+
             letter-spacing: -0.4px;
 
             color: #ffffff;
@@ -148,8 +162,10 @@
             margin-top: 2px;
 
             font-size: 12px;
+
             color: var(--muted);
         }
+
 
         /* =========================
            CARD
@@ -165,7 +181,8 @@
                     rgba(15, 23, 42, 0.95)
                 );
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
             border-radius: 20px;
 
@@ -199,6 +216,7 @@
                 );
         }
 
+
         /* =========================
            LOGIN
         ========================= */
@@ -209,6 +227,7 @@
 
         .login-card {
             max-width: 480px;
+
             margin: 0 auto;
 
             padding: 28px 22px 22px;
@@ -258,6 +277,7 @@
 
             color: var(--muted);
         }
+
 
         /* =========================
            INPUT
@@ -311,19 +331,11 @@
             color: #ffffff !important;
 
             outline: none;
-
-            transition:
-                border 0.2s ease,
-                box-shadow 0.2s ease,
-                background 0.2s ease;
         }
 
         #adminPassword:focus {
             border-color:
                 rgba(59, 130, 246, 0.75) !important;
-
-            background:
-                rgba(2, 6, 23, 0.85) !important;
 
             box-shadow:
                 0 0 0 4px
@@ -333,6 +345,7 @@
         #adminPassword::placeholder {
             color: #64748b;
         }
+
 
         /* =========================
            BUTTON
@@ -362,20 +375,12 @@
                 transform 0.18s ease,
                 box-shadow 0.18s ease,
                 filter 0.18s ease;
-
-            box-shadow:
-                0 8px 22px
-                rgba(37, 99, 235, 0.22);
         }
 
         .btn-primary:hover {
             filter: brightness(1.08);
 
             transform: translateY(-1px);
-
-            box-shadow:
-                0 12px 28px
-                rgba(37, 99, 235, 0.30);
         }
 
         .btn-primary:active {
@@ -394,6 +399,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
             gap: 9px;
         }
 
@@ -404,10 +410,6 @@
                     var(--green),
                     var(--green-dark)
                 ) !important;
-
-            box-shadow:
-                0 6px 18px
-                rgba(34,197,94,0.18);
         }
 
         .btn-danger {
@@ -417,16 +419,13 @@
                     var(--red),
                     var(--red-dark)
                 ) !important;
-
-            box-shadow:
-                0 6px 18px
-                rgba(239,68,68,0.18);
         }
 
         .btn-outline {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             gap: 7px;
 
             min-height: 38px;
@@ -447,25 +446,11 @@
             font-weight: 700;
 
             cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border 0.2s ease,
-                color 0.2s ease;
         }
 
-        .btn-outline:hover {
-            background:
-                rgba(30,41,59,0.9);
-
-            border-color:
-                rgba(148,163,184,0.35);
-
-            color: #ffffff;
-        }
 
         /* =========================
-           DASHBOARD HERO
+           DASHBOARD
         ========================= */
 
         .dashboard-hero {
@@ -483,16 +468,16 @@
 
             font-size: 21px;
             font-weight: 800;
-
-            letter-spacing: -0.3px;
         }
 
         .dashboard-desc {
             margin-top: 4px;
 
             font-size: 12px;
+
             color: var(--muted);
         }
+
 
         /* =========================
            STATUS BAR
@@ -504,12 +489,6 @@
             align-items: center;
 
             gap: 12px;
-
-            margin-bottom: 12px;
-        }
-
-        .section-info {
-            min-width: 0;
         }
 
         .section-title {
@@ -525,12 +504,14 @@
             margin-top: 3px;
 
             font-size: 11px;
+
             color: var(--muted);
         }
 
         .pending-counter {
             display: inline-flex;
             align-items: center;
+
             gap: 7px;
 
             padding: 7px 10px;
@@ -556,36 +537,12 @@
             border-radius: 50%;
 
             background: #fbbf24;
-
-            box-shadow:
-                0 0 10px
-                rgba(251,191,36,0.7);
         }
+
 
         /* =========================
-           ORDER CARD
+           ORDER
         ========================= */
-
-        #orderList .card {
-            padding: 17px;
-
-            transition:
-                border 0.2s ease,
-                transform 0.2s ease,
-                background 0.2s ease;
-        }
-
-        #orderList .card:hover {
-            border-color:
-                rgba(59,130,246,0.28);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(30,41,59,0.98),
-                    rgba(15,23,42,0.98)
-                );
-        }
 
         .flex-between {
             display: flex;
@@ -637,39 +594,45 @@
             font-weight: 800;
         }
 
-        /* =========================
-           RESPONSIVE ORDER BUTTON
-        ========================= */
-
         #orderList .flex.gap-2 {
             display: flex;
             gap: 8px;
         }
 
-        #orderList button.btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-
-            min-height: 34px;
-
-            border-radius: 9px;
-
-            font-weight: 700;
-        }
 
         /* =========================
-           EMPTY STATE
+           MOBILE
         ========================= */
 
-        #orderList .text-center {
-            padding: 35px 20px;
+        @media (max-width: 600px) {
+
+            body {
+                padding: 14px 11px 30px;
+            }
+
+            .brand-icon {
+                width: 43px;
+                height: 43px;
+            }
+
+            .brand-title {
+                font-size: 18px;
+            }
+
+            .card {
+                border-radius: 17px;
+                padding: 15px;
+            }
+
+            #orderList .flex.gap-2 {
+                width: 100%;
+            }
+
+            #orderList .flex.gap-2 button {
+                flex: 1;
+            }
+
         }
-
-        /* =========================
-           FOOTER
-        ========================= */
 
         .footer-note {
             margin-top: 24px;
@@ -681,64 +644,16 @@
             color: #475569;
         }
 
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 600px) {
-
-            body {
-                padding:
-                    14px
-                    11px
-                    30px;
-            }
-
-            .top-header {
-                padding-bottom: 18px;
-            }
-
-            .brand-icon {
-                width: 43px;
-                height: 43px;
-
-                border-radius: 14px;
-            }
-
-            .brand-title {
-                font-size: 18px;
-            }
-
-            .card {
-                border-radius: 17px;
-
-                padding: 15px;
-            }
-
-            .dashboard-hero {
-                align-items: flex-start;
-            }
-
-            #orderList .card .flex-between {
-                align-items: flex-start;
-            }
-
-            #orderList .flex.gap-2 {
-                width: 100%;
-            }
-
-            #orderList .flex.gap-2 button {
-                flex: 1;
-            }
-        }
     </style>
 </head>
 
 <body>
 
+
 <div class="app-container">
 
-    <!-- ================= HEADER ================= -->
+
+    <!-- HEADER -->
 
     <header class="top-header">
 
@@ -749,17 +664,25 @@
             </div>
 
             <div class="brand-text">
-                <h1 class="brand-title">RIKY COIN</h1>
+
+                <h1 class="brand-title">
+                    RIKY COIN
+                </h1>
+
                 <div class="brand-subtitle">
                     Admin Management Panel
                 </div>
+
             </div>
 
         </div>
 
+
         <button
+            id="logoutBtn"
             class="btn-outline"
             onclick="logoutAdmin()"
+            style="display:none;"
         >
             <i class="fas fa-right-from-bracket"></i>
             Logout
@@ -768,7 +691,7 @@
     </header>
 
 
-    <!-- ================= LOGIN ================= -->
+    <!-- LOGIN -->
 
     <div id="adminLogin" class="login-wrapper">
 
@@ -786,9 +709,11 @@
                 Masukkan password administrator untuk membuka panel pengelolaan pesanan dan RIKY COIN.
             </p>
 
+
             <label class="input-label">
                 Password Admin
             </label>
+
 
             <div class="input-wrapper">
 
@@ -798,9 +723,11 @@
                     type="password"
                     id="adminPassword"
                     placeholder="Masukkan password admin"
+                    autocomplete="current-password"
                 >
 
             </div>
+
 
             <button
                 class="btn-primary login-button"
@@ -810,18 +737,18 @@
                 Masuk ke Dashboard
             </button>
 
-            <p class="text-xs text-muted mt-4 text-center">
-                Gunakan akses administrator yang telah ditentukan.
-            </p>
-
         </div>
 
     </div>
 
 
-    <!-- ================= DASHBOARD ================= -->
 
-    <div id="adminDashboard" style="display:none;">
+    <!-- DASHBOARD -->
+
+    <div
+        id="adminDashboard"
+        style="display:none;"
+    >
 
         <div class="card">
 
@@ -839,6 +766,7 @@
 
                 </div>
 
+
                 <button
                     class="btn-outline"
                     onclick="refreshOrders()"
@@ -849,23 +777,30 @@
 
             </div>
 
+
             <div class="section-bar">
 
-                <div class="section-info">
+                <div>
 
                     <h3 class="section-title">
                         Pesanan Menunggu Verifikasi
                     </h3>
 
                     <div class="section-desc">
-                        Pastikan pesanan diperiksa sebelum memberikan reward coin.
+                        Pesanan dari website utama yang tersimpan di Firestore.
                     </div>
 
                 </div>
 
+
                 <div class="pending-counter">
+
                     <span class="pending-dot"></span>
-                    Pending
+
+                    <span id="pendingCount">
+                        0 Pending
+                    </span>
+
                 </div>
 
             </div>
@@ -874,6 +809,7 @@
 
 
         <!-- LIST ORDER -->
+
         <div id="orderList"></div>
 
     </div>
@@ -883,155 +819,335 @@
         RIKY STORE • ADMIN MANAGEMENT
     </div>
 
+
 </div>
+
 
 
 <!-- ================= FIREBASE ================= -->
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 
+
 <script>
-// ===== FIREBASE =====
+
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
 const firebaseConfig = {
+
     apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
+
     authDomain: "riky-store-push.firebaseapp.com",
+
     projectId: "riky-store-push",
+
     storageBucket: "riky-store-push.firebasestorage.app",
+
     messagingSenderId: "700709840952",
+
     appId: "1:700709840952:web:d2efb042652f931d269ecd"
+
 };
-firebase.initializeApp(firebaseConfig);
+
+
+// INISIALISASI FIREBASE
+
+if (!firebase.apps.length) {
+
+    firebase.initializeApp(firebaseConfig);
+
+}
+
+
 const db = firebase.firestore();
 
-// ===== STATE =====
+
+
+// =====================================================
+// STATE
+// =====================================================
+
 let orders = [];
-let users = [];
 
-// ===== AMBIL USER DARI LOCALSTORAGE (fallback) =====
-function getLocalUsers() {
-    return JSON.parse(localStorage.getItem('rikyUsers')) || [];
-}
 
-// ===== FIND USER (LOCALSTORAGE DAHULU, LALU FIRESTORE) =====
-function findUser(username) {
-    // Cari di localStorage
-    const localUsers = getLocalUsers();
-    let user = localUsers.find(u => u.username === username);
-    if (user) return user;
 
-    // Cari di Firestore (dari array users yang sudah di-fetch)
-    user = users.find(u => u.username === username);
-    if (user) return user;
+// =====================================================
+// FETCH DATA DARI FIRESTORE
+// =====================================================
 
-    return null;
-}
-
-// ===== SYNC USER KE FIRESTORE (jika perlu) =====
-async function syncUserToFirestore(userData) {
-    if (!userData || !userData.username) return;
-    try {
-        await db.collection('users').doc(userData.username).set({
-            nama: userData.nama || '',
-            email: userData.email || '',
-            whatsapp: userData.whatsapp || '',
-            password: userData.password || '',
-            foto: userData.foto || null,
-            voucherUsed: userData.voucherUsed || false,
-            role: userData.role || 'customer',
-            resellerStatus: userData.resellerStatus || 'none',
-            namaToko: userData.namaToko || '',
-            coinBalance: userData.coinBalance || 0,
-            coinHistory: userData.coinHistory || [],
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-        console.log('✅ User synced to Firestore:', userData.username);
-    } catch (e) {
-        console.error('❌ Gagal sync:', e);
-    }
-}
-
-// ===== FETCH DATA =====
 async function fetchData() {
+
     try {
-        // Ambil dari Firestore
-        const userSnap = await db.collection('users').get();
-        users = [];
-        userSnap.forEach(doc => {
-            users.push({ username: doc.id, ...doc.data() });
+
+        const snapshot = await db
+            .collection('orders')
+            .where('status', '==', 'pending')
+            .get();
+
+
+        orders = [];
+
+
+        snapshot.forEach(doc => {
+
+            const data = doc.data();
+
+
+            orders.push({
+
+                firestoreId: doc.id,
+
+                ...data
+
+            });
+
         });
 
-        // Ambil order dari localStorage
-        const history = JSON.parse(localStorage.getItem('rikyHistory')) || [];
-        orders = history.filter(o => o.status === 'pending' || !o.status);
-        orders = orders.map(o => {
-            if (!o.status) o.status = 'pending';
-            if (o.coinRewarded === undefined) o.coinRewarded = false;
-            return o;
+
+        // URUTKAN ORDER TERBARU
+
+        orders.sort((a, b) => {
+
+            return Number(b.id || 0) - Number(a.id || 0);
+
         });
+
+
+        console.log(
+            '✅ Order pending:',
+            orders.length
+        );
+
+
         return true;
-    } catch (e) {
-        console.error('❌ Gagal fetch data:', e);
+
+
+    } catch (error) {
+
+        console.error(
+            '❌ Gagal mengambil order:',
+            error
+        );
+
+
+        Swal.fire({
+
+            icon: 'error',
+
+            title: 'Gagal Memuat Data',
+
+            text: error.message
+
+        });
+
+
         return false;
+
     }
+
 }
 
-// ===== RENDER ORDERS =====
+
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHtml(text) {
+
+    if (text === undefined || text === null) {
+
+        return '';
+
+    }
+
+
+    const div = document.createElement('div');
+
+    div.textContent = String(text);
+
+    return div.innerHTML;
+
+}
+
+
+
+// =====================================================
+// RENDER ORDERS
+// =====================================================
+
 function renderOrders() {
-    const container = document.getElementById('orderList');
+
+    const container =
+        document.getElementById('orderList');
+
+
+    const pendingCount =
+        document.getElementById('pendingCount');
+
+
+    pendingCount.textContent =
+        `${orders.length} Pending`;
+
+
+
+    // ==========================================
+    // EMPTY STATE
+    // ==========================================
 
     if (!orders.length) {
+
         container.innerHTML = `
-            <div class="card text-center text-muted">
-                <div style="font-size:28px;margin-bottom:10px;">
+
+            <div
+                class="card text-center text-muted"
+                style="padding:40px 20px;"
+            >
+
+                <div
+                    style="
+                        font-size:30px;
+                        margin-bottom:12px;
+                        color:#22c55e;
+                    "
+                >
                     <i class="fas fa-circle-check"></i>
-                </div>
-                <div style="font-weight:700;color:#cbd5e1;margin-bottom:4px;">
-                    Tidak Ada Pesanan Pending
-                </div>
-                <div style="font-size:12px;">
-                    Semua pesanan yang perlu diverifikasi akan muncul di halaman ini.
-                </div>
-            </div>
-        `;
-        return;
-    }
-
-    let html = '';
-
-    orders.forEach((o, idx) => {
-
-        const items = o.items.map(i =>
-            `${i.nama} x${i.qty||1}`
-        ).join(', ');
-
-        const reward = Math.floor(o.total / 1000);
-
-        html += `
-            <div class="card" data-index="${idx}">
-
-                <div class="flex-between">
-
-                    <div>
-                        <span class="order-id">
-                            #${o.id}
-                        </span>
-
-                        <span class="badge-pending">
-                            PENDING
-                        </span>
-                    </div>
-
-                    <span class="text-sm text-muted">
-                        ${o.tanggal}
-                    </span>
-
                 </div>
 
 
                 <div
+                    style="
+                        font-weight:700;
+                        color:#e2e8f0;
+                        margin-bottom:5px;
+                    "
+                >
+                    Tidak Ada Pesanan Pending
+                </div>
+
+
+                <div style="font-size:12px;">
+
+                    Semua pesanan yang perlu
+                    diverifikasi akan muncul di sini.
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    let html = '';
+
+
+
+    // ==========================================
+    // LOOP ORDER
+    // ==========================================
+
+    orders.forEach((order, index) => {
+
+
+        const items =
+            Array.isArray(order.items)
+
+            ? order.items.map(item => {
+
+                return `
+
+                    <div style="margin-bottom:5px;">
+
+                        <strong>
+                            ${escapeHtml(item.nama)}
+                        </strong>
+
+                        <span style="color:#94a3b8;">
+                            x${Number(item.qty || 1)}
+                        </span>
+
+                    </div>
+
+                `;
+
+            }).join('')
+
+            : '<span class="text-muted">Data item tidak tersedia</span>';
+
+
+
+        // ======================================
+        // REWARD COIN
+        // 1.000 RUPIAH = 1 COIN
+        // ======================================
+
+        const reward =
+            Math.floor(
+                Number(order.total || 0) / 1000
+            );
+
+
+
+        html += `
+
+            <div
+                class="card"
+                data-index="${index}"
+            >
+
+
+                <!-- HEADER ORDER -->
+
+                <div class="flex-between">
+
+
+                    <div>
+
+                        <span class="order-id">
+
+                            #${escapeHtml(order.id)}
+
+                        </span>
+
+
+                        <span class="badge-pending">
+
+                            PENDING
+
+                        </span>
+
+                    </div>
+
+
+                    <span
+                        class="text-sm text-muted"
+                    >
+
+                        ${escapeHtml(order.tanggal || '-')}
+
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- ITEM -->
+
+                <div
                     class="text-sm mt-3"
+
                     style="
                         padding:12px;
                         background:rgba(2,6,23,0.32);
@@ -1041,41 +1157,76 @@ function renderOrders() {
                         line-height:1.6;
                     "
                 >
+
                     ${items}
+
                 </div>
 
 
+
+                <!-- TOTAL -->
+
                 <div
                     class="flex-between mt-3"
+
                     style="
                         padding-top:12px;
-                        border-top:1px solid rgba(148,163,184,0.10);
+                        border-top:
+                            1px solid rgba(148,163,184,0.10);
                     "
                 >
 
+
                     <div>
+
 
                         <div style="font-size:13px;">
 
                             <span class="text-muted">
+
                                 Total Pembayaran:
+
                             </span>
+
 
                             <span class="font-bold">
-                                Rp${o.total.toLocaleString()}
+
+                                Rp${Number(
+                                    order.total || 0
+                                ).toLocaleString('id-ID')}
+
                             </span>
 
+
                             ${
-                                o.coinUsed > 0
+
+                                Number(order.coinUsed || 0) > 0
+
                                 ?
-                                `<span class="text-xs text-muted ml-2">
-                                    (Coin: ${o.coinUsed})
-                                </span>`
+
+                                `
+
+                                <span
+                                    class="text-xs text-muted"
+                                    style="margin-left:5px;"
+                                >
+
+                                    Coin digunakan:
+                                    ${Number(order.coinUsed)}
+
+                                </span>
+
+                                `
+
                                 :
+
                                 ''
+
                             }
 
+
                         </div>
+
 
 
                         <div
@@ -1086,266 +1237,993 @@ function renderOrders() {
                             Reward Coin:
 
                             <span class="coin-amount">
+
                                 ${reward} Coin
+
                             </span>
 
                         </div>
 
+
                     </div>
 
 
-                    <div class="flex gap-2 flex-wrap">
+
+                    <!-- BUTTON -->
+
+                    <div
+                        class="flex gap-2 flex-wrap"
+                    >
+
 
                         <button
-                            class="btn-primary btn-success text-xs px-3 py-1"
-                            onclick="verifyOrder(${idx}, true)"
+
+                            class="
+                                btn-primary
+                                btn-success
+                                text-xs
+                                px-3
+                                py-2
+                            "
+
+                            onclick="verifyOrder(${index}, true)"
+
                         >
+
                             <i class="fas fa-check"></i>
+
                             Berhasil
+
                         </button>
+
 
 
                         <button
-                            class="btn-primary btn-danger text-xs px-3 py-1"
-                            onclick="verifyOrder(${idx}, false)"
+
+                            class="
+                                btn-primary
+                                btn-danger
+                                text-xs
+                                px-3
+                                py-2
+                            "
+
+                            onclick="verifyOrder(${index}, false)"
+
                         >
+
                             <i class="fas fa-xmark"></i>
+
                             Tolak
+
                         </button>
 
+
                     </div>
+
 
                 </div>
 
 
+
+                <!-- BUYER -->
+
                 <div
+
                     class="text-xs text-muted"
+
                     style="
                         margin-top:13px;
                         padding-top:11px;
-                        border-top:1px solid rgba(148,163,184,0.08);
+                        border-top:
+                            1px solid rgba(148,163,184,0.08);
+                        line-height:1.8;
                     "
+
                 >
-                    <i
-                        class="fas fa-user"
-                        style="margin-right:6px;"
-                    ></i>
 
-                    Pembeli:
-                    <strong style="color:#cbd5e1;">
-                        @${o.username}
-                    </strong>
+                    <div>
 
-                    <span style="margin:0 5px;color:#475569;">•</span>
+                        <i
+                            class="fas fa-user"
+                            style="margin-right:6px;"
+                        ></i>
 
-                    WA:
-                    ${o.buyerWa || '-'}
+
+                        Pembeli:
+
+                        <strong
+                            style="color:#cbd5e1;"
+                        >
+
+                            @${escapeHtml(order.username || '-')}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <i
+                            class="fas fa-phone"
+                            style="margin-right:6px;"
+                        ></i>
+
+
+                        WA:
+
+                        ${escapeHtml(order.buyerWa || '-')}
+
+                    </div>
+
+
+                    ${
+
+                        order.note
+
+                        ?
+
+                        `
+
+                        <div>
+
+                            <i
+                                class="fas fa-note-sticky"
+                                style="margin-right:6px;"
+                            ></i>
+
+
+                            Catatan:
+
+                            ${escapeHtml(order.note)}
+
+                        </div>
+
+                        `
+
+                        :
+
+                        ''
+
+                    }
+
+
                 </div>
 
+
             </div>
+
         `;
+
     });
+
+
 
     container.innerHTML = html;
+
 }
 
-// ===== VERIFY ORDER =====
+
+
+// =====================================================
+// VERIFY ORDER
+// =====================================================
+
 async function verifyOrder(index, isSuccess) {
-    const order = orders[index];
+
+
+    const order =
+        orders[index];
+
+
     if (!order) return;
 
-    if (order.coinRewarded === true) {
-        Swal.fire('Info', 'Pesanan ini sudah pernah diverifikasi.', 'info');
-        return;
-    }
 
-    // Cari user (localStorage dulu, baru Firestore)
-    let user = findUser(order.username);
-    if (!user) {
-        Swal.fire('Error', `User @${order.username} tidak ditemukan. Pastikan user sudah login minimal sekali.`, 'error');
-        return;
-    }
 
-    // Konfirmasi
-    const label = isSuccess ? 'Berhasil' : 'Tolak';
+    // ==========================================
+    // CEK STATUS TERBARU DARI FIRESTORE
+    // ==========================================
 
-    const result = await Swal.fire({
-        title: `Verifikasi #${order.id}`,
-        text: `Anda yakin menandai sebagai "${label}"?`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: `Ya, ${label}`,
-        cancelButtonText: 'Batal'
-    });
+    try {
 
-    if (!result.isConfirmed) return;
+        const latestDoc =
+            await db
+                .collection('orders')
+                .doc(order.firestoreId)
+                .get();
 
-    if (isSuccess) {
 
-        const reward = Math.floor(order.total / 1000);
+        if (!latestDoc.exists) {
 
-        if (reward > 0) {
-
-            // Update coin di user
-            const newBalance = (user.coinBalance || 0) + reward;
-
-            const newHistory = user.coinHistory || [];
-
-            newHistory.unshift({
-                type: 'reward',
-                amount: reward,
-                reason: `Reward dari pesanan #${order.id}`,
-                orderId: order.id,
-                date: new Date().toLocaleString('id-ID')
-            });
-
-            // Update di localStorage
-            const localUsers = getLocalUsers();
-
-            const idxLocal = localUsers.findIndex(
-                u => u.username === user.username
+            Swal.fire(
+                'Error',
+                'Pesanan sudah tidak ditemukan.',
+                'error'
             );
 
-            if (idxLocal !== -1) {
+            refreshOrders();
 
-                localUsers[idxLocal].coinBalance = newBalance;
-                localUsers[idxLocal].coinHistory = newHistory;
+            return;
 
-                localStorage.setItem(
-                    'rikyUsers',
-                    JSON.stringify(localUsers)
-                );
-            }
-
-            // Update di Firestore
-            await syncUserToFirestore({
-                username: user.username,
-                nama: user.nama,
-                email: user.email,
-                whatsapp: user.whatsapp,
-                foto: user.foto,
-                role: user.role,
-                resellerStatus: user.resellerStatus,
-                namaToko: user.namaToko,
-                coinBalance: newBalance,
-                coinHistory: newHistory
-            });
-
-            order.status = 'success';
-            order.coinRewarded = true;
-
-            Swal.fire({
-                toast:true,
-                position:'top-end',
-                icon:'success',
-                title:`✅ +${reward} Coin untuk @${user.username}`,
-                showConfirmButton:false,
-                timer:3000
-            });
-
-        } else {
-
-            order.status = 'success';
-            order.coinRewarded = true;
-
-            Swal.fire({
-                toast:true,
-                position:'top-end',
-                icon:'info',
-                title:`✅ Pesanan #${order.id} berhasil (0 Coin)`,
-                showConfirmButton:false,
-                timer:3000
-            });
         }
 
-    } else {
 
-        order.status = 'rejected';
-        order.coinRewarded = false;
+        const latestOrder =
+            latestDoc.data();
 
-        Swal.fire({
-            toast:true,
-            position:'top-end',
-            icon:'error',
-            title:`❌ Pesanan #${order.id} ditolak.`,
-            showConfirmButton:false,
-            timer:3000
-        });
-    }
 
-    // Simpan order ke localStorage
-    const history =
-        JSON.parse(localStorage.getItem('rikyHistory')) || [];
+        if (
+            latestOrder.status !== 'pending'
+        ) {
 
-    const idxHist =
-        history.findIndex(h => h.id === order.id);
+            Swal.fire(
+                'Info',
+                'Pesanan ini sudah diverifikasi sebelumnya.',
+                'info'
+            );
 
-    if (idxHist !== -1)
-        history[idxHist] = order;
-    else
-        history.push(order);
+            refreshOrders();
 
-    localStorage.setItem(
-        'rikyHistory',
-        JSON.stringify(history)
-    );
+            return;
 
-    // Refresh tampilan
-    await fetchData();
-    renderOrders();
-}
+        }
 
-// ===== REFRESH =====
-async function refreshOrders() {
-    await fetchData();
-    renderOrders();
-}
 
-// ===== ADMIN LOGIN =====
-function adminLogin() {
-
-    const pass =
-        document.getElementById('adminPassword').value;
-
-    if (pass === '1') {
-
-        document.getElementById('adminLogin').style.display = 'none';
-
-        document.getElementById('adminDashboard').style.display = 'block';
-
-        localStorage.setItem('adminSession', 'true');
-
-        refreshOrders();
-
-    } else {
+    } catch (error) {
 
         Swal.fire(
             'Error',
-            'Password salah!',
+            'Gagal mengecek status pesanan.',
             'error'
         );
+
+        return;
+
     }
+
+
+
+    const label =
+        isSuccess
+            ? 'Berhasil'
+            : 'Tolak';
+
+
+
+    // ==========================================
+    // KONFIRMASI ADMIN
+    // ==========================================
+
+    const result =
+        await Swal.fire({
+
+            title:
+                `Verifikasi #${order.id}`,
+
+            text:
+                isSuccess
+
+                ?
+
+                'Pesanan akan ditandai berhasil dan reward coin akan diberikan.'
+
+                :
+
+                'Pesanan akan ditolak.',
+
+            icon:
+                'question',
+
+            showCancelButton: true,
+
+            confirmButtonText:
+                `Ya, ${label}`,
+
+            cancelButtonText:
+                'Batal',
+
+            reverseButtons: true
+
+        });
+
+
+    if (!result.isConfirmed) return;
+
+
+
+    // ==========================================
+    // ORDER BERHASIL
+    // ==========================================
+
+    if (isSuccess) {
+
+
+        try {
+
+
+            // ==================================
+            // REWARD
+            // ==================================
+
+            const reward =
+                Math.floor(
+                    Number(order.total || 0) / 1000
+                );
+
+
+
+            // ==================================
+            // REFERENSI USER
+            // ==================================
+
+            const userRef =
+                db
+                .collection('users')
+                .doc(order.username);
+
+
+
+            const orderRef =
+                db
+                .collection('orders')
+                .doc(order.firestoreId);
+
+
+
+            // ==================================
+            // TRANSACTION
+            // AGAR COIN TIDAK MASUK 2 KALI
+            // ==================================
+
+            await db.runTransaction(
+                async transaction => {
+
+
+                    const orderDoc =
+                        await transaction.get(
+                            orderRef
+                        );
+
+
+                    if (!orderDoc.exists) {
+
+                        throw new Error(
+                            'ORDER_NOT_FOUND'
+                        );
+
+                    }
+
+
+                    const currentOrder =
+                        orderDoc.data();
+
+
+                    if (
+                        currentOrder.status !==
+                        'pending'
+                    ) {
+
+                        throw new Error(
+                            'ORDER_ALREADY_VERIFIED'
+                        );
+
+                    }
+
+
+
+                    const userDoc =
+                        await transaction.get(
+                            userRef
+                        );
+
+
+                    // ==========================
+                    // USER HARUS ADA
+                    // ==========================
+
+                    if (!userDoc.exists) {
+
+                        throw new Error(
+                            'USER_NOT_FOUND'
+                        );
+
+                    }
+
+
+
+                    const userData =
+                        userDoc.data();
+
+
+
+                    const oldBalance =
+                        Number(
+                            userData.coinBalance || 0
+                        );
+
+
+
+                    const newBalance =
+                        oldBalance + reward;
+
+
+
+                    const oldHistory =
+                        Array.isArray(
+                            userData.coinHistory
+                        )
+
+                        ?
+
+                        userData.coinHistory
+
+                        :
+
+                        [];
+
+
+
+                    const newHistory = [
+
+                        {
+
+                            type: 'reward',
+
+                            amount: reward,
+
+                            reason:
+                                `Reward dari pesanan #${order.id}`,
+
+                            orderId:
+                                order.id,
+
+                            date:
+                                new Date()
+                                .toLocaleString(
+                                    'id-ID'
+                                )
+
+                        },
+
+                        ...oldHistory
+
+                    ];
+
+
+
+                    // ==========================
+                    // UPDATE USER
+                    // ==========================
+
+                    transaction.update(
+
+                        userRef,
+
+                        {
+
+                            coinBalance:
+                                newBalance,
+
+                            coinHistory:
+                                newHistory,
+
+                            updatedAt:
+                                firebase.firestore
+                                .FieldValue
+                                .serverTimestamp()
+
+                        }
+
+                    );
+
+
+
+                    // ==========================
+                    // UPDATE ORDER
+                    // ==========================
+
+                    transaction.update(
+
+                        orderRef,
+
+                        {
+
+                            status:
+                                'success',
+
+                            coinRewarded:
+                                true,
+
+                            rewardCoin:
+                                reward,
+
+                            verifiedAt:
+                                firebase.firestore
+                                .FieldValue
+                                .serverTimestamp(),
+
+                            verifiedBy:
+                                'admin'
+
+                        }
+
+                    );
+
+
+                }
+            );
+
+
+
+            // ==================================
+            // SUCCESS
+            // ==================================
+
+            await Swal.fire({
+
+                toast: true,
+
+                position: 'top-end',
+
+                icon: 'success',
+
+                title:
+
+                    reward > 0
+
+                    ?
+
+                    `+${reward} Coin berhasil diberikan`
+
+                    :
+
+                    `Pesanan berhasil diverifikasi`,
+
+                showConfirmButton: false,
+
+                timer: 3000,
+
+                timerProgressBar: true
+
+            });
+
+
+            await refreshOrders();
+
+
+
+        } catch (error) {
+
+
+            console.error(
+                'VERIFY ERROR:',
+                error
+            );
+
+
+
+            let message =
+                'Terjadi kesalahan saat memverifikasi pesanan.';
+
+
+
+            if (
+                error.message ===
+                'USER_NOT_FOUND'
+            ) {
+
+                message =
+                    `User @${order.username} belum ditemukan di Firestore.`;
+
+            }
+
+
+            else if (
+                error.message ===
+                'ORDER_ALREADY_VERIFIED'
+            ) {
+
+                message =
+                    'Pesanan ini sudah diverifikasi sebelumnya.';
+
+            }
+
+
+            else if (
+                error.message ===
+                'ORDER_NOT_FOUND'
+            ) {
+
+                message =
+                    'Pesanan tidak ditemukan.';
+
+            }
+
+
+
+            Swal.fire(
+
+                'Error',
+
+                message,
+
+                'error'
+
+            );
+
+
+        }
+
+
+
+    }
+
+
+
+    // ==========================================
+    // ORDER DITOLAK
+    // ==========================================
+
+    else {
+
+
+        try {
+
+
+            const orderRef =
+                db
+                .collection('orders')
+                .doc(order.firestoreId);
+
+
+
+            await db.runTransaction(
+                async transaction => {
+
+
+                    const orderDoc =
+                        await transaction.get(
+                            orderRef
+                        );
+
+
+                    if (!orderDoc.exists) {
+
+                        throw new Error(
+                            'ORDER_NOT_FOUND'
+                        );
+
+                    }
+
+
+                    const currentOrder =
+                        orderDoc.data();
+
+
+
+                    if (
+                        currentOrder.status !==
+                        'pending'
+                    ) {
+
+                        throw new Error(
+                            'ORDER_ALREADY_VERIFIED'
+                        );
+
+                    }
+
+
+
+                    transaction.update(
+
+                        orderRef,
+
+                        {
+
+                            status:
+                                'rejected',
+
+                            coinRewarded:
+                                false,
+
+                            rejectedAt:
+                                firebase.firestore
+                                .FieldValue
+                                .serverTimestamp(),
+
+                            rejectedBy:
+                                'admin'
+
+                        }
+
+                    );
+
+
+                }
+            );
+
+
+
+            await Swal.fire({
+
+                toast: true,
+
+                position: 'top-end',
+
+                icon: 'error',
+
+                title:
+                    `Pesanan #${order.id} ditolak`,
+
+                showConfirmButton: false,
+
+                timer: 3000
+
+            });
+
+
+
+            await refreshOrders();
+
+
+
+        } catch (error) {
+
+
+            console.error(
+                'REJECT ERROR:',
+                error
+            );
+
+
+            Swal.fire(
+
+                'Error',
+
+                'Gagal menolak pesanan.',
+
+                'error'
+
+            );
+
+
+        }
+
+
+    }
+
+
 }
+
+
+
+// =====================================================
+// REFRESH
+// =====================================================
+
+async function refreshOrders() {
+
+    const container =
+        document.getElementById('orderList');
+
+
+    container.innerHTML = `
+
+        <div
+            class="card text-center text-muted"
+        >
+
+            <i
+                class="fas fa-spinner fa-spin"
+                style="font-size:22px;"
+            ></i>
+
+            <div
+                style="margin-top:10px;"
+            >
+                Memuat pesanan...
+            </div>
+
+        </div>
+
+    `;
+
+
+    const success =
+        await fetchData();
+
+
+    if (success) {
+
+        renderOrders();
+
+    }
+
+}
+
+
+
+// =====================================================
+// ADMIN LOGIN
+// =====================================================
+
+function adminLogin() {
+
+
+    const pass =
+        document
+        .getElementById('adminPassword')
+        .value
+        .trim();
+
+
+
+    // ==========================================
+    // PASSWORD ADMIN
+    // ==========================================
+
+    if (pass === '1') {
+
+
+        localStorage.setItem(
+
+            'adminSession',
+
+            'true'
+
+        );
+
+
+
+        showAdminDashboard();
+
+
+    }
+
+
+    else {
+
+
+        Swal.fire(
+
+            'Password Salah',
+
+            'Password administrator tidak sesuai.',
+
+            'error'
+
+        );
+
+
+    }
+
+
+}
+
+
+
+// =====================================================
+// TAMPILKAN DASHBOARD
+// =====================================================
+
+function showAdminDashboard() {
+
+
+    document
+        .getElementById('adminLogin')
+        .style
+        .display = 'none';
+
+
+
+    document
+        .getElementById('adminDashboard')
+        .style
+        .display = 'block';
+
+
+
+    document
+        .getElementById('logoutBtn')
+        .style
+        .display = 'inline-flex';
+
+
+
+    refreshOrders();
+
+
+}
+
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
 
 function logoutAdmin() {
 
-    localStorage.removeItem('adminSession');
 
-    document.getElementById('adminLogin').style.display = 'block';
+    localStorage.removeItem(
+        'adminSession'
+    );
 
-    document.getElementById('adminDashboard').style.display = 'none';
+
+
+    document
+        .getElementById('adminLogin')
+        .style
+        .display = 'block';
+
+
+
+    document
+        .getElementById('adminDashboard')
+        .style
+        .display = 'none';
+
+
+
+    document
+        .getElementById('logoutBtn')
+        .style
+        .display = 'none';
+
+
+
+    document
+        .getElementById('adminPassword')
+        .value = '';
+
+
 }
 
-// ===== AUTO LOGIN =====
-if (localStorage.getItem('adminSession') === 'true') {
 
-    document.getElementById('adminLogin').style.display = 'none';
 
-    document.getElementById('adminDashboard').style.display = 'block';
+// =====================================================
+// ENTER UNTUK LOGIN
+// =====================================================
 
-    refreshOrders();
+document
+.getElementById('adminPassword')
+.addEventListener(
+
+    'keydown',
+
+    function(event) {
+
+        if (event.key === 'Enter') {
+
+            adminLogin();
+
+        }
+
+    }
+
+);
+
+
+
+// =====================================================
+// AUTO LOGIN
+// =====================================================
+
+if (
+
+    localStorage.getItem(
+        'adminSession'
+    ) === 'true'
+
+) {
+
+    showAdminDashboard();
+
 }
+
+
 </script>
+
 
 </body>
 </html>
