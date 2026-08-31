@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -996,13 +995,13 @@
 .coin-amount-control {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     margin-top: 10px;
     flex-wrap: wrap;
 }
 .coin-amount-control button {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     border: 1.5px solid var(--border);
     background: var(--surface);
@@ -1013,7 +1012,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
     flex-shrink: 0;
 }
 .coin-amount-control button:hover {
@@ -1038,14 +1036,13 @@
 }
 .coin-max-btn {
     font-size: 11px;
-    padding: 6px 14px;
+    padding: 8px 16px;
     border-radius: 9999px;
     background: var(--primary);
     color: white;
     border: none;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.2s;
     flex-shrink: 0;
 }
 .coin-max-btn:hover {
@@ -1054,7 +1051,7 @@
 .coin-info-text {
     font-size: 10px;
     color: var(--textSec);
-    margin-top: 6px;
+    margin-top: 4px;
 }
 .coin-discount-display {
     font-size: 12px;
@@ -4323,14 +4320,15 @@
 // ============================================================
 
 // --- Fungsi dasar ---
+// ============================================================
+// RIKY COIN - FUNGSI DAN LOGIKA (FINAL)
+// ============================================================
+
 function getUserCoinData(username) {
     const users = getUsers();
     const user = users.find(u => u.username === username);
     if (!user) return null;
-    return {
-        balance: user.coinBalance || 0,
-        history: user.coinHistory || []
-    };
+    return { balance: user.coinBalance || 0, history: user.coinHistory || [] };
 }
 
 function saveUserCoinData(username, balance, history) {
@@ -4356,13 +4354,7 @@ function addCoinToUser(username, amount, reason, orderId) {
     if (!data) return false;
     const newBalance = data.balance + amount;
     const newHistory = data.history || [];
-    newHistory.unshift({
-        type: 'reward',
-        amount: amount,
-        reason: reason || 'Reward pembelian',
-        orderId: orderId || null,
-        date: new Date().toLocaleString('id-ID')
-    });
+    newHistory.unshift({ type: 'reward', amount: amount, reason: reason || 'Reward pembelian', orderId: orderId || null, date: new Date().toLocaleString('id-ID') });
     saveUserCoinData(username, newBalance, newHistory);
     return true;
 }
@@ -4373,13 +4365,7 @@ function useCoinFromUser(username, amount, reason, orderId) {
     if (!data || data.balance < amount) return false;
     const newBalance = data.balance - amount;
     const newHistory = data.history || [];
-    newHistory.unshift({
-        type: 'redeem',
-        amount: -amount,
-        reason: reason || 'Digunakan untuk pesanan',
-        orderId: orderId || null,
-        date: new Date().toLocaleString('id-ID')
-    });
+    newHistory.unshift({ type: 'redeem', amount: -amount, reason: reason || 'Digunakan untuk pesanan', orderId: orderId || null, date: new Date().toLocaleString('id-ID') });
     saveUserCoinData(username, newBalance, newHistory);
     return true;
 }
@@ -4391,25 +4377,20 @@ function getCoinBalance(username) {
 
 function updateCoinUI() {
     const user = getLoggedInUser();
-    if (!user) {
-        document.getElementById('drawerCoinBalance').textContent = '0';
-        return;
-    }
+    if (!user) { document.getElementById('drawerCoinBalance').textContent = '0'; return; }
     const balance = getCoinBalance(user.username);
     document.getElementById('drawerCoinBalance').textContent = balance;
-    const profileBal = document.getElementById('profileCoinBalance');
-    if (profileBal) profileBal.textContent = balance;
-    const profileVal = document.getElementById('profileCoinValue');
-    if (profileVal) profileVal.textContent = balance;
-    const checkoutBal = document.getElementById('checkoutCoinBalance');
-    if (checkoutBal) checkoutBal.textContent = balance;
+    const pb = document.getElementById('profileCoinBalance');
+    if (pb) pb.textContent = balance;
+    const pv = document.getElementById('profileCoinValue');
+    if (pv) pv.textContent = balance;
+    const cb = document.getElementById('checkoutCoinBalance');
+    if (cb) cb.textContent = balance;
 }
 
-// --- Event listener riwayat coin (dipasang ulang setiap kali profil dirender) ---
 function setupCoinHistoryListener() {
     const btn = document.getElementById('showCoinHistoryBtn');
     if (!btn) return;
-    // Hapus listener lama (clone + replace) untuk menghindari duplikasi
     const newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
     newBtn.addEventListener('click', function(e) {
@@ -4417,10 +4398,7 @@ function setupCoinHistoryListener() {
         const container = document.getElementById('coinHistoryContainer');
         if (!container) return;
         const user = getLoggedInUser();
-        if (!user) {
-            showToast('Login dulu!', 'error');
-            return;
-        }
+        if (!user) { showToast('Login dulu!', 'error'); return; }
         const data = getUserCoinData(user.username);
         if (!data || !data.history || data.history.length === 0) {
             container.innerHTML = '<p class="text-xs" style="color:var(--textSec);">Belum ada riwayat coin.</p>';
@@ -4431,20 +4409,14 @@ function setupCoinHistoryListener() {
         data.history.slice(0, 20).forEach(h => {
             const cls = h.amount > 0 ? 'plus' : 'minus';
             const sign = h.amount > 0 ? '+' : '';
-            html += `
-                <div class="coin-history-item">
-                    <span>${h.reason || 'Transaksi'}</span>
-                    <span class="amount ${cls}">${sign}${h.amount} Coin</span>
-                    <span class="text-[9px]" style="color:var(--textSec);">${h.date || ''}</span>
-                </div>
-            `;
+            html += `<div class="coin-history-item"><span>${h.reason || 'Transaksi'}</span><span class="amount ${cls}">${sign}${h.amount} Coin</span><span class="text-[9px]" style="color:var(--textSec);">${h.date || ''}</span></div>`;
         });
         container.innerHTML = html;
         container.classList.toggle('hidden');
     });
 }
 
-// --- Checkout Coin Logic ---
+// ===== CHECKOUT COIN =====
 let coinUseMode = 'no';
 let coinAmount = 0;
 let maxCoinAllowed = 0;
@@ -4456,41 +4428,29 @@ function renderCoinCheckoutOptions() {
     const balance = getCoinBalance(user.username);
     const balEl = document.getElementById('checkoutCoinBalance');
     if (balEl) balEl.textContent = balance;
-
     const subtotal = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
     checkoutSubtotal = subtotal;
     maxCoinAllowed = Math.floor(subtotal * 0.20);
     const maxAvailable = Math.min(balance, maxCoinAllowed);
     document.getElementById('maxCoinDisplay').textContent = maxAvailable;
     const input = document.getElementById('coinAmountInput');
-    if (input) {
-        input.max = maxAvailable;
-        input.value = 0;
-    }
-
-    // Reset mode
+    if (input) { input.max = maxAvailable; input.value = 0; }
     coinUseMode = 'no';
     coinAmount = 0;
     document.getElementById('coinAmountSection').style.display = 'none';
     document.getElementById('coinDiscountDisplay').textContent = 'Potongan: Rp0';
-
-    const toggles = document.querySelectorAll('.coin-toggle-group .toggle-btn');
-    toggles.forEach(btn => {
+    document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.use === 'no');
     });
-
     updateCheckoutTotal();
-    // Pasang ulang event listener untuk tombol coin (karena modal bisa dibuka ulang)
     setupCoinCheckoutListeners();
 }
 
 function setupCoinCheckoutListeners() {
-    // Toggle
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
         btn.removeEventListener('click', coinToggleHandler);
         btn.addEventListener('click', coinToggleHandler);
     });
-    // Tombol - + Maksimal dan input
     const dec = document.getElementById('coinDecBtn');
     const inc = document.getElementById('coinIncBtn');
     const maxBtn = document.getElementById('coinMaxBtn');
@@ -4578,7 +4538,7 @@ function updateCheckoutTotal() {
     window._tempCoinUsed = coinUseMode === 'yes' ? coinAmount : 0;
 }
 
-// --- Override openCheckoutModal ---
+// ===== OVERRIDE CHECKOUT =====
 const originalOpenCheckout = window.openCheckoutModal;
 window.openCheckoutModal = function() {
     if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
@@ -4596,7 +4556,6 @@ window.openCheckoutModal = function() {
     html += `</div>`;
     details.innerHTML = html;
     document.getElementById('checkoutModal').classList.add('open');
-    // Reset coin
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
     document.querySelector('.coin-toggle-group .toggle-btn[data-use="no"]').classList.add('active');
     document.getElementById('coinAmountSection').style.display = 'none';
@@ -4608,16 +4567,13 @@ window.openCheckoutModal = function() {
     document.getElementById('maxCoinDisplay').textContent = max;
     document.getElementById('coinAmountInput').max = max;
     updateCheckoutTotal();
-    // Pasang listener coin
     setTimeout(setupCoinCheckoutListeners, 50);
-    // Voucher reset
     appliedVoucher = null;
     document.getElementById('checkoutVoucherInput').value = '';
     document.getElementById('voucherMessage').innerHTML = '';
     document.getElementById('voucherDetail').classList.add('hidden');
 };
 
-// --- Override checkout QRIS dan kirim bukti (coin) ---
 document.getElementById('checkoutQrisBtn')?.addEventListener('click', function() {
     if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
     let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
@@ -4627,14 +4583,8 @@ document.getElementById('checkoutQrisBtn')?.addEventListener('click', function()
     const user = getLoggedInUser();
     if (user && coinUsed > 0) {
         const balance = getCoinBalance(user.username);
-        if (coinUsed > balance) {
-            showToast('Saldo coin tidak mencukupi!', 'error');
-            return;
-        }
-        if (coinUsed > Math.floor(total * 0.20)) {
-            showToast('Melebihi batas 20%!', 'error');
-            return;
-        }
+        if (coinUsed > balance) { showToast('Saldo coin tidak mencukupi!', 'error'); return; }
+        if (coinUsed > Math.floor(total * 0.20)) { showToast('Melebihi batas 20%!', 'error'); return; }
     }
     document.getElementById('qrisTotal').textContent = `Rp${finalTotal.toLocaleString()}`;
     document.getElementById('uploadNominal').textContent = `Rp${finalTotal.toLocaleString()}`;
@@ -4645,8 +4595,6 @@ document.getElementById('checkoutQrisBtn')?.addEventListener('click', function()
     document.getElementById('qrisModal').classList.add('open');
 });
 
-// Override kirim bukti
-const originalKirim = document.getElementById('kirimBuktiBtn')?.click;
 document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
     const wa = document.getElementById('buyerWa').value.trim();
     const file = document.getElementById('buktiFile').files[0];
@@ -4661,19 +4609,10 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
     let finalTotal = total - coinDiscount;
     if (coinUsed > 0) {
         const balance = getCoinBalance(user.username);
-        if (coinUsed > balance) {
-            showToast('Saldo coin tidak mencukupi!', 'error');
-            return;
-        }
-        if (coinUsed > Math.floor(total * 0.20)) {
-            showToast('Melebihi batas 20%!', 'error');
-            return;
-        }
+        if (coinUsed > balance) { showToast('Saldo coin tidak mencukupi!', 'error'); return; }
+        if (coinUsed > Math.floor(total * 0.20)) { showToast('Melebihi batas 20%!', 'error'); return; }
         const success = useCoinFromUser(user.username, coinUsed, `Digunakan untuk pesanan #${Date.now()}`, Date.now());
-        if (!success) {
-            showToast('Gagal menggunakan coin!', 'error');
-            return;
-        }
+        if (!success) { showToast('Gagal menggunakan coin!', 'error'); return; }
     }
     const orderId = Date.now();
     const order = {
@@ -4728,18 +4667,14 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
             showToast('Gagal kirim, coba lagi', 'error');
             if (coinUsed > 0) {
                 const userNow = getLoggedInUser();
-                if (userNow) {
-                    addCoinToUser(userNow.username, coinUsed, 'Rollback gagal kirim', orderId);
-                }
+                if (userNow) { addCoinToUser(userNow.username, coinUsed, 'Rollback gagal kirim', orderId); }
             }
         }
     } catch (e) {
         showToast('Error jaringan, coba lagi', 'error');
         if (coinUsed > 0) {
             const userNow = getLoggedInUser();
-            if (userNow) {
-                addCoinToUser(userNow.username, coinUsed, 'Rollback error', orderId);
-            }
+            if (userNow) { addCoinToUser(userNow.username, coinUsed, 'Rollback error', orderId); }
         }
     } finally {
         this.textContent = 'Kirim';
@@ -4747,16 +4682,13 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
     }
 });
 
-// --- Update updateAuthUI untuk panggil setupCoinHistoryListener ---
 const originalUpdateAuthUI = window.updateAuthUI;
 window.updateAuthUI = function() {
     originalUpdateAuthUI();
     updateCoinUI();
-    // Pasang listener riwayat coin
     setTimeout(setupCoinHistoryListener, 100);
 };
 
-// --- Event listener untuk drawer link coin ---
 document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('click', function(e) {
     e.preventDefault();
     document.getElementById('drawer').classList.remove('open');
@@ -4769,7 +4701,6 @@ document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('c
     }, 300);
 });
 
-// Inisialisasi awal
 setTimeout(() => {
     updateCoinUI();
     setupCoinHistoryListener();
