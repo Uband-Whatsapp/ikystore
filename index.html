@@ -996,8 +996,8 @@
 .coin-amount-control {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 8px;
+    gap: 6px;
+    margin-top: 10px;
     flex-wrap: wrap;
 }
 .coin-amount-control button {
@@ -1007,29 +1007,31 @@
     border: 1.5px solid var(--border);
     background: var(--surface);
     color: var(--text);
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 .coin-amount-control button:hover {
     border-color: var(--primary);
     color: var(--primary);
 }
 .coin-amount-control input {
-    width: 90px;
+    width: 80px;
     text-align: center;
     background: var(--surface);
     border: 1.5px solid var(--border);
     border-radius: 8px;
-    padding: 8px;
+    padding: 8px 4px;
     color: var(--text);
     font-weight: 600;
     font-size: 15px;
     outline: none;
+    flex-shrink: 0;
 }
 .coin-amount-control input:focus {
     border-color: var(--primary);
@@ -1044,6 +1046,7 @@
     cursor: pointer;
     font-weight: 600;
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 .coin-max-btn:hover {
     transform: scale(1.02);
@@ -4315,6 +4318,11 @@
 // RIKY COIN - FUNGSI DAN LOGIKA
 // ============================================================
 
+// ============================================================
+// RIKY COIN - FUNGSI DAN LOGIKA (VERSI FINAL)
+// ============================================================
+
+// --- Fungsi dasar ---
 function getUserCoinData(username) {
     const users = getUsers();
     const user = users.find(u => u.username === username);
@@ -4389,57 +4397,59 @@ function updateCoinUI() {
     }
     const balance = getCoinBalance(user.username);
     document.getElementById('drawerCoinBalance').textContent = balance;
-    document.getElementById('profileCoinBalance').textContent = balance;
-    document.getElementById('profileCoinValue').textContent = balance;
-    const checkoutBalance = document.getElementById('checkoutCoinBalance');
-    if (checkoutBalance) checkoutBalance.textContent = balance;
+    const profileBal = document.getElementById('profileCoinBalance');
+    if (profileBal) profileBal.textContent = balance;
+    const profileVal = document.getElementById('profileCoinValue');
+    if (profileVal) profileVal.textContent = balance;
+    const checkoutBal = document.getElementById('checkoutCoinBalance');
+    if (checkoutBal) checkoutBal.textContent = balance;
 }
 
-// Tambahkan di dalam updateAuthUI(), setelah profileContent.innerHTML selesai di-set:
-document.getElementById('showCoinHistoryBtn')?.addEventListener('click', function(e) {
-    e.stopPropagation();
-    const container = document.getElementById('coinHistoryContainer');
-    if (!container) return;
-    
-    const user = getLoggedInUser();
-    if (!user) {
-        showToast('Login dulu!', 'error');
-        return;
-    }
-    
-    const data = getUserCoinData(user.username);
-    if (!data || !data.history || data.history.length === 0) {
-        container.innerHTML = '<p class="text-xs" style="color:var(--textSec);">Belum ada riwayat coin.</p>';
-        container.classList.remove('hidden');
-        return;
-    }
-    
-    let html = '';
-    data.history.slice(0, 20).forEach(h => {
-        const cls = h.amount > 0 ? 'plus' : 'minus';
-        const sign = h.amount > 0 ? '+' : '';
-        html += `
-            <div class="coin-history-item">
-                <span>${h.reason || 'Transaksi'}</span>
-                <span class="amount ${cls}">${sign}${h.amount} Coin</span>
-                <span class="text-[9px]" style="color:var(--textSec);">${h.date || ''}</span>
-            </div>
-        `;
+// --- Event listener riwayat coin (dipasang ulang setiap kali profil dirender) ---
+function setupCoinHistoryListener() {
+    const btn = document.getElementById('showCoinHistoryBtn');
+    if (!btn) return;
+    // Hapus listener lama (clone + replace) untuk menghindari duplikasi
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const container = document.getElementById('coinHistoryContainer');
+        if (!container) return;
+        const user = getLoggedInUser();
+        if (!user) {
+            showToast('Login dulu!', 'error');
+            return;
+        }
+        const data = getUserCoinData(user.username);
+        if (!data || !data.history || data.history.length === 0) {
+            container.innerHTML = '<p class="text-xs" style="color:var(--textSec);">Belum ada riwayat coin.</p>';
+            container.classList.remove('hidden');
+            return;
+        }
+        let html = '';
+        data.history.slice(0, 20).forEach(h => {
+            const cls = h.amount > 0 ? 'plus' : 'minus';
+            const sign = h.amount > 0 ? '+' : '';
+            html += `
+                <div class="coin-history-item">
+                    <span>${h.reason || 'Transaksi'}</span>
+                    <span class="amount ${cls}">${sign}${h.amount} Coin</span>
+                    <span class="text-[9px]" style="color:var(--textSec);">${h.date || ''}</span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        container.classList.toggle('hidden');
     });
-    container.innerHTML = html;
-    container.classList.toggle('hidden');
-});
-// === Checkout Coin Logic ===
-// ============================================================
-// RIKY COIN - CHECKOUT LOGIC (PERBAIKAN)
-// ============================================================
+}
 
+// --- Checkout Coin Logic ---
 let coinUseMode = 'no';
 let coinAmount = 0;
 let maxCoinAllowed = 0;
 let checkoutSubtotal = 0;
 
-// === Fungsi render ulang opsi coin ===
 function renderCoinCheckoutOptions() {
     const user = getLoggedInUser();
     if (!user) return;
@@ -4452,49 +4462,67 @@ function renderCoinCheckoutOptions() {
     maxCoinAllowed = Math.floor(subtotal * 0.20);
     const maxAvailable = Math.min(balance, maxCoinAllowed);
     document.getElementById('maxCoinDisplay').textContent = maxAvailable;
-    document.getElementById('coinAmountInput').max = maxAvailable;
+    const input = document.getElementById('coinAmountInput');
+    if (input) {
+        input.max = maxAvailable;
+        input.value = 0;
+    }
 
-    // Reset ke mode default (Tidak Gunakan)
+    // Reset mode
     coinUseMode = 'no';
     coinAmount = 0;
     document.getElementById('coinAmountSection').style.display = 'none';
     document.getElementById('coinDiscountDisplay').textContent = 'Potongan: Rp0';
 
-    document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
+    const toggles = document.querySelectorAll('.coin-toggle-group .toggle-btn');
+    toggles.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.use === 'no');
     });
 
     updateCheckoutTotal();
+    // Pasang ulang event listener untuk tombol coin (karena modal bisa dibuka ulang)
+    setupCoinCheckoutListeners();
 }
 
-// === Event listener tombol toggle ===
-document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const use = this.dataset.use;
-        coinUseMode = use;
-
-        document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-
-        if (use === 'yes') {
-            document.getElementById('coinAmountSection').style.display = 'block';
-            const user = getLoggedInUser();
-            const balance = user ? getCoinBalance(user.username) : 0;
-            const max = Math.min(balance, maxCoinAllowed);
-            document.getElementById('coinAmountInput').value = 0;
-            document.getElementById('coinAmountInput').max = max;
-            coinAmount = 0;
-        } else {
-            document.getElementById('coinAmountSection').style.display = 'none';
-            coinAmount = 0;
-        }
-        updateCheckoutTotal();
+function setupCoinCheckoutListeners() {
+    // Toggle
+    document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
+        btn.removeEventListener('click', coinToggleHandler);
+        btn.addEventListener('click', coinToggleHandler);
     });
-});
+    // Tombol - + Maksimal dan input
+    const dec = document.getElementById('coinDecBtn');
+    const inc = document.getElementById('coinIncBtn');
+    const maxBtn = document.getElementById('coinMaxBtn');
+    const input = document.getElementById('coinAmountInput');
+    if (dec) { dec.removeEventListener('click', coinDecHandler); dec.addEventListener('click', coinDecHandler); }
+    if (inc) { inc.removeEventListener('click', coinIncHandler); inc.addEventListener('click', coinIncHandler); }
+    if (maxBtn) { maxBtn.removeEventListener('click', coinMaxHandler); maxBtn.addEventListener('click', coinMaxHandler); }
+    if (input) { input.removeEventListener('input', coinInputHandler); input.addEventListener('input', coinInputHandler); }
+}
 
-// === Tombol + - ===
-document.getElementById('coinDecBtn')?.addEventListener('click', function(e) {
+function coinToggleHandler(e) {
+    e.stopPropagation();
+    const use = this.dataset.use;
+    coinUseMode = use;
+    document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    if (use === 'yes') {
+        document.getElementById('coinAmountSection').style.display = 'block';
+        const user = getLoggedInUser();
+        const balance = user ? getCoinBalance(user.username) : 0;
+        const max = Math.min(balance, maxCoinAllowed);
+        const input = document.getElementById('coinAmountInput');
+        if (input) { input.value = 0; input.max = max; }
+        coinAmount = 0;
+    } else {
+        document.getElementById('coinAmountSection').style.display = 'none';
+        coinAmount = 0;
+    }
+    updateCheckoutTotal();
+}
+
+function coinDecHandler(e) {
     e.stopPropagation();
     const input = document.getElementById('coinAmountInput');
     let val = parseInt(input.value) || 0;
@@ -4502,9 +4530,9 @@ document.getElementById('coinDecBtn')?.addEventListener('click', function(e) {
     input.value = val;
     coinAmount = val;
     updateCheckoutTotal();
-});
+}
 
-document.getElementById('coinIncBtn')?.addEventListener('click', function(e) {
+function coinIncHandler(e) {
     e.stopPropagation();
     const input = document.getElementById('coinAmountInput');
     let val = parseInt(input.value) || 0;
@@ -4513,20 +4541,18 @@ document.getElementById('coinIncBtn')?.addEventListener('click', function(e) {
     input.value = val;
     coinAmount = val;
     updateCheckoutTotal();
-});
+}
 
-// === Tombol Maksimal ===
-document.getElementById('coinMaxBtn')?.addEventListener('click', function(e) {
+function coinMaxHandler(e) {
     e.stopPropagation();
     const input = document.getElementById('coinAmountInput');
     const max = parseInt(input.max) || 0;
     input.value = max;
     coinAmount = max;
     updateCheckoutTotal();
-});
+}
 
-// === Input manual ===
-document.getElementById('coinAmountInput')?.addEventListener('input', function(e) {
+function coinInputHandler(e) {
     let val = parseInt(this.value) || 0;
     const max = parseInt(this.max) || 0;
     if (val > max) val = max;
@@ -4534,9 +4560,8 @@ document.getElementById('coinAmountInput')?.addEventListener('input', function(e
     this.value = val;
     coinAmount = val;
     updateCheckoutTotal();
-});
+}
 
-// === Update total ===
 function updateCheckoutTotal() {
     const subtotal = checkoutSubtotal;
     let discount = 0;
@@ -4553,7 +4578,7 @@ function updateCheckoutTotal() {
     window._tempCoinUsed = coinUseMode === 'yes' ? coinAmount : 0;
 }
 
-// Override openCheckoutModal
+// --- Override openCheckoutModal ---
 const originalOpenCheckout = window.openCheckoutModal;
 window.openCheckoutModal = function() {
     if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
@@ -4570,7 +4595,8 @@ window.openCheckoutModal = function() {
     });
     html += `</div>`;
     details.innerHTML = html;
-    document.getElementById('checkoutCoinBalance').textContent = getCoinBalance(getLoggedInUser().username);
+    document.getElementById('checkoutModal').classList.add('open');
+    // Reset coin
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
     document.querySelector('.coin-toggle-group .toggle-btn[data-use="no"]').classList.add('active');
     document.getElementById('coinAmountSection').style.display = 'none';
@@ -4582,14 +4608,16 @@ window.openCheckoutModal = function() {
     document.getElementById('maxCoinDisplay').textContent = max;
     document.getElementById('coinAmountInput').max = max;
     updateCheckoutTotal();
-    document.getElementById('checkoutModal').classList.add('open');
+    // Pasang listener coin
+    setTimeout(setupCoinCheckoutListeners, 50);
+    // Voucher reset
     appliedVoucher = null;
     document.getElementById('checkoutVoucherInput').value = '';
     document.getElementById('voucherMessage').innerHTML = '';
     document.getElementById('voucherDetail').classList.add('hidden');
 };
 
-// Override checkout QRIS
+// --- Override checkout QRIS dan kirim bukti (coin) ---
 document.getElementById('checkoutQrisBtn')?.addEventListener('click', function() {
     if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
     let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
@@ -4618,6 +4646,7 @@ document.getElementById('checkoutQrisBtn')?.addEventListener('click', function()
 });
 
 // Override kirim bukti
+const originalKirim = document.getElementById('kirimBuktiBtn')?.click;
 document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
     const wa = document.getElementById('buyerWa').value.trim();
     const file = document.getElementById('buktiFile').files[0];
@@ -4718,14 +4747,16 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
     }
 });
 
-// Update updateAuthUI untuk panggil updateCoinUI
+// --- Update updateAuthUI untuk panggil setupCoinHistoryListener ---
 const originalUpdateAuthUI = window.updateAuthUI;
 window.updateAuthUI = function() {
     originalUpdateAuthUI();
     updateCoinUI();
+    // Pasang listener riwayat coin
+    setTimeout(setupCoinHistoryListener, 100);
 };
 
-// Event listener untuk drawer link coin
+// --- Event listener untuk drawer link coin ---
 document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('click', function(e) {
     e.preventDefault();
     document.getElementById('drawer').classList.remove('open');
@@ -4737,6 +4768,12 @@ document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('c
         if (btn) btn.click();
     }, 300);
 });
+
+// Inisialisasi awal
+setTimeout(() => {
+    updateCoinUI();
+    setupCoinHistoryListener();
+}, 500);
     </script>
 </body>
 </html>
