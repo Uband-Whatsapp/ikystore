@@ -904,6 +904,7 @@
             }
         }
 /* ===== RIKY COIN ===== */
+/* ===== RIKY COIN ===== */
 .coin-balance-card {
     background: var(--card);
     border-radius: var(--radius);
@@ -939,21 +940,45 @@
 .coin-history-item .amount.minus {
     color: #EF4444;
 }
+
+/* === CHECKOUT COIN - PERBAIKAN === */
 .coin-checkout-section {
     background: var(--card);
     border-radius: var(--radiusSm);
-    padding: 12px;
-    margin-top: 12px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    margin-bottom: 8px;
     border: 1px solid var(--border);
+    width: 100%;
+    box-sizing: border-box;
+}
+.coin-checkout-section .coin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.coin-checkout-section .coin-header .label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+.coin-checkout-section .coin-header .saldo {
+    font-size: 12px;
+    color: var(--textSec);
+}
+.coin-checkout-section .coin-header .saldo span {
+    color: #FBBF24;
+    font-weight: 700;
 }
 .coin-toggle-group {
     display: flex;
     gap: 8px;
-    margin-top: 6px;
+    margin-bottom: 8px;
 }
 .coin-toggle-group .toggle-btn {
     flex: 1;
-    padding: 6px 0;
+    padding: 8px 0;
     border-radius: 9999px;
     border: 1.5px solid var(--border);
     background: transparent;
@@ -971,14 +996,15 @@
 .coin-amount-control {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     margin-top: 8px;
+    flex-wrap: wrap;
 }
 .coin-amount-control button {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     background: var(--surface);
     color: var(--text);
     font-size: 18px;
@@ -987,32 +1013,52 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s;
+}
+.coin-amount-control button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
 }
 .coin-amount-control input {
-    width: 80px;
+    width: 90px;
     text-align: center;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: 8px;
-    padding: 6px;
+    padding: 8px;
     color: var(--text);
     font-weight: 600;
-    font-size: 14px;
+    font-size: 15px;
+    outline: none;
+}
+.coin-amount-control input:focus {
+    border-color: var(--primary);
 }
 .coin-max-btn {
-    font-size: 10px;
-    padding: 4px 10px;
+    font-size: 11px;
+    padding: 6px 14px;
     border-radius: 9999px;
     background: var(--primary);
     color: white;
     border: none;
     cursor: pointer;
     font-weight: 600;
+    transition: all 0.2s;
+}
+.coin-max-btn:hover {
+    transform: scale(1.02);
 }
 .coin-info-text {
     font-size: 10px;
     color: var(--textSec);
-    margin-top: 4px;
+    margin-top: 6px;
+}
+.coin-discount-display {
+    font-size: 12px;
+    color: var(--textSec);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
 }
     </style>
 </head>
@@ -1909,9 +1955,9 @@
             </div>
             <div class="modal-body" id="checkoutDetails"></div>
             <div class="coin-checkout-section">
-    <div class="flex items-center justify-between">
-        <span class="text-sm font-semibold" style="color:var(--text);">RIKY COIN</span>
-        <span class="text-xs" style="color:var(--textSec);">Saldo: <span id="checkoutCoinBalance">0</span> Coin</span>
+    <div class="coin-header">
+        <span class="label"><i class="fas fa-coins text-yellow-500 mr-1"></i> RIKY COIN</span>
+        <span class="saldo">Saldo: <span id="checkoutCoinBalance">0</span> Coin</span>
     </div>
     <div class="coin-toggle-group">
         <button class="toggle-btn active" data-use="no">Tidak Gunakan</button>
@@ -1928,7 +1974,7 @@
             Maksimal 20% dari total ( <span id="maxCoinDisplay">0</span> Coin )
         </div>
     </div>
-    <div id="coinDiscountDisplay" class="text-xs mt-1" style="color:var(--textSec);">Potongan: Rp0</div>
+    <div class="coin-discount-display" id="coinDiscountDisplay">Potongan: Rp0</div>
 </div>
             <div class="px-4 pb-1">
                 <div class="flex gap-1.5">
@@ -4349,16 +4395,25 @@ function updateCoinUI() {
     if (checkoutBalance) checkoutBalance.textContent = balance;
 }
 
-document.getElementById('showCoinHistoryBtn')?.addEventListener('click', function() {
+// Tambahkan di dalam updateAuthUI(), setelah profileContent.innerHTML selesai di-set:
+document.getElementById('showCoinHistoryBtn')?.addEventListener('click', function(e) {
+    e.stopPropagation();
     const container = document.getElementById('coinHistoryContainer');
+    if (!container) return;
+    
     const user = getLoggedInUser();
-    if (!user) return;
+    if (!user) {
+        showToast('Login dulu!', 'error');
+        return;
+    }
+    
     const data = getUserCoinData(user.username);
     if (!data || !data.history || data.history.length === 0) {
         container.innerHTML = '<p class="text-xs" style="color:var(--textSec);">Belum ada riwayat coin.</p>';
         container.classList.remove('hidden');
         return;
     }
+    
     let html = '';
     data.history.slice(0, 20).forEach(h => {
         const cls = h.amount > 0 ? 'plus' : 'minus';
@@ -4374,42 +4429,59 @@ document.getElementById('showCoinHistoryBtn')?.addEventListener('click', functio
     container.innerHTML = html;
     container.classList.toggle('hidden');
 });
-
 // === Checkout Coin Logic ===
+// ============================================================
+// RIKY COIN - CHECKOUT LOGIC (PERBAIKAN)
+// ============================================================
+
 let coinUseMode = 'no';
 let coinAmount = 0;
 let maxCoinAllowed = 0;
 let checkoutSubtotal = 0;
 
+// === Fungsi render ulang opsi coin ===
 function renderCoinCheckoutOptions() {
     const user = getLoggedInUser();
     if (!user) return;
     const balance = getCoinBalance(user.username);
-    document.getElementById('checkoutCoinBalance').textContent = balance;
+    const balEl = document.getElementById('checkoutCoinBalance');
+    if (balEl) balEl.textContent = balance;
+
     const subtotal = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
     checkoutSubtotal = subtotal;
     maxCoinAllowed = Math.floor(subtotal * 0.20);
     const maxAvailable = Math.min(balance, maxCoinAllowed);
     document.getElementById('maxCoinDisplay').textContent = maxAvailable;
+    document.getElementById('coinAmountInput').max = maxAvailable;
+
+    // Reset ke mode default (Tidak Gunakan)
     coinUseMode = 'no';
     coinAmount = 0;
     document.getElementById('coinAmountSection').style.display = 'none';
     document.getElementById('coinDiscountDisplay').textContent = 'Potongan: Rp0';
+
     document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.use === 'no');
     });
+
     updateCheckoutTotal();
 }
 
+// === Event listener tombol toggle ===
 document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
         const use = this.dataset.use;
         coinUseMode = use;
+
         document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
+
         if (use === 'yes') {
             document.getElementById('coinAmountSection').style.display = 'block';
-            const max = Math.min(getCoinBalance(getLoggedInUser().username), maxCoinAllowed);
+            const user = getLoggedInUser();
+            const balance = user ? getCoinBalance(user.username) : 0;
+            const max = Math.min(balance, maxCoinAllowed);
             document.getElementById('coinAmountInput').value = 0;
             document.getElementById('coinAmountInput').max = max;
             coinAmount = 0;
@@ -4421,7 +4493,9 @@ document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
     });
 });
 
-document.getElementById('coinDecBtn')?.addEventListener('click', function() {
+// === Tombol + - ===
+document.getElementById('coinDecBtn')?.addEventListener('click', function(e) {
+    e.stopPropagation();
     const input = document.getElementById('coinAmountInput');
     let val = parseInt(input.value) || 0;
     if (val > 0) val--;
@@ -4429,7 +4503,9 @@ document.getElementById('coinDecBtn')?.addEventListener('click', function() {
     coinAmount = val;
     updateCheckoutTotal();
 });
-document.getElementById('coinIncBtn')?.addEventListener('click', function() {
+
+document.getElementById('coinIncBtn')?.addEventListener('click', function(e) {
+    e.stopPropagation();
     const input = document.getElementById('coinAmountInput');
     let val = parseInt(input.value) || 0;
     const max = parseInt(input.max) || 0;
@@ -4438,14 +4514,19 @@ document.getElementById('coinIncBtn')?.addEventListener('click', function() {
     coinAmount = val;
     updateCheckoutTotal();
 });
-document.getElementById('coinMaxBtn')?.addEventListener('click', function() {
+
+// === Tombol Maksimal ===
+document.getElementById('coinMaxBtn')?.addEventListener('click', function(e) {
+    e.stopPropagation();
     const input = document.getElementById('coinAmountInput');
     const max = parseInt(input.max) || 0;
     input.value = max;
     coinAmount = max;
     updateCheckoutTotal();
 });
-document.getElementById('coinAmountInput')?.addEventListener('input', function() {
+
+// === Input manual ===
+document.getElementById('coinAmountInput')?.addEventListener('input', function(e) {
     let val = parseInt(this.value) || 0;
     const max = parseInt(this.max) || 0;
     if (val > max) val = max;
@@ -4455,13 +4536,15 @@ document.getElementById('coinAmountInput')?.addEventListener('input', function()
     updateCheckoutTotal();
 });
 
+// === Update total ===
 function updateCheckoutTotal() {
     const subtotal = checkoutSubtotal;
     let discount = 0;
     if (coinUseMode === 'yes' && coinAmount > 0) {
-        discount = coinAmount;
-        const maxDiscount = Math.min(subtotal * 0.20, getCoinBalance(getLoggedInUser().username));
-        if (discount > maxDiscount) discount = maxDiscount;
+        const user = getLoggedInUser();
+        const balance = user ? getCoinBalance(user.username) : 0;
+        const maxDiscount = Math.min(subtotal * 0.20, balance);
+        discount = Math.min(coinAmount, maxDiscount);
     }
     const total = subtotal - discount;
     document.getElementById('coinDiscountDisplay').textContent = `Potongan: Rp${discount.toLocaleString()}`;
