@@ -4648,191 +4648,570 @@ document.getElementById('checkoutQrisBtn')?.addEventListener('click', function()
 });
 
 document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
+
     const wa = document.getElementById('buyerWa').value.trim();
     const file = document.getElementById('buktiFile').files[0];
     const note = document.getElementById('checkoutNote').value.trim();
-    if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
-    if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
-    const user = getLoggedInUser();
-    if (!user) { showToast('Login dulu!', 'error'); return; }
 
-    let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
-    let coinUsed = window._checkoutCoinUsed || 0;
-    let coinDiscount = window._checkoutCoinDiscount || 0;
-    let finalTotal = total - coinDiscount;
-
-    if (coinUsed > 0) {
-        const balance = getCoinBalance(user.username);
-        if (coinUsed > balance) { showToast('Saldo coin tidak mencukupi!', 'error'); return; }
-        if (coinUsed > Math.floor(total * 0.20)) { showToast('Melebihi batas 20%!', 'error'); return; }
-        const success = useCoinFromUser(user.username, coinUsed, `Digunakan untuk pesanan #${Date.now()}`, Date.now());
-        if (!success) { showToast('Gagal menggunakan coin!', 'error'); return; }
+    if (!wa) {
+        showToast('Isi nomor WhatsApp!', 'error');
+        return;
     }
 
+    if (!file) {
+        showToast('Upload bukti transfer!', 'error');
+        return;
+    }
+
+    const user = getLoggedInUser();
+
+    if (!user) {
+        showToast('Login dulu!', 'error');
+        return;
+    }
+
+
+    // ==========================================
+    // HITUNG TOTAL
+    // ==========================================
+
+    let total = cart.reduce(
+        (s, i) => s + i.harga * (i.qty || 1),
+        0
+    );
+
+    let coinUsed =
+        window._checkoutCoinUsed || 0;
+
+    let coinDiscount =
+        window._checkoutCoinDiscount || 0;
+
+    let finalTotal =
+        total - coinDiscount;
+
+
+    // ==========================================
+    // VALIDASI COIN
+    // ==========================================
+
+    if (coinUsed > 0) {
+
+        const balance =
+            getCoinBalance(user.username);
+
+        if (coinUsed > balance) {
+
+            showToast(
+                'Saldo coin tidak mencukupi!',
+                'error'
+            );
+
+            return;
+        }
+
+
+        if (
+            coinUsed >
+            Math.floor(total * 0.20)
+        ) {
+
+            showToast(
+                'Melebihi batas 20%!',
+                'error'
+            );
+
+            return;
+        }
+
+    }
+
+
+    // ==========================================
+    // BUAT ORDER ID
+    // ==========================================
+
     const orderId = Date.now();
+
+
+    // ==========================================
+    // BUAT DATA ORDER
+    // ==========================================
+
     const order = {
+
         id: orderId,
-        tanggal: new Date().toLocaleString('id-ID'),
-        items: [...cart],
-        subtotal: total,
-        coinUsed: coinUsed,
-        coinDiscount: coinDiscount,
-        total: finalTotal,
-        username: user.username,
-        status: 'pending',
-        coinRewarded: false,
-        buyerWa: wa,
-        note: note || ''
+
+        tanggal:
+            new Date()
+            .toLocaleString('id-ID'),
+
+        items:
+            [...cart],
+
+        subtotal:
+            Number(total),
+
+        coinUsed:
+            Number(coinUsed),
+
+        coinDiscount:
+            Number(coinDiscount),
+
+        total:
+            Number(finalTotal),
+
+        username:
+            user.username || '',
+
+        status:
+            'pending',
+
+        coinRewarded:
+            false,
+
+        buyerWa:
+            wa,
+
+        note:
+            note || ''
+
     };
 
-    let caption = `✨ RIKY STORE - PESANAN BARU ✨\n\n`;
+
+    // ==========================================
+    // BUAT CAPTION TELEGRAM
+    // ==========================================
+
+    let caption =
+        `✨ RIKY STORE - PESANAN BARU ✨\n\n`;
+
+
     cart.forEach(item => {
+
         let d = '';
-        if (item.tipe === 'game') d = `ID: ${item.userId}`;
-        else if (item.tipe === 'bot') d = item.linkGrup ? `Link Grup: ${item.linkGrup}` : `No WA: ${item.phone}`;
-        else if (item.tipe === 'premium') d = 'Aktivasi langsung';
-        caption += `📦 ${item.nama} x${item.qty||1} - Rp${(item.harga*(item.qty||1)).toLocaleString()}\n   ▸ ${d}\n\n`;
+
+        if (item.tipe === 'game') {
+
+            d =
+                `ID: ${item.userId || '-'}`;
+
+        }
+
+        else if (item.tipe === 'bot') {
+
+            d =
+                item.linkGrup
+
+                ?
+
+                `Link Grup: ${item.linkGrup}`
+
+                :
+
+                `No WA: ${item.phone || '-'}`;
+
+        }
+
+        else if (item.tipe === 'premium') {
+
+            d =
+                'Aktivasi langsung';
+
+        }
+
+
+        caption +=
+            `📦 ${item.nama} x${item.qty || 1} - Rp${(
+                item.harga * (item.qty || 1)
+            ).toLocaleString()}\n`;
+
+        caption +=
+            `   ▸ ${d}\n\n`;
+
     });
-    caption += `💎 TOTAL: Rp${finalTotal.toLocaleString()}\n`;
-    if (coinUsed > 0) caption += `🪙 Coin digunakan: ${coinUsed} Coin (potongan Rp${coinDiscount.toLocaleString()})\n`;
-    caption += `\n👤 Pembeli\n📱 WA: ${wa}\n`;
-    if (note) caption += `📝 Catatan: ${note}\n`;
-    caption += `\n🆔 ID Pesanan: #${orderId}\n⏳ Status: Menunggu Verifikasi`;
+
+
+    caption +=
+        `💎 TOTAL: Rp${finalTotal.toLocaleString()}\n`;
+
+
+    if (coinUsed > 0) {
+
+        caption +=
+            `🪙 Coin digunakan: ${coinUsed} Coin (potongan Rp${coinDiscount.toLocaleString()})\n`;
+
+    }
+
+
+    caption +=
+        `\n👤 Pembeli\n`;
+
+    caption +=
+        `📱 WA: ${wa}\n`;
+
+
+    if (note) {
+
+        caption +=
+            `📝 Catatan: ${note}\n`;
+
+    }
+
+
+    caption +=
+        `\n🆔 ID Pesanan: #${orderId}\n`;
+
+    caption +=
+        `⏳ Status: Menunggu Verifikasi`;
+
+
+    // ==========================================
+    // FORM DATA TELEGRAM
+    // ==========================================
 
     const fd = new FormData();
-    fd.append('chat_id', CHAT_ID);
-    fd.append('caption', caption);
-    fd.append('photo', file);
-    fd.append('parse_mode', 'Markdown');
+
+    fd.append(
+        'chat_id',
+        CHAT_ID
+    );
+
+    fd.append(
+        'caption',
+        caption
+    );
+
+    fd.append(
+        'photo',
+        file
+    );
+
+    fd.append(
+        'parse_mode',
+        'Markdown'
+    );
+
 
     try {
-        this.textContent = 'Mengirim...';
-        this.disabled = true;
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-        const result = await res.json();
+
+        this.textContent =
+            'Mengirim...';
+
+        this.disabled =
+            true;
+
+
+        // ==========================================
+        // KIRIM KE TELEGRAM
+        // ==========================================
+
+        const res =
+            await fetch(
+
+                `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
+
+                {
+                    method: 'POST',
+                    body: fd
+                }
+
+            );
+
+
+        const result =
+            await res.json();
+
+
+        // ==========================================
+        // JIKA TELEGRAM BERHASIL
+        // ==========================================
+
         if (result.ok) {
 
-    try {
+
+            console.log(
+                '✅ TELEGRAM BERHASIL'
+            );
+
+
+            // ==========================================
+            // BERSIHKAN DATA UNDEFINED
+            // PENTING UNTUK FIRESTORE
+            // ==========================================
+
+            const firestoreOrder =
+                JSON.parse(
+                    JSON.stringify(order)
+                );
+
+
+            console.log(
+                '🔥 DATA YANG AKAN DIKIRIM KE FIRESTORE:',
+                firestoreOrder
+            );
+
+
+            try {
+
+
+                // ==========================================
+                // CEK FIREBASE
+                // ==========================================
+
+                if (
+                    typeof firebase === 'undefined'
+                ) {
+
+                    throw new Error(
+                        'Firebase belum termuat'
+                    );
+
+                }
+
+
+                if (!db) {
+
+                    throw new Error(
+                        'Firestore db belum tersedia'
+                    );
+
+                }
+
+
+                // ==========================================
+                // SIMPAN KE FIRESTORE
+                // ==========================================
+
+                await db
+                    .collection('orders')
+                    .doc(String(orderId))
+                    .set({
+
+                        ...firestoreOrder,
+
+                        status:
+                            'pending',
+
+                        coinRewarded:
+                            false,
+
+                        createdAt:
+                            firebase.firestore
+                            .FieldValue
+                            .serverTimestamp(),
+
+                        updatedAt:
+                            firebase.firestore
+                            .FieldValue
+                            .serverTimestamp()
+
+                    });
+
+
+                console.log(
+                    '🔥🔥🔥 ORDER BERHASIL MASUK FIRESTORE 🔥🔥🔥'
+                );
+
+
+                // ==========================================
+                // BARU POTONG COIN SETELAH
+                // SEMUA BERHASIL
+                // ==========================================
+
+                if (coinUsed > 0) {
+
+                    const success =
+                        useCoinFromUser(
+
+                            user.username,
+
+                            coinUsed,
+
+                            `Digunakan untuk pesanan #${orderId}`,
+
+                            orderId
+
+                        );
+
+
+                    if (!success) {
+
+                        console.warn(
+                            'Coin gagal dipotong'
+                        );
+
+                    }
+
+                }
+
+
+                // ==========================================
+                // BACKUP LOCALSTORAGE
+                // ==========================================
+
+                orderHistory.unshift(order);
+
+
+                localStorage.setItem(
+
+                    'rikyHistory',
+
+                    JSON.stringify(orderHistory)
+
+                );
+
+
+                // ==========================================
+                // KOSONGKAN CART
+                // ==========================================
+
+                cart = [];
+
+                saveCart();
+
+
+                // ==========================================
+                // TUTUP MODAL
+                // ==========================================
+
+                document
+                    .getElementById('uploadModal')
+                    .classList
+                    .remove('open');
+
+
+                // ==========================================
+                // RESET CHECKOUT
+                // ==========================================
+
+                window._checkoutCoinUsed = 0;
+
+                window._checkoutCoinDiscount = 0;
+
+                window._checkoutSubtotal = 0;
+
+
+                updateCoinUI();
+
+
+                showToast(
+
+                    'Pesanan berhasil dikirim dan masuk ke sistem admin!',
+
+                    'success'
+
+                );
+
+
+            }
+
+            catch (firestoreError) {
+
+
+                console.error(
+                    '❌❌❌ FIRESTORE ERROR:',
+                    firestoreError
+                );
+
+
+                console.error(
+                    '❌ PESAN ERROR:',
+                    firestoreError.message
+                );
+
+
+                // Tetap simpan backup lokal
+
+                orderHistory.unshift(order);
+
+
+                localStorage.setItem(
+
+                    'rikyHistory',
+
+                    JSON.stringify(orderHistory)
+
+                );
+
+
+                showToast(
+
+                    'Telegram berhasil, tapi Firestore gagal: ' +
+                    firestoreError.message,
+
+                    'error'
+
+                );
+
+            }
+
+
+        }
+
 
         // ==========================================
-        // SIMPAN PESANAN KE FIRESTORE
+        // TELEGRAM GAGAL
         // ==========================================
-        await db.collection('orders')
-            .doc(String(order.id))
-            .set({
-                ...order,
-                status: 'pending',
-                coinRewarded: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+
+        else {
 
 
-        // ==========================================
-        // LOCALSTORAGE TETAP DISIMPAN SEBAGAI BACKUP
-        // ==========================================
-        orderHistory.unshift(order);
-
-        localStorage.setItem(
-            'rikyHistory',
-            JSON.stringify(orderHistory)
-        );
+            console.error(
+                'Telegram Error:',
+                result
+            );
 
 
-        // ==========================================
-        // KOSONGKAN KERANJANG
-        // ==========================================
-        cart = [];
+            showToast(
+                'Gagal kirim ke Telegram, coba lagi',
+                'error'
+            );
 
-        saveCart();
-
-
-        // ==========================================
-        // TUTUP MODAL
-        // ==========================================
-        document
-            .getElementById('uploadModal')
-            .classList
-            .remove('open');
+        }
 
 
-        // ==========================================
-        // RESET DATA CHECKOUT
-        // ==========================================
-        window._checkoutCoinUsed = 0;
-        window._checkoutCoinDiscount = 0;
-        window._checkoutSubtotal = 0;
+    }
 
 
-        updateCoinUI();
+    // ==========================================
+    // ERROR JARINGAN
+    // ==========================================
 
+    catch (e) {
 
-        showToast(
-            'Pesanan terkirim! Menunggu verifikasi admin.',
-            'success'
-        );
-
-
-    } catch (firestoreError) {
 
         console.error(
-            'Gagal menyimpan order ke Firestore:',
-            firestoreError
+            'ERROR UTAMA:',
+            e
         );
 
+
         showToast(
-            'Pesanan terkirim ke Telegram, tetapi gagal menyimpan data pesanan.',
+            'Error jaringan: ' + e.message,
             'error'
         );
 
     }
 
-}
-        } else {
-            showToast('Gagal kirim, coba lagi', 'error');
-            if (coinUsed > 0) {
-                const userNow = getLoggedInUser();
-                if (userNow) { addCoinToUser(userNow.username, coinUsed, 'Rollback gagal kirim', orderId); }
-            }
-        }
-    } catch (e) {
-        showToast('Error jaringan, coba lagi', 'error');
-        if (coinUsed > 0) {
-            const userNow = getLoggedInUser();
-            if (userNow) { addCoinToUser(userNow.username, coinUsed, 'Rollback error', orderId); }
-        }
-    } finally {
-        this.textContent = 'Kirim';
-        this.disabled = false;
+
+    // ==========================================
+    // RESET BUTTON
+    // ==========================================
+
+    finally {
+
+
+        this.textContent =
+            'Kirim';
+
+
+        this.disabled =
+            false;
+
     }
+
+
 });
-
-// === Integrasi dengan Auth UI ===
-const originalUpdateAuthUI = window.updateAuthUI;
-window.updateAuthUI = function() {
-    originalUpdateAuthUI();
-    updateCoinUI();
-    setTimeout(setupCoinHistoryListener, 100);
-};
-
-// === Klik menu RIKY COIN di drawer ===
-document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.getElementById('drawer').classList.remove('open');
-    document.getElementById('drawerOverlay').classList.remove('open');
-    document.body.classList.remove('drawer-open');
-    document.getElementById('profileModal').classList.add('open');
-    setTimeout(() => {
-        const btn = document.getElementById('showCoinHistoryBtn');
-        if (btn) btn.click();
-    }, 300);
-});
-
-// === Inisialisasi awal ===
-setTimeout(() => {
-    updateCoinUI();
-    setupCoinHistoryListener();
-}, 500);
     </script>
 </body>
 </html>
