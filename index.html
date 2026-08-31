@@ -996,28 +996,32 @@
 .coin-amount-control {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 10px;
+    margin-top: 12px;
     flex-wrap: wrap;
 }
 .coin-amount-control button {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: 1.5px solid var(--border);
     background: var(--surface);
     color: var(--text);
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: all 0.2s;
 }
 .coin-amount-control button:hover {
     border-color: var(--primary);
     color: var(--primary);
+}
+.coin-amount-control button:active {
+    transform: scale(0.92);
 }
 .coin-amount-control input {
     width: 80px;
@@ -1025,41 +1029,48 @@
     background: var(--surface);
     border: 1.5px solid var(--border);
     border-radius: 8px;
-    padding: 8px 4px;
+    padding: 10px 4px;
     color: var(--text);
-    font-weight: 600;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 16px;
     outline: none;
     flex-shrink: 0;
 }
 .coin-amount-control input:focus {
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
 }
 .coin-max-btn {
-    font-size: 11px;
-    padding: 8px 16px;
+    font-size: 12px;
+    padding: 10px 18px;
     border-radius: 9999px;
     background: var(--primary);
     color: white;
     border: none;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     flex-shrink: 0;
+    transition: all 0.2s;
 }
 .coin-max-btn:hover {
-    transform: scale(1.02);
+    transform: scale(1.03);
+}
+.coin-max-btn:active {
+    transform: scale(0.95);
 }
 .coin-info-text {
-    font-size: 10px;
-    color: var(--textSec);
-    margin-top: 4px;
-}
-.coin-discount-display {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--textSec);
     margin-top: 6px;
-    padding-top: 6px;
+    width: 100%;
+}
+.coin-discount-display {
+    font-size: 13px;
+    color: var(--textSec);
+    margin-top: 8px;
+    padding-top: 8px;
     border-top: 1px solid var(--border);
+    font-weight: 600;
 }
     </style>
 </head>
@@ -4700,16 +4711,83 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
         const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
         const result = await res.json();
         if (result.ok) {
-            orderHistory.unshift(order);
-            localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
-            cart = [];
-            saveCart();
-            document.getElementById('uploadModal').classList.remove('open');
-            showToast('Pesanan terkirim! Menunggu verifikasi admin.', 'success');
-            window._checkoutCoinUsed = 0;
-            window._checkoutCoinDiscount = 0;
-            window._checkoutSubtotal = 0;
-            updateCoinUI();
+
+    try {
+
+        // ==========================================
+        // SIMPAN PESANAN KE FIRESTORE
+        // ==========================================
+        await db.collection('orders')
+            .doc(String(order.id))
+            .set({
+                ...order,
+                status: 'pending',
+                coinRewarded: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+
+        // ==========================================
+        // LOCALSTORAGE TETAP DISIMPAN SEBAGAI BACKUP
+        // ==========================================
+        orderHistory.unshift(order);
+
+        localStorage.setItem(
+            'rikyHistory',
+            JSON.stringify(orderHistory)
+        );
+
+
+        // ==========================================
+        // KOSONGKAN KERANJANG
+        // ==========================================
+        cart = [];
+
+        saveCart();
+
+
+        // ==========================================
+        // TUTUP MODAL
+        // ==========================================
+        document
+            .getElementById('uploadModal')
+            .classList
+            .remove('open');
+
+
+        // ==========================================
+        // RESET DATA CHECKOUT
+        // ==========================================
+        window._checkoutCoinUsed = 0;
+        window._checkoutCoinDiscount = 0;
+        window._checkoutSubtotal = 0;
+
+
+        updateCoinUI();
+
+
+        showToast(
+            'Pesanan terkirim! Menunggu verifikasi admin.',
+            'success'
+        );
+
+
+    } catch (firestoreError) {
+
+        console.error(
+            'Gagal menyimpan order ke Firestore:',
+            firestoreError
+        );
+
+        showToast(
+            'Pesanan terkirim ke Telegram, tetapi gagal menyimpan data pesanan.',
+            'error'
+        );
+
+    }
+
+}
         } else {
             showToast('Gagal kirim, coba lagi', 'error');
             if (coinUsed > 0) {
