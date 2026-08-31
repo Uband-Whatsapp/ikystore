@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Coin - RIKY STORE</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(37, 99, 235, 0.12), transparent 30%),
+                #0B1121;
+            color: #F1F5F9;
+            font-family: Inter, Arial, sans-serif;
+            padding: 16px;
+        }
+
+        .app-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+            font-size: 19px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+        }
+
+        .brand p {
+            margin: 3px 0 0;
+            color: #64748B;
+            font-size: 12px;
+        }
+
+        /* CARD */
+        .card {
+            background: rgba(30, 41, 59, 0.82);
+            border: 1px solid #334155;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(12px);
+        }
+
+        /* LOGIN */
+        .login-card {
+            max-width: 480px;
+            margin: 60px auto;
+            padding: 24px;
+        }
+
+        .login-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: rgba(37, 99, 235, 0.12);
+            color: #60A5FA;
+            font-size: 23px;
+            border: 1px solid rgba(37, 99, 235, 0.25);
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #94A3B8;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        /* INPUT */
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #CBD5E1;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748B;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            background: #0F172A;
+            color: #F8FAFC;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        /* BUTTON */
+        button {
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .login-button {
+            width: 100%;
+            margin-top: 14px;
+            padding: 13px;
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #F87171;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        /* DASHBOARD */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .dashboard-title h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .dashboard-title p {
+            margin: 4px 0 0;
+            color: #64748B;
+            font-size: 12px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.75);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 15px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #94A3B8;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            margin-top: 7px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(37, 99, 235, 0.12);
+            color: #60A5FA;
+        }
+
+        /* ORDER CARD */
+        .order-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #EAB308;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            padding-left: 5px;
+        }
+
+        .order-id {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .order-date {
+            font-size: 11px;
+            color: #64748B;
+            text-align: right;
+        }
+
+        .badge-pending {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 6px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: rgba(234, 179, 8, 0.12);
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            color: #FACC15;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .order-items {
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.65);
+            border-radius: 12px;
+            border: 1px solid rgba(51, 65, 85, 0.7);
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-left: 5px;
+        }
+
+        .price-label {
+            color: #64748B;
+            font-size: 11px;
+        }
+
+        .price-value {
+            font-size: 19px;
+            font-weight: 800;
+            margin-top: 2px;
+        }
+
+        .coin-info {
+            margin-top: 7px;
+            font-size: 11px;
+            color: #94A3B8;
+        }
+
+        .coin-reward {
+            color: #FACC15;
+            font-weight: 800;
+        }
+
+        .coin-used {
+            margin-top: 4px;
+            font-size: 11px;
+            color: #64748B;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-success,
+        .btn-danger {
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 9px 13px;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .btn-success {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ADE80;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .btn-success:hover {
+            background: #22C55E;
+            color: white;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #F87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover {
+            background: #EF4444;
+            color: white;
+        }
+
+        /* EMPTY */
+        .empty-state {
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: rgba(37, 99, 235, 0.08);
+            color: #64748B;
+            font-size: 24px;
+        }
+
+        .empty-title {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .empty-text {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .topbar {
+                margin-bottom: 16px;
+            }
+
+            .brand h1 {
+                font-size: 17px;
+            }
+
+            .brand p {
+                font-size: 10px;
+            }
+
+            .btn-logout span {
+                display: none;
+            }
+
+            .order-footer {
+                align-items: stretch;
+            }
+
+            .action-buttons {
+                width: 100%;
+            }
+
+            .btn-success,
+            .btn-danger {
+                flex: 1;
+                padding: 11px;
+            }
+
+            .price-value {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- HEADER -->
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fas fa-coins"></i>
+            </div>
+
+            <div>
+                <h1>RIKY COIN</h1>
+                <p>Admin Panel • Manajemen Pesanan</p>
+            </div>
+        </div>
+
+        <button class="btn-logout" onclick="logoutAdmin()">
+            <i class="fas fa-right-from-bracket"></i>
+            <span>Logout</span>
+        </button>
+    </div>
+
+
+    <!-- LOGIN -->
+    <div id="adminLogin" class="card login-card">
+
+        <div class="login-icon">
+            <i class="fas fa-shield-halved"></i>
+        </div>
+
+        <div class="login-title">Admin Login</div>
+
+        <div class="login-subtitle">
+            Masukkan password untuk mengakses panel administrasi.
+        </div>
+
+        <label class="input-label">
+            Password Admin
+        </label>
+
+        <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Masukkan password admin"
+            >
+        </div>
+
+        <button class="btn-primary login-button" onclick="adminLogin()">
+            <i class="fas fa-arrow-right-to-bracket mr-2"></i>
+            Masuk ke Dashboard
+        </button>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div id="adminDashboard" style="display:none;">
+
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <h2>Pesanan Masuk</h2>
+                <p>Kelola dan verifikasi pesanan yang menunggu.</p>
+            </div>
+        </div>
+
+
+        <!-- STATISTIK -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-top">
+
+                    <div>
+                        <div class="stat-label">
+                            PESANAN PENDING
+                        </div>
+
+                        <div class="stat-value" id="pendingCount">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-top">
+
+                    <div>
+                        <div class="stat-label">
+                            TOTAL REWARD
+                        </div>
+
+                        <div class="stat-value" id="totalReward">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ORDER LIST -->
+        <div id="orderList"></div>
+
+    </div>
+
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+
+/* =========================================================
+   FIREBASE CONFIG
+   ========================================================= */
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
+    authDomain: "riky-store-push.firebaseapp.com",
+    projectId: "riky-store-push",
+    storageBucket: "riky-store-push.firebasestorage.app",
+    messagingSenderId: "700709840952",
+    appId: "1:700709840952:web:d2efb042652f931d269ecd"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
+
+/* =========================================================
+   DATA
+   ========================================================= */
+
+let orders = [];
+let users = [];
+
+
+/* =========================================================
+   FETCH DATA
+   ========================================================= */
+
+async function fetchData() {
+
+    const userSnap = await db.collection('users').get();
+
+    users = [];
+
+    userSnap.forEach(doc =>
+        users.push({
+            username: doc.id,
+            ...doc.data()
+        })
+    );
+
+
+    const history =
+        JSON.parse(localStorage.getItem('rikyHistory')) || [];
+
+
+    orders = history
+        .filter(o => o.status === 'pending' || !o.status)
+        .map(o => {
+
+            if (!o.status)
+                o.status = 'pending';
+
+            if (o.coinRewarded === undefined)
+                o.coinRewarded = false;
+
+            return o;
+
+        });
+
+}
+
+
+/* =========================================================
+   RENDER ORDER
+   ========================================================= */
+
+function renderOrders() {
+
+    const container =
+        document.getElementById('orderList');
+
+
+    /* UPDATE STATISTIK */
+
+    const pendingCount =
+        document.getElementById('pendingCount');
+
+    const totalReward =
+        document.getElementById('totalReward');
+
+
+    if (pendingCount)
+        pendingCount.textContent = orders.length;
+
+
+    const rewards =
+        orders.reduce((total, order) => {
+            return total + Math.floor(order.total / 1000);
+        }, 0);
+
+
+    if (totalReward)
+        totalReward.textContent = rewards;
+
+
+    /* EMPTY STATE */
+
+    if (!orders.length) {
+
+        container.innerHTML = `
+            <div class="card empty-state">
+
+                <div class="empty-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+
+                <div class="empty-title">
+                    Tidak Ada Pesanan Pending
+                </div>
+
+                <div class="empty-text">
+                    Semua pesanan telah diproses.
+                </div>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    let html = '';
+
+
+    orders.forEach((o, idx) => {
+
+        const items =
+            o.items
+                .map(i =>
+                    `${i.nama} x${i.qty || 1}`
+                )
+                .join(', ');
+
+
+        const reward =
+            Math.floor(o.total / 1000);
+
+
+        html += `
+
+            <div class="card order-card" data-index="${idx}">
+
+                <div class="order-header">
+
+                    <div>
+
+                        <div class="order-id">
+                            Pesanan #${o.id}
+                        </div>
+
+                        <span class="badge-pending">
+                            <i class="fas fa-clock"></i>
+                            PENDING
+                        </span>
+
+                    </div>
+
+
+                    <div class="order-date">
+                        ${o.tanggal}
+                    </div>
+
+                </div>
+
+
+                <div class="order-items">
+
+                    <i class="fas fa-bag-shopping mr-2 text-slate-500"></i>
+
+                    ${items}
+
+                </div>
+
+
+                <div class="order-footer">
+
+                    <div>
+
+                        <div class="price-label">
+                            TOTAL PEMBAYARAN
+                        </div>
+
+                        <div class="price-value">
+                            Rp${o.total.toLocaleString()}
+                        </div>
+
+
+                        ${o.coinUsed > 0 ? `
+
+                            <div class="coin-used">
+                                Coin digunakan: ${o.coinUsed}
+                            </div>
+
+                        ` : ''}
+
+
+                        <div class="coin-info">
+
+                            Reward:
+
+                            <span class="coin-reward">
+                                ${reward} Coin
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="action-buttons">
+
+                        <button
+                            class="btn-success"
+                            onclick="verifyOrder(${idx}, true)"
+                        >
+
+                            <i class="fas fa-check mr-1"></i>
+
+                            Berhasil
+
+                        </button>
+
+
+                        <button
+                            class="btn-danger"
+                            onclick="verifyOrder(${idx}, false)"
+                        >
+
+                            <i class="fas fa-xmark mr-1"></i>
+
+                            Tolak
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   VERIFY ORDER
+   ========================================================= */
+
+async function verifyOrder(index, isSuccess) {
+
+    const order = orders[index];
+
+    if (!order)
+        return;
+
+
+    if (order.coinRewarded === true) {
+
+        Swal.fire(
+            'Info',
+            'Pesanan ini sudah pernah diverifikasi.',
+            'info'
+        );
+
+        return;
+
+    }
+
+
+    const user =
+        users.find(
+            u => u.username === order.username
+        );
+
+
+    if (!user) {
+
+        Swal.fire(
+            'Error',
+            'User tidak ditemukan.',
+            'error'
+        );
+
+        return;
+
+    }
+
+
+    const confirmText =
+        isSuccess ? 'Berhasil' : 'Tolak';
+
+
+    const result =
+        await Swal.fire({
+
+            title: `Verifikasi #${order.id}`,
+
+            text:
+                `Anda yakin menandai sebagai "${confirmText}"?`,
+
+            icon: 'question',
+
+            showCancelButton: true,
+
+            confirmButtonText:
+                `Ya, ${confirmText}`,
+
+            cancelButtonText:
+                'Batal'
+
+        });
+
+
+    if (!result.isConfirmed)
+        return;
+
+
+    /* ================= SUCCESS ================= */
+
+    if (isSuccess) {
+
+        const reward =
+            Math.floor(order.total / 1000);
+
+
+        if (reward > 0) {
+
+            const newBalance =
+                (user.coinBalance || 0)
+                + reward;
+
+
+            const newHistory =
+                user.coinHistory || [];
+
+
+            newHistory.unshift({
+
+                type: 'reward',
+
+                amount: reward,
+
+                reason:
+                    `Reward dari pesanan #${order.id}`,
+
+                orderId:
+                    order.id,
+
+                date:
+                    new Date()
+                    .toLocaleString('id-ID')
+
+            });
+
+
+            await db
+                .collection('users')
+                .doc(user.username)
+                .update({
+
+                    coinBalance:
+                        newBalance,
+
+                    coinHistory:
+                        newHistory
+
+                });
+
+
+            const localUsers =
+                JSON.parse(
+                    localStorage.getItem('rikyUsers')
+                ) || [];
+
+
+            const idx2 =
+                localUsers.findIndex(
+                    u =>
+                        u.username ===
+                        user.username
+                );
+
+
+            if (idx2 !== -1) {
+
+                localUsers[idx2].coinBalance =
+                    newBalance;
+
+                localUsers[idx2].coinHistory =
+                    newHistory;
+
+
+                localStorage.setItem(
+                    'rikyUsers',
+                    JSON.stringify(localUsers)
+                );
+
+            }
+
+
+            order.status = 'success';
+
+            order.coinRewarded = true;
+
+        }
+
+        else {
+
+            order.status = 'success';
+
+            order.coinRewarded = true;
+
+        }
+
+
+        Swal.fire({
+
+            toast: true,
+
+            position: 'top-end',
+
+            icon: 'success',
+
+            title:
+                `+${reward} Coin untuk @${user.username}`,
+
+            showConfirmButton: false,
+
+            timer: 3000
+
+        });
+
+    }
+
+
+    /* ================= REJECT ================= */
+
+    else {
+
+        order.status = 'rejected';
+
+        order.coinRewarded = false;
+
+
+        Swal.fire({
+
+            toast: true,
+
+            position: 'top-end',
+
+            icon: 'error',
+
+            title:
+                `Pesanan #${order.id} ditolak.`,
+
+            showConfirmButton: false,
+
+            timer: 3000
+
+        });
+
+    }
+
+
+    /* ================= SAVE HISTORY ================= */
+
+    const history =
+        JSON.parse(
+            localStorage.getItem('rikyHistory')
+        ) || [];
+
+
+    const idx2 =
+        history.findIndex(
+            h => h.id === order.id
+        );
+
+
+    if (idx2 !== -1)
+        history[idx2] = order;
+
+    else
+        history.push(order);
+
+
+    localStorage.setItem(
+        'rikyHistory',
+        JSON.stringify(history)
+    );
+
+
+    await fetchData();
+
+    renderOrders();
+
+}
+
+
+/* =========================================================
+   REFRESH
+   ========================================================= */
+
+async function refreshOrders() {
+
+    await fetchData();
+
+    renderOrders();
+
+}
+
+
+/* =========================================================
+   ADMIN LOGIN
+   ========================================================= */
+
+function adminLogin() {
+
+    if (
+        document.getElementById(
+            'adminPassword'
+        ).value === 'admin123'
+    ) {
+
+        document.getElementById(
+            'adminLogin'
+        ).style.display = 'none';
+
+
+        document.getElementById(
+            'adminDashboard'
+        ).style.display = 'block';
+
+
+        localStorage.setItem(
+            'adminSession',
+            'true'
+        );
+
+
+        refreshOrders();
+
+    }
+
+    else {
+
+        Swal.fire(
+            'Error',
+            'Password salah!',
+            'error'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+function logoutAdmin() {
+
+    localStorage.removeItem(
+        'adminSession'
+    );
+
+
+    document.getElementById(
+        'adminLogin'
+    ).style.display = 'block';
+
+
+    document.getElementById(
+        'adminDashboard'
+    ).style.display = 'none';
+
+}
+
+
+/* =========================================================
+   AUTO LOGIN
+   ========================================================= */
+
+if (
+    localStorage.getItem(
+        'adminSession'
+    ) === 'true'
+) {
+
+    document.getElementById(
+        'adminLogin'
+    ).style.display = 'none';
+
+
+    document.getElementById(
+        'adminDashboard'
+    ).style.display = 'block';
+
+
+    refreshOrders();
+
+}
+
+</script>
+
+</body>
+</html>
