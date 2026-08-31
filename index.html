@@ -902,6 +902,117 @@
                 flex-direction: column;
             }
         }
+/* ===== RIKY COIN ===== */
+.coin-balance-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+.coin-balance-card .coin-icon {
+    font-size: 24px;
+    color: #FBBF24;
+}
+.coin-balance-card .balance {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+}
+.coin-balance-card .balance span {
+    color: var(--primary);
+}
+.coin-history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+}
+.coin-history-item .amount.plus {
+    color: #22C55E;
+}
+.coin-history-item .amount.minus {
+    color: #EF4444;
+}
+.coin-checkout-section {
+    background: var(--card);
+    border-radius: var(--radiusSm);
+    padding: 12px;
+    margin-top: 12px;
+    border: 1px solid var(--border);
+}
+.coin-toggle-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+.coin-toggle-group .toggle-btn {
+    flex: 1;
+    padding: 6px 0;
+    border-radius: 9999px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--textSec);
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.coin-toggle-group .toggle-btn.active {
+    border-color: var(--primary);
+    background: rgba(37,99,235,0.15);
+    color: var(--primary);
+}
+.coin-amount-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+.coin-amount-control button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.coin-amount-control input {
+    width: 80px;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 14px;
+}
+.coin-max-btn {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+.coin-info-text {
+    font-size: 10px;
+    color: var(--textSec);
+    margin-top: 4px;
+}
     </style>
 </head>
 <body>
@@ -1064,6 +1175,10 @@
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="history"><i class="fas fa-clock-rotate-left text-primary w-5 text-center"></i> Riwayat</button>
                     <!-- RESELLER: Menu Reseller di bagian Akun -->
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="reseller"><i class="fas fa-store text-primary w-5 text-center"></i> Reseller</button>
+<button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="coins">
+    <i class="fas fa-coins text-yellow-500 w-5 text-center"></i> RIKY COIN
+    <span class="ml-auto text-xs bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded-full" id="drawerCoinBalance">0</span>
+</button>
                 </div>
             </div>
 
@@ -1792,6 +1907,28 @@
                 <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="checkoutModal">&times;</button>
             </div>
             <div class="modal-body" id="checkoutDetails"></div>
+            <div class="coin-checkout-section">
+    <div class="flex items-center justify-between">
+        <span class="text-sm font-semibold" style="color:var(--text);">RIKY COIN</span>
+        <span class="text-xs" style="color:var(--textSec);">Saldo: <span id="checkoutCoinBalance">0</span> Coin</span>
+    </div>
+    <div class="coin-toggle-group">
+        <button class="toggle-btn active" data-use="no">Tidak Gunakan</button>
+        <button class="toggle-btn" data-use="yes">Gunakan Coin</button>
+    </div>
+    <div id="coinAmountSection" style="display:none;">
+        <div class="coin-amount-control">
+            <button id="coinDecBtn">−</button>
+            <input type="number" id="coinAmountInput" value="0" min="0">
+            <button id="coinIncBtn">+</button>
+            <button class="coin-max-btn" id="coinMaxBtn">Maksimal</button>
+        </div>
+        <div class="coin-info-text">
+            Maksimal 20% dari total ( <span id="maxCoinDisplay">0</span> Coin )
+        </div>
+    </div>
+    <div id="coinDiscountDisplay" class="text-xs mt-1" style="color:var(--textSec);">Potongan: Rp0</div>
+</div>
             <div class="px-4 pb-1">
                 <div class="flex gap-1.5">
                     <input type="text" id="checkoutVoucherInput" placeholder="Kode voucher" class="input-modern text-sm flex-1">
@@ -2181,6 +2318,19 @@
                                         ${roleBadge}
                                         <span class="badge badge-blue"><i class="fas fa-shopping-bag"></i> ${orderHistory.length} Pesanan</span>
                                     </div>
+// === TAMBAHKAN DI DALAM profileContent.innerHTML, setelah roleBadge ===
+<div class="coin-balance-card w-full">
+    <div>
+        <span class="text-xs font-bold uppercase tracking-wider" style="color:var(--textSec);">RIKY COIN</span>
+        <p class="balance"><span id="profileCoinBalance">${user ? getCoinBalance(user.username) : 0}</span> Coin</p>
+        <p class="text-[9px]" style="color:var(--textSec);">Nilai: Rp<span id="profileCoinValue">${user ? getCoinBalance(user.username) : 0}</span></p>
+    </div>
+    <div class="coin-icon"><i class="fas fa-coins"></i></div>
+</div>
+<div class="w-full mt-2">
+    <button class="text-xs text-primary font-semibold hover:underline" id="showCoinHistoryBtn">Lihat Riwayat Coin</button>
+</div>
+<div id="coinHistoryContainer" class="mt-2 hidden max-h-40 overflow-y-auto"></div>
                                     <div class="w-full mt-3 border-t pt-3 space-y-1.5" style="border-color:var(--border);">
                                         <button class="w-full btn-outline text-sm py-1.5" onclick="showToast('Fitur favorit segera hadir','info')"><i class="fas fa-heart"></i> Favorit</button>
                                         <button class="w-full btn-danger text-sm py-1.5 rounded-full font-semibold" style="background:rgba(239,68,68,0.15);color:#EF4444;border:1px solid rgba(239,68,68,0.3);" onclick="clearLoggedInUser();showToast('Logout berhasil','success');document.getElementById('profileModal').classList.remove('open');">
@@ -4115,6 +4265,395 @@
                 })
                 .catch(err => console.error('❌ SW registration gagal:', err));
         }
+        // ============================================================
+// RIKY COIN - FUNGSI DAN LOGIKA
+// ============================================================
+
+function getUserCoinData(username) {
+    const users = getUsers();
+    const user = users.find(u => u.username === username);
+    if (!user) return null;
+    return {
+        balance: user.coinBalance || 0,
+        history: user.coinHistory || []
+    };
+}
+
+function saveUserCoinData(username, balance, history) {
+    const users = getUsers();
+    const idx = users.findIndex(u => u.username === username);
+    if (idx === -1) return;
+    users[idx].coinBalance = balance;
+    users[idx].coinHistory = history || [];
+    saveUsers(users);
+    const user = getLoggedInUser();
+    if (user && user.username === username) {
+        user.coinBalance = balance;
+        user.coinHistory = history || [];
+        setLoggedInUser(user);
+        syncUserToFirestore(user);
+    }
+    updateCoinUI();
+}
+
+function addCoinToUser(username, amount, reason, orderId) {
+    if (amount <= 0) return false;
+    const data = getUserCoinData(username);
+    if (!data) return false;
+    const newBalance = data.balance + amount;
+    const newHistory = data.history || [];
+    newHistory.unshift({
+        type: 'reward',
+        amount: amount,
+        reason: reason || 'Reward pembelian',
+        orderId: orderId || null,
+        date: new Date().toLocaleString('id-ID')
+    });
+    saveUserCoinData(username, newBalance, newHistory);
+    return true;
+}
+
+function useCoinFromUser(username, amount, reason, orderId) {
+    if (amount <= 0) return false;
+    const data = getUserCoinData(username);
+    if (!data || data.balance < amount) return false;
+    const newBalance = data.balance - amount;
+    const newHistory = data.history || [];
+    newHistory.unshift({
+        type: 'redeem',
+        amount: -amount,
+        reason: reason || 'Digunakan untuk pesanan',
+        orderId: orderId || null,
+        date: new Date().toLocaleString('id-ID')
+    });
+    saveUserCoinData(username, newBalance, newHistory);
+    return true;
+}
+
+function getCoinBalance(username) {
+    const data = getUserCoinData(username);
+    return data ? data.balance : 0;
+}
+
+function updateCoinUI() {
+    const user = getLoggedInUser();
+    if (!user) {
+        document.getElementById('drawerCoinBalance').textContent = '0';
+        return;
+    }
+    const balance = getCoinBalance(user.username);
+    document.getElementById('drawerCoinBalance').textContent = balance;
+    document.getElementById('profileCoinBalance').textContent = balance;
+    document.getElementById('profileCoinValue').textContent = balance;
+    const checkoutBalance = document.getElementById('checkoutCoinBalance');
+    if (checkoutBalance) checkoutBalance.textContent = balance;
+}
+
+document.getElementById('showCoinHistoryBtn')?.addEventListener('click', function() {
+    const container = document.getElementById('coinHistoryContainer');
+    const user = getLoggedInUser();
+    if (!user) return;
+    const data = getUserCoinData(user.username);
+    if (!data || !data.history || data.history.length === 0) {
+        container.innerHTML = '<p class="text-xs" style="color:var(--textSec);">Belum ada riwayat coin.</p>';
+        container.classList.remove('hidden');
+        return;
+    }
+    let html = '';
+    data.history.slice(0, 20).forEach(h => {
+        const cls = h.amount > 0 ? 'plus' : 'minus';
+        const sign = h.amount > 0 ? '+' : '';
+        html += `
+            <div class="coin-history-item">
+                <span>${h.reason || 'Transaksi'}</span>
+                <span class="amount ${cls}">${sign}${h.amount} Coin</span>
+                <span class="text-[9px]" style="color:var(--textSec);">${h.date || ''}</span>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+    container.classList.toggle('hidden');
+});
+
+// === Checkout Coin Logic ===
+let coinUseMode = 'no';
+let coinAmount = 0;
+let maxCoinAllowed = 0;
+let checkoutSubtotal = 0;
+
+function renderCoinCheckoutOptions() {
+    const user = getLoggedInUser();
+    if (!user) return;
+    const balance = getCoinBalance(user.username);
+    document.getElementById('checkoutCoinBalance').textContent = balance;
+    const subtotal = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+    checkoutSubtotal = subtotal;
+    maxCoinAllowed = Math.floor(subtotal * 0.20);
+    const maxAvailable = Math.min(balance, maxCoinAllowed);
+    document.getElementById('maxCoinDisplay').textContent = maxAvailable;
+    coinUseMode = 'no';
+    coinAmount = 0;
+    document.getElementById('coinAmountSection').style.display = 'none';
+    document.getElementById('coinDiscountDisplay').textContent = 'Potongan: Rp0';
+    document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.use === 'no');
+    });
+    updateCheckoutTotal();
+}
+
+document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const use = this.dataset.use;
+        coinUseMode = use;
+        document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        if (use === 'yes') {
+            document.getElementById('coinAmountSection').style.display = 'block';
+            const max = Math.min(getCoinBalance(getLoggedInUser().username), maxCoinAllowed);
+            document.getElementById('coinAmountInput').value = 0;
+            document.getElementById('coinAmountInput').max = max;
+            coinAmount = 0;
+        } else {
+            document.getElementById('coinAmountSection').style.display = 'none';
+            coinAmount = 0;
+        }
+        updateCheckoutTotal();
+    });
+});
+
+document.getElementById('coinDecBtn')?.addEventListener('click', function() {
+    const input = document.getElementById('coinAmountInput');
+    let val = parseInt(input.value) || 0;
+    if (val > 0) val--;
+    input.value = val;
+    coinAmount = val;
+    updateCheckoutTotal();
+});
+document.getElementById('coinIncBtn')?.addEventListener('click', function() {
+    const input = document.getElementById('coinAmountInput');
+    let val = parseInt(input.value) || 0;
+    const max = parseInt(input.max) || 0;
+    if (val < max) val++;
+    input.value = val;
+    coinAmount = val;
+    updateCheckoutTotal();
+});
+document.getElementById('coinMaxBtn')?.addEventListener('click', function() {
+    const input = document.getElementById('coinAmountInput');
+    const max = parseInt(input.max) || 0;
+    input.value = max;
+    coinAmount = max;
+    updateCheckoutTotal();
+});
+document.getElementById('coinAmountInput')?.addEventListener('input', function() {
+    let val = parseInt(this.value) || 0;
+    const max = parseInt(this.max) || 0;
+    if (val > max) val = max;
+    if (val < 0) val = 0;
+    this.value = val;
+    coinAmount = val;
+    updateCheckoutTotal();
+});
+
+function updateCheckoutTotal() {
+    const subtotal = checkoutSubtotal;
+    let discount = 0;
+    if (coinUseMode === 'yes' && coinAmount > 0) {
+        discount = coinAmount;
+        const maxDiscount = Math.min(subtotal * 0.20, getCoinBalance(getLoggedInUser().username));
+        if (discount > maxDiscount) discount = maxDiscount;
+    }
+    const total = subtotal - discount;
+    document.getElementById('coinDiscountDisplay').textContent = `Potongan: Rp${discount.toLocaleString()}`;
+    document.getElementById('checkoutTotal').textContent = `Rp${total.toLocaleString()}`;
+    window._tempCoinDiscount = discount;
+    window._tempCoinUsed = coinUseMode === 'yes' ? coinAmount : 0;
+}
+
+// Override openCheckoutModal
+const originalOpenCheckout = window.openCheckoutModal;
+window.openCheckoutModal = function() {
+    if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
+    if (!isLoggedIn()) { showToast('Login dulu untuk checkout', 'info'); openAuthModal(); return; }
+    const details = document.getElementById('checkoutDetails');
+    let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+    let html = '<div class="space-y-1.5">';
+    cart.forEach(item => {
+        let detail = '';
+        if (item.tipe === 'game') detail = `ID: ${item.userId}`;
+        else if (item.tipe === 'bot') detail = item.linkGrup ? `Link Grup: ${item.linkGrup.substring(0,30)}...` : `No WA: ${item.phone}`;
+        else if (item.tipe === 'premium') detail = 'Aktivasi langsung';
+        html += `<div class="flex justify-between text-sm py-1 border-b" style="border-color:var(--border);"><span style="color:var(--text);">${item.nama} x${item.qty||1}</span><span style="color:var(--textSec);">Rp${(item.harga*(item.qty||1)).toLocaleString()}</span></div><div class="text-xs" style="color:var(--textSec);">${detail}</div>`;
+    });
+    html += `</div>`;
+    details.innerHTML = html;
+    document.getElementById('checkoutCoinBalance').textContent = getCoinBalance(getLoggedInUser().username);
+    document.querySelectorAll('.coin-toggle-group .toggle-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.coin-toggle-group .toggle-btn[data-use="no"]').classList.add('active');
+    document.getElementById('coinAmountSection').style.display = 'none';
+    document.getElementById('coinAmountInput').value = 0;
+    coinUseMode = 'no';
+    coinAmount = 0;
+    checkoutSubtotal = total;
+    const max = Math.min(getCoinBalance(getLoggedInUser().username), Math.floor(total * 0.20));
+    document.getElementById('maxCoinDisplay').textContent = max;
+    document.getElementById('coinAmountInput').max = max;
+    updateCheckoutTotal();
+    document.getElementById('checkoutModal').classList.add('open');
+    appliedVoucher = null;
+    document.getElementById('checkoutVoucherInput').value = '';
+    document.getElementById('voucherMessage').innerHTML = '';
+    document.getElementById('voucherDetail').classList.add('hidden');
+};
+
+// Override checkout QRIS
+document.getElementById('checkoutQrisBtn')?.addEventListener('click', function() {
+    if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
+    let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+    let discount = window._tempCoinDiscount || 0;
+    let coinUsed = window._tempCoinUsed || 0;
+    let finalTotal = total - discount;
+    const user = getLoggedInUser();
+    if (user && coinUsed > 0) {
+        const balance = getCoinBalance(user.username);
+        if (coinUsed > balance) {
+            showToast('Saldo coin tidak mencukupi!', 'error');
+            return;
+        }
+        if (coinUsed > Math.floor(total * 0.20)) {
+            showToast('Melebihi batas 20%!', 'error');
+            return;
+        }
+    }
+    document.getElementById('qrisTotal').textContent = `Rp${finalTotal.toLocaleString()}`;
+    document.getElementById('uploadNominal').textContent = `Rp${finalTotal.toLocaleString()}`;
+    window._checkoutCoinUsed = coinUsed;
+    window._checkoutCoinDiscount = discount;
+    window._checkoutSubtotal = total;
+    document.getElementById('checkoutModal').classList.remove('open');
+    document.getElementById('qrisModal').classList.add('open');
+});
+
+// Override kirim bukti
+document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
+    const wa = document.getElementById('buyerWa').value.trim();
+    const file = document.getElementById('buktiFile').files[0];
+    const note = document.getElementById('checkoutNote').value.trim();
+    if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
+    if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
+    const user = getLoggedInUser();
+    if (!user) { showToast('Login dulu!', 'error'); return; }
+    let total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+    let coinUsed = window._checkoutCoinUsed || 0;
+    let coinDiscount = window._checkoutCoinDiscount || 0;
+    let finalTotal = total - coinDiscount;
+    if (coinUsed > 0) {
+        const balance = getCoinBalance(user.username);
+        if (coinUsed > balance) {
+            showToast('Saldo coin tidak mencukupi!', 'error');
+            return;
+        }
+        if (coinUsed > Math.floor(total * 0.20)) {
+            showToast('Melebihi batas 20%!', 'error');
+            return;
+        }
+        const success = useCoinFromUser(user.username, coinUsed, `Digunakan untuk pesanan #${Date.now()}`, Date.now());
+        if (!success) {
+            showToast('Gagal menggunakan coin!', 'error');
+            return;
+        }
+    }
+    const orderId = Date.now();
+    const order = {
+        id: orderId,
+        tanggal: new Date().toLocaleString('id-ID'),
+        items: [...cart],
+        subtotal: total,
+        coinUsed: coinUsed,
+        coinDiscount: coinDiscount,
+        total: finalTotal,
+        username: user.username,
+        status: 'pending',
+        coinRewarded: false,
+        buyerWa: wa,
+        note: note || ''
+    };
+    let caption = `✨ RIKY STORE - PESANAN BARU ✨\n\n`;
+    cart.forEach(item => {
+        let d = '';
+        if (item.tipe === 'game') d = `ID: ${item.userId}`;
+        else if (item.tipe === 'bot') d = item.linkGrup ? `Link Grup: ${item.linkGrup}` : `No WA: ${item.phone}`;
+        else if (item.tipe === 'premium') d = 'Aktivasi langsung';
+        caption += `📦 ${item.nama} x${item.qty||1} - Rp${(item.harga*(item.qty||1)).toLocaleString()}\n   ▸ ${d}\n\n`;
+    });
+    caption += `💎 TOTAL: Rp${finalTotal.toLocaleString()}\n`;
+    if (coinUsed > 0) caption += `🪙 Coin digunakan: ${coinUsed} Coin (potongan Rp${coinDiscount.toLocaleString()})\n`;
+    caption += `\n👤 Pembeli\n📱 WA: ${wa}\n`;
+    if (note) caption += `📝 Catatan: ${note}\n`;
+    caption += `\n🆔 ID Pesanan: #${orderId}\n⏳ Status: Menunggu Verifikasi`;
+    const fd = new FormData();
+    fd.append('chat_id', CHAT_ID);
+    fd.append('caption', caption);
+    fd.append('photo', file);
+    fd.append('parse_mode', 'Markdown');
+    try {
+        this.textContent = 'Mengirim...';
+        this.disabled = true;
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+        const result = await res.json();
+        if (result.ok) {
+            orderHistory.unshift(order);
+            localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
+            cart = [];
+            saveCart();
+            document.getElementById('uploadModal').classList.remove('open');
+            showToast('Pesanan terkirim! Menunggu verifikasi admin.', 'success');
+            window._checkoutCoinUsed = 0;
+            window._checkoutCoinDiscount = 0;
+            window._checkoutSubtotal = 0;
+            updateCoinUI();
+        } else {
+            showToast('Gagal kirim, coba lagi', 'error');
+            if (coinUsed > 0) {
+                const userNow = getLoggedInUser();
+                if (userNow) {
+                    addCoinToUser(userNow.username, coinUsed, 'Rollback gagal kirim', orderId);
+                }
+            }
+        }
+    } catch (e) {
+        showToast('Error jaringan, coba lagi', 'error');
+        if (coinUsed > 0) {
+            const userNow = getLoggedInUser();
+            if (userNow) {
+                addCoinToUser(userNow.username, coinUsed, 'Rollback error', orderId);
+            }
+        }
+    } finally {
+        this.textContent = 'Kirim';
+        this.disabled = false;
+    }
+});
+
+// Update updateAuthUI untuk panggil updateCoinUI
+const originalUpdateAuthUI = window.updateAuthUI;
+window.updateAuthUI = function() {
+    originalUpdateAuthUI();
+    updateCoinUI();
+};
+
+// Event listener untuk drawer link coin
+document.querySelector('.drawer-link[data-action="coins"]')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.classList.remove('drawer-open');
+    document.getElementById('profileModal').classList.add('open');
+    setTimeout(() => {
+        const btn = document.getElementById('showCoinHistoryBtn');
+        if (btn) btn.click();
+    }, 300);
+});
     </script>
 </body>
 </html>
