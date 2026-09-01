@@ -1182,6 +1182,693 @@
     align-items: center;
     justify-content: space-between;
 }
+/* ============================================
+   RIKY COIN MODAL
+============================================ */
+
+.riky-coin-popup {
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--border) !important;
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.45) !important;
+    max-width: calc(100vw - 24px) !important;
+}
+
+
+/* ============================================
+   CONTAINER
+============================================ */
+
+.riky-coin-modal {
+    width: 100%;
+    text-align: left;
+    padding: 20px;
+}
+
+
+/* ============================================
+   HEADER
+============================================ */
+
+.riky-coin-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+
+.riky-coin-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(251, 191, 36, 0.25),
+            rgba(245, 158, 11, 0.08)
+        );
+
+    border:
+        1px solid
+        rgba(251, 191, 36, 0.3);
+
+    color: #FBBF24;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+
+.riky-coin-header-text {
+    min-width: 0;
+}
+
+
+.riky-coin-header-text h2 {
+    margin: 0;
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    color: var(--text);
+
+    letter-spacing: 0.2px;
+}
+
+
+.riky-coin-header-text p {
+    margin: 4px 0 0;
+
+    font-size: 12px;
+
+    color: var(--textSec);
+}
+
+
+/* ============================================
+   BALANCE CARD
+============================================ */
+
+.riky-coin-balance-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 18px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(251, 191, 36, 0.16),
+            rgba(245, 158, 11, 0.05)
+        );
+
+    border:
+        1px solid
+        rgba(251, 191, 36, 0.25);
+
+    margin-bottom: 22px;
+}
+
+
+.riky-coin-balance-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+    height: 130px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(251, 191, 36, 0.08);
+
+    top: -70px;
+    right: -40px;
+
+    pointer-events: none;
+}
+
+
+.riky-coin-balance-top {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+.riky-coin-label {
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    color: #FBBF24;
+}
+
+
+.riky-coin-small-icon {
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #FBBF24;
+
+    background:
+        rgba(251, 191, 36, 0.12);
+}
+
+
+.riky-coin-balance-value {
+
+    position: relative;
+
+    z-index: 1;
+
+    font-size: 30px;
+
+    font-weight: 800;
+
+    color: #FBBF24;
+
+    line-height: 1.2;
+
+    word-break: break-word;
+}
+
+
+.riky-coin-balance-value span {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--textSec);
+
+    margin-left: 4px;
+}
+
+
+.riky-coin-balance-info {
+
+    position: relative;
+
+    z-index: 1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 10px;
+
+    font-size: 11px;
+
+    color: var(--textSec);
+}
+
+
+.riky-coin-balance-info i {
+
+    color: #FBBF24;
+}
+
+
+/* ============================================
+   HISTORY TITLE
+============================================ */
+
+.riky-coin-history-title {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+}
+
+
+.riky-coin-history-title h3 {
+
+    margin: 0;
+
+    font-size: 15px;
+
+    font-weight: 750;
+
+    color: var(--text);
+}
+
+
+.riky-coin-history-title p {
+
+    margin: 3px 0 0;
+
+    font-size: 11px;
+
+    color: var(--textSec);
+}
+
+
+.riky-coin-history-title > i {
+
+    color: var(--textSec);
+
+    font-size: 16px;
+}
+
+
+/* ============================================
+   HISTORY LIST
+============================================ */
+
+.riky-coin-history-list {
+
+    max-height: 320px;
+
+    overflow-y: auto;
+
+    padding-right: 4px;
+}
+
+
+/* Scrollbar */
+
+.riky-coin-history-list::-webkit-scrollbar {
+
+    width: 4px;
+}
+
+
+.riky-coin-history-list::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+.riky-coin-history-list::-webkit-scrollbar-thumb {
+
+    background: var(--border);
+
+    border-radius: 999px;
+}
+
+
+/* ============================================
+   HISTORY ITEM
+============================================ */
+
+.riky-coin-history-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 13px 4px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    transition:
+        background 0.2s ease;
+}
+
+
+.riky-coin-history-item:last-child {
+
+    border-bottom: none;
+}
+
+
+.riky-coin-history-item:hover {
+
+    background:
+        rgba(255, 255, 255, 0.02);
+}
+
+
+/* ============================================
+   HISTORY ICON
+============================================ */
+
+.riky-coin-history-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    font-size: 13px;
+}
+
+
+.riky-coin-history-icon.plus {
+
+    color: #22C55E;
+
+    background:
+        rgba(34, 197, 94, 0.12);
+}
+
+
+.riky-coin-history-icon.minus {
+
+    color: #EF4444;
+
+    background:
+        rgba(239, 68, 68, 0.12);
+}
+
+
+/* ============================================
+   HISTORY INFO
+============================================ */
+
+.riky-coin-history-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.riky-coin-history-reason {
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    color: var(--text);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.riky-coin-history-date {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 4px;
+
+    font-size: 10px;
+
+    color: var(--textSec);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.riky-coin-dot {
+
+    opacity: 0.6;
+}
+
+
+/* ============================================
+   HISTORY AMOUNT
+============================================ */
+
+.riky-coin-history-amount {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    flex-shrink: 0;
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+
+.riky-coin-history-amount.plus {
+
+    color: #22C55E;
+}
+
+
+.riky-coin-history-amount.minus {
+
+    color: #EF4444;
+}
+
+
+.riky-coin-history-amount small {
+
+    margin-top: 2px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    color: var(--textSec);
+}
+
+
+/* ============================================
+   EMPTY STATE
+============================================ */
+
+.riky-coin-empty {
+
+    text-align: center;
+
+    padding:
+        18px 10px
+        8px;
+}
+
+
+.riky-coin-empty-icon {
+
+    width: 62px;
+
+    height: 62px;
+
+    margin:
+        0 auto
+        14px;
+
+    border-radius: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 24px;
+
+    color: var(--textSec);
+
+    background:
+        var(--card);
+
+    border:
+        1px solid
+        var(--border);
+}
+
+
+.riky-coin-empty h3 {
+
+    margin: 0;
+
+    font-size: 16px;
+
+    color: var(--text);
+}
+
+
+.riky-coin-empty p {
+
+    max-width: 260px;
+
+    margin:
+        8px auto
+        0;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    color: var(--textSec);
+}
+
+
+/* ============================================
+   SWEETALERT CLOSE BUTTON
+============================================ */
+
+.riky-coin-close-btn {
+
+    width: calc(100% - 40px) !important;
+
+    margin:
+        0 20px
+        20px !important;
+
+    padding:
+        13px 20px !important;
+
+    border-radius:
+        14px !important;
+
+    border: none !important;
+
+    background:
+        var(--primary) !important;
+
+    color:
+        white !important;
+
+    font-size:
+        14px !important;
+
+    font-weight:
+        700 !important;
+
+    cursor:
+        pointer !important;
+
+    transition:
+        all 0.2s ease !important;
+}
+
+
+.riky-coin-close-btn:active {
+
+    transform:
+        scale(0.97);
+}
+
+
+/* ============================================
+   MOBILE
+============================================ */
+
+@media (max-width: 480px) {
+
+    .riky-coin-modal {
+
+        padding: 16px;
+    }
+
+
+    .riky-coin-popup {
+
+        width:
+            calc(100vw - 20px)
+            !important;
+    }
+
+
+    .riky-coin-balance-value {
+
+        font-size: 26px;
+    }
+
+
+    .riky-coin-history-list {
+
+        max-height: 280px;
+    }
+
+
+    .riky-coin-history-item {
+
+        gap: 9px;
+
+        padding:
+            12px 2px;
+    }
+
+
+    .riky-coin-history-icon {
+
+        width: 34px;
+
+        height: 34px;
+
+        border-radius: 10px;
+    }
+
+
+    .riky-coin-history-reason {
+
+        font-size: 12px;
+    }
+
+
+    .riky-coin-history-amount {
+
+        font-size: 12px;
+    }
+
+}
     </style>
 </head>
 <body>
@@ -4315,62 +5002,635 @@ else if (action === 'coins') {
 // FUNGSI SHOW COIN HISTORY
 // ============================================
 function showCoinHistory() {
+
     const user = getLoggedInUser();
+
     if (!user) {
-        showToast('Login dulu untuk melihat riwayat coin', 'error');
+
+        showToast(
+            'Login dulu untuk melihat riwayat coin',
+            'error'
+        );
+
         openAuthModal();
+
         return;
     }
 
-    const balance = getCoinBalance(user.username);
-    const history = window.firestoreCoinHistory[user.username] || 
-                    (getUserCoinData(user.username)?.history || []);
+
+    // ============================================
+    // AMBIL DATA COIN
+    // ============================================
+
+    const balance =
+        getCoinBalance(user.username);
+
+
+    const history =
+        (window.firestoreCoinHistory &&
+        window.firestoreCoinHistory[user.username])
+
+        ||
+
+        (getUserCoinData(user.username)?.history || []);
+
+
+    // ============================================
+    // FORMAT SALDO
+    // ============================================
+
+    const formattedBalance =
+        Number(balance || 0)
+        .toLocaleString('id-ID');
+
+
+    // ============================================
+    // TAMPILAN JIKA BELUM ADA RIWAYAT
+    // ============================================
 
     if (!history || history.length === 0) {
+
         Swal.fire({
-            title: '🪙 RIKY COIN',
-            html: `<p style="color:var(--textSec);">Belum ada riwayat coin.</p>
-                   <p style="font-size:20px;font-weight:bold;color:#FBBF24;">Saldo: ${balance} Coin</p>`,
-            confirmButtonText: 'Tutup',
-            background: 'var(--surface)',
-            color: 'var(--text)',
-            width: 380
+
+            width: 430,
+
+            background:
+                'var(--surface)',
+
+            color:
+                'var(--text)',
+
+            padding:
+                '0',
+
+            showCloseButton:
+                true,
+
+            confirmButtonText:
+                'Tutup',
+
+            buttonsStyling:
+                false,
+
+            customClass: {
+
+                popup:
+                    'riky-coin-popup',
+
+                confirmButton:
+                    'riky-coin-close-btn'
+
+            },
+
+
+            html: `
+
+                <div class="riky-coin-modal">
+
+
+                    <!-- HEADER -->
+
+                    <div class="riky-coin-header">
+
+
+                        <div class="riky-coin-icon">
+
+                            <i class="fas fa-coins"></i>
+
+                        </div>
+
+
+                        <div class="riky-coin-header-text">
+
+                            <h2>
+                                RIKY COIN
+                            </h2>
+
+                            <p>
+                                Saldo & Riwayat Coin
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BALANCE CARD -->
+
+                    <div class="riky-coin-balance-card">
+
+
+                        <div class="riky-coin-balance-top">
+
+                            <span class="riky-coin-label">
+
+                                SALDO SAAT INI
+
+                            </span>
+
+
+                            <div class="riky-coin-small-icon">
+
+                                <i class="fas fa-wallet"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="riky-coin-balance-value">
+
+                            ${formattedBalance}
+
+                            <span>
+                                Coin
+                            </span>
+
+                        </div>
+
+
+                        <div class="riky-coin-balance-info">
+
+                            <i class="fas fa-circle-check"></i>
+
+                            Saldo RIKY COIN Anda
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- EMPTY STATE -->
+
+                    <div class="riky-coin-empty">
+
+
+                        <div class="riky-coin-empty-icon">
+
+                            <i class="fas fa-receipt"></i>
+
+                        </div>
+
+
+                        <h3>
+
+                            Belum Ada Riwayat
+
+                        </h3>
+
+
+                        <p>
+
+                            Transaksi penggunaan dan
+                            penambahan coin akan muncul
+                            di sini.
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            `
+
         });
+
         return;
+
     }
 
-    let listHtml = history.slice(0, 20).map(h => {
-        const amount = Number(h.amount || 0);
-        const sign = amount > 0 ? '+' : '';
-        const cls = amount >= 0 ? 'color:#22C55E;' : 'color:#EF4444;';
-        const date = h.date || '';
-        return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">
-                    <span style="color:var(--text);">${escapeHtml(h.reason || 'Transaksi')}</span>
-                    <span style="${cls}font-weight:bold;">${sign}${amount} Coin</span>
-                    <span style="color:var(--textSec);font-size:11px;">${escapeHtml(date)}</span>
-                </div>`;
-    }).join('');
+
+    // ============================================
+    // BUAT LIST RIWAYAT
+    // ============================================
+
+    let listHtml =
+
+        history
+        .slice(0, 20)
+        .map((h, index) => {
+
+
+            const amount =
+                Number(h.amount || 0);
+
+
+            const isPlus =
+                amount >= 0;
+
+
+            const sign =
+                amount > 0
+                    ? '+'
+                    : '';
+
+
+            const amountClass =
+                isPlus
+                    ? 'plus'
+                    : 'minus';
+
+
+            const icon =
+                isPlus
+                    ? 'fa-arrow-trend-up'
+                    : 'fa-arrow-trend-down';
+
+
+            const typeText =
+                isPlus
+                    ? 'Coin Masuk'
+                    : 'Coin Digunakan';
+
+
+            const date =
+                h.date || '-';
+
+
+            return `
+
+                <div class="riky-coin-history-item">
+
+
+                    <!-- ICON -->
+
+                    <div
+                        class="
+                            riky-coin-history-icon
+                            ${amountClass}
+                        "
+                    >
+
+                        <i
+                            class="
+                                fas
+                                ${icon}
+                            "
+                        ></i>
+
+                    </div>
+
+
+
+                    <!-- INFO -->
+
+                    <div
+                        class="
+                            riky-coin-history-info
+                        "
+                    >
+
+
+                        <div
+                            class="
+                                riky-coin-history-reason
+                            "
+                        >
+
+                            ${escapeHtml(
+                                h.reason ||
+                                'Transaksi Coin'
+                            )}
+
+                        </div>
+
+
+                        <div
+                            class="
+                                riky-coin-history-date
+                            "
+                        >
+
+                            <span>
+
+                                ${typeText}
+
+                            </span>
+
+
+                            <span
+                                class="
+                                    riky-coin-dot
+                                "
+                            >
+                                •
+                            </span>
+
+
+                            <span>
+
+                                ${escapeHtml(date)}
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- AMOUNT -->
+
+                    <div
+                        class="
+                            riky-coin-history-amount
+                            ${amountClass}
+                        "
+                    >
+
+                        ${sign}${amount
+                            .toLocaleString('id-ID')}
+
+                        <small>
+
+                            Coin
+
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        })
+        .join('');
+
+
+    // ============================================
+    // TAMPILAN RIWAYAT
+    // ============================================
 
     Swal.fire({
-        title: '🪙 RIKY COIN',
-        html: `<div style="max-height:300px;overflow-y:auto;text-align:left;padding-right:4px;">
-                   <p style="font-size:18px;font-weight:bold;color:#FBBF24;text-align:center;margin-bottom:12px;">Saldo: ${balance} Coin</p>
-                   ${listHtml}
-               </div>`,
-        confirmButtonText: 'Tutup',
-        background: 'var(--surface)',
-        color: 'var(--text)',
-        width: 420
+
+        width: 430,
+
+        background:
+            'var(--surface)',
+
+        color:
+            'var(--text)',
+
+        padding:
+            '0',
+
+        showCloseButton:
+            true,
+
+        confirmButtonText:
+            'Tutup',
+
+        buttonsStyling:
+            false,
+
+        customClass: {
+
+            popup:
+                'riky-coin-popup',
+
+            confirmButton:
+                'riky-coin-close-btn'
+
+        },
+
+
+        html: `
+
+            <div class="riky-coin-modal">
+
+
+                <!-- HEADER -->
+
+                <div class="riky-coin-header">
+
+
+                    <div class="riky-coin-icon">
+
+                        <i class="fas fa-coins"></i>
+
+                    </div>
+
+
+                    <div class="riky-coin-header-text">
+
+
+                        <h2>
+
+                            RIKY COIN
+
+                        </h2>
+
+
+                        <p>
+
+                            Saldo & Riwayat Coin
+
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- BALANCE CARD -->
+
+                <div
+                    class="
+                        riky-coin-balance-card
+                    "
+                >
+
+
+                    <div
+                        class="
+                            riky-coin-balance-top
+                        "
+                    >
+
+
+                        <span
+                            class="
+                                riky-coin-label
+                            "
+                        >
+
+                            SALDO SAAT INI
+
+                        </span>
+
+
+                        <div
+                            class="
+                                riky-coin-small-icon
+                            "
+                        >
+
+                            <i
+                                class="
+                                    fas
+                                    fa-wallet
+                                "
+                            ></i>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            riky-coin-balance-value
+                        "
+                    >
+
+                        ${formattedBalance}
+
+                        <span>
+
+                            Coin
+
+                        </span>
+
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            riky-coin-balance-info
+                        "
+                    >
+
+                        <i
+                            class="
+                                fas
+                                fa-clock-rotate-left
+                            "
+                        ></i>
+
+                        ${history.length} Riwayat Transaksi
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- HISTORY TITLE -->
+
+                <div
+                    class="
+                        riky-coin-history-title
+                    "
+                >
+
+
+                    <div>
+
+                        <h3>
+
+                            Riwayat Transaksi
+
+                        </h3>
+
+
+                        <p>
+
+                            20 transaksi terbaru
+
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        class="
+                            fas
+                            fa-list
+                        "
+                    ></i>
+
+
+                </div>
+
+
+
+                <!-- HISTORY LIST -->
+
+                <div
+                    class="
+                        riky-coin-history-list
+                    "
+                >
+
+                    ${listHtml}
+
+                </div>
+
+
+            </div>
+
+        `
+
     });
+
 }
 
+
+
 // ============================================
-// FUNGSI ESCAPE HTML (jika belum ada)
+// FUNGSI ESCAPE HTML
 // ============================================
 function escapeHtml(text) {
+
     if (!text) return '';
-    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-    return text.replace(/[&<>"']/g, m => map[m]);
+
+
+    const map = {
+
+        '&':
+            '&amp;',
+
+        '<':
+            '&lt;',
+
+        '>':
+            '&gt;',
+
+        '"':
+            '&quot;',
+
+        "'":
+            '&#039;'
+
+    };
+
+
+    return String(text).replace(
+
+        /[&<>"']/g,
+
+        function(m) {
+
+            return map[m];
+
+        }
+
+    );
+
 }
         // ============================================================
         // EXPOSE FUNGSI RESELLER (tambahan)
