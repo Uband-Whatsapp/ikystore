@@ -2981,7 +2981,7 @@
             { nama: "AOV 2390 Voucher", harga: 489000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" }
         ];
 
-        // ===== PERUBAHAN HARGA CAPCUT DI SINI =====
+        // ===== PERUBAHAN HARGA CANVA DI SINI (Rp7.000) =====
         const extraProducts = [
             { nama: "IQYI 1BULAN", harga: 16000, img: "https://i.ibb.co.com/wrpRGBHQ/IMG-20260620-WA0040.jpg",
                 durasi: "1 Bulan", deskripsi: "Akses premium iQiyi 1 bulan", tipe: "iqiyi" },
@@ -2993,7 +2993,7 @@
                 durasi: "30 Hari", deskripsi: "Akses premium Netflix", tipe: "netflix" },
             { nama: "Spotify Pro 1 Bulan", harga: 20000, img: "https://i.ibb.co.com/cjKWYZC/f396eb27ae5d20c91b04473360772710.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Spotify 1 bulan", tipe: "spotify" },
-            { nama: "Canva Pro 1 Bulan", harga: 10000, img: "https://i.ibb.co.com/C5HqPJLG/b224bcfb58a1861dee8afc847a5d657d.jpg",
+            { nama: "Canva Pro 1 Bulan", harga: 7000, img: "https://i.ibb.co.com/C5HqPJLG/b224bcfb58a1861dee8afc847a5d657d.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Canva", tipe: "canva" },
             { nama: "Alight Motion 1 Tahun", harga: 2000, img: "https://i.ibb.co.com/C3brrSqB/b81d4234e3172874f0d44e0cfa36c72a.jpg",
                 durasi: "1 Tahun", deskripsi: "Akses premium 1 tahun", tipe: "alightmotion" },
@@ -4751,7 +4751,70 @@ else if (action === 'coins') {
                 preview.classList.remove('hidden'); } else preview.classList.add('hidden');
         }
 
-        
+        document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
+            const wa = document.getElementById('buyerWa').value.trim();
+            const file = document.getElementById('buktiFile').files[0];
+            const note = document.getElementById('checkoutNote').value.trim();
+            if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
+            if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
+            let total = appliedVoucher ? appliedVoucher.totalAfterDiscount : cart.reduce((s, i) => s + i.harga * (i.qty ||
+                1), 0);
+            let caption = "✨ RIKY STORE - PESANAN BARU ✨\n\n";
+            cart.forEach(item => {
+                let d = '';
+                if (item.tipe === 'game') d = `ID: ${item.userId}`;
+                else if (item.tipe === 'bot') d = item.linkGrup ? `Link Grup: ${item.linkGrup}` :
+                `No WA: ${item.phone}`;
+                else if (item.tipe === 'premium') d = 'Aktivasi langsung';
+                caption += `📦 ${item.nama} x${item.qty||1} - Rp${(item.harga*(item.qty||1)).toLocaleString()}\n   ▸ ${d}\n\n`;
+            });
+            caption += `💎 TOTAL: Rp${total.toLocaleString()}\n`;
+            if (appliedVoucher) caption +=
+                `🎫 Voucher: ${appliedVoucher.code} (potongan Rp${appliedVoucher.discountAmount.toLocaleString()})\n`;
+            caption += `\n👤 Pembeli\n📱 WA: ${wa}\n`;
+            if (note) caption += `📝 Catatan: ${note}\n`;
+            caption += `\n⏳ Status: Menunggu Konfirmasi Admin`;
+            if (appliedVoucher) {
+                const user = getLoggedInUser();
+                if (user) {
+                    const users = getUsers();
+                    const idx = users.findIndex(u => u.username === user.username);
+                    if (idx !== -1) { users[idx].voucherUsed = true;
+                        saveUsers(users);
+                        user.voucherUsed = true;
+                        setLoggedInUser(user); }
+                }
+            }
+            const fd = new FormData();
+            fd.append('chat_id', CHAT_ID);
+            fd.append('caption', caption);
+            fd.append('photo', file);
+            fd.append('parse_mode', 'Markdown');
+            try {
+                this.textContent = 'Mengirim...';
+                this.disabled = true;
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST',
+                    body: fd });
+                const result = await res.json();
+                if (result.ok) {
+                    const user = getLoggedInUser();
+                    const historyOrder = { id: Date.now(), tanggal: new Date().toLocaleString('id-ID'), items: [
+                            ...cart
+                        ], total: total, username: user ? user.username : 'guest' };
+                    orderHistory.unshift(historyOrder);
+                    localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
+                    cart = [];
+                    saveCart();
+                    document.getElementById('uploadModal').classList.remove('open');
+                    showToast('Pesanan berhasil! Admin akan segera proses.', 'success');
+                    appliedVoucher = null;
+                    document.getElementById('checkoutVoucherInput').value = '';
+                    document.getElementById('voucherDetail').classList.add('hidden');
+                    document.getElementById('voucherMessage').innerHTML = '';
+                } else showToast('Gagal kirim, coba lagi', 'error');
+            } catch (e) { showToast('Error jaringan, coba lagi', 'error'); } finally { this.textContent = 'Kirim';
+                this.disabled = false; }
+        });
 
         // ============================================================
         // MODAL CLOSE
