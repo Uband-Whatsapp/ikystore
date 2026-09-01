@@ -3118,6 +3118,16 @@
                     document.body.classList.remove('drawer-open');
                     openResellerPage();
                 }
+else if (action === 'coins') {
+    // Tutup drawer
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.body.classList.remove('drawer-open');
+
+    // Tampilkan riwayat coin
+    showCoinHistory();
+}
+                
             });
         });
 
@@ -4301,7 +4311,67 @@
                 }
             });
         }
+// ============================================
+// FUNGSI SHOW COIN HISTORY
+// ============================================
+function showCoinHistory() {
+    const user = getLoggedInUser();
+    if (!user) {
+        showToast('Login dulu untuk melihat riwayat coin', 'error');
+        openAuthModal();
+        return;
+    }
 
+    const balance = getCoinBalance(user.username);
+    const history = window.firestoreCoinHistory[user.username] || 
+                    (getUserCoinData(user.username)?.history || []);
+
+    if (!history || history.length === 0) {
+        Swal.fire({
+            title: '🪙 RIKY COIN',
+            html: `<p style="color:var(--textSec);">Belum ada riwayat coin.</p>
+                   <p style="font-size:20px;font-weight:bold;color:#FBBF24;">Saldo: ${balance} Coin</p>`,
+            confirmButtonText: 'Tutup',
+            background: 'var(--surface)',
+            color: 'var(--text)',
+            width: 380
+        });
+        return;
+    }
+
+    let listHtml = history.slice(0, 20).map(h => {
+        const amount = Number(h.amount || 0);
+        const sign = amount > 0 ? '+' : '';
+        const cls = amount >= 0 ? 'color:#22C55E;' : 'color:#EF4444;';
+        const date = h.date || '';
+        return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">
+                    <span style="color:var(--text);">${escapeHtml(h.reason || 'Transaksi')}</span>
+                    <span style="${cls}font-weight:bold;">${sign}${amount} Coin</span>
+                    <span style="color:var(--textSec);font-size:11px;">${escapeHtml(date)}</span>
+                </div>`;
+    }).join('');
+
+    Swal.fire({
+        title: '🪙 RIKY COIN',
+        html: `<div style="max-height:300px;overflow-y:auto;text-align:left;padding-right:4px;">
+                   <p style="font-size:18px;font-weight:bold;color:#FBBF24;text-align:center;margin-bottom:12px;">Saldo: ${balance} Coin</p>
+                   ${listHtml}
+               </div>`,
+        confirmButtonText: 'Tutup',
+        background: 'var(--surface)',
+        color: 'var(--text)',
+        width: 420
+    });
+}
+
+// ============================================
+// FUNGSI ESCAPE HTML (jika belum ada)
+// ============================================
+function escapeHtml(text) {
+    if (!text) return '';
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return text.replace(/[&<>"']/g, m => map[m]);
+}
         // ============================================================
         // EXPOSE FUNGSI RESELLER (tambahan)
         // ============================================================
@@ -4340,6 +4410,7 @@
         // EXPOSE
         // ============================================================
         window.navigateTo = navigateTo;
+        window.showCoinHistory = showCoinHistory;
         window.openAuthModal = openAuthModal;
         window.openCartModal = openCartModal;
         window.openOrdersModal = openOrdersModal;
