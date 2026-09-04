@@ -2417,6 +2417,8 @@
                 <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="editing">Editing</button>
                 <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="musik">Musik</button>
                 <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="produktivitas">Produktivitas</button>
+                <!-- TOMBOL KATEGORI BARU: LAINNYA -->
+                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="lainnya">Lainnya</button>
             </div>
         </div>
         <div class="mt-3 grid grid-cols-2 gap-2.5" id="premiumProductsContainer"></div>
@@ -2981,7 +2983,7 @@
             { nama: "AOV 2390 Voucher", harga: 489000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" }
         ];
 
-        // ===== PERUBAHAN HARGA CAPCUT DI SINI =====
+        // ===== PERUBAHAN HARGA CANVA & SPOTIFY + PRODUK BARU =====
         const extraProducts = [
             { nama: "IQYI 1BULAN", harga: 16000, img: "https://i.ibb.co.com/wrpRGBHQ/IMG-20260620-WA0040.jpg",
                 durasi: "1 Bulan", deskripsi: "Akses premium iQiyi 1 bulan", tipe: "iqiyi" },
@@ -2991,9 +2993,11 @@
                 durasi: "30 Hari", deskripsi: "Akses premium 30 hari", tipe: "capcut" },
             { nama: "Netflix Pro 1 Bulan", harga: 25000, img: "https://i.ibb.co.com/8nMwgnrf/72a0500ff35991d147a6b48e4bffc721.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Netflix", tipe: "netflix" },
-            { nama: "Spotify Pro 1 Bulan", harga: 20000, img: "https://i.ibb.co.com/cjKWYZC/f396eb27ae5d20c91b04473360772710.jpg",
+            // Spotify diubah dari 20000 menjadi 18000
+            { nama: "Spotify Pro 1 Bulan", harga: 18000, img: "https://i.ibb.co.com/cjKWYZC/f396eb27ae5d20c91b04473360772710.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Spotify 1 bulan", tipe: "spotify" },
-            { nama: "Canva Pro 1 Bulan", harga: 10000, img: "https://i.ibb.co.com/C5HqPJLG/b224bcfb58a1861dee8afc847a5d657d.jpg",
+            // Canva diubah dari 10000 menjadi 7000
+            { nama: "Canva Pro 1 Bulan", harga: 7000, img: "https://i.ibb.co.com/C5HqPJLG/b224bcfb58a1861dee8afc847a5d657d.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Canva", tipe: "canva" },
             { nama: "Alight Motion 1 Tahun", harga: 2000, img: "https://i.ibb.co.com/C3brrSqB/b81d4234e3172874f0d44e0cfa36c72a.jpg",
                 durasi: "1 Tahun", deskripsi: "Akses premium 1 tahun", tipe: "alightmotion" },
@@ -3012,7 +3016,25 @@
             { nama: "ChatGPT Pro 1 Bulan", harga: 35000, img: "https://i.ibb.co.com/FLF0X35s/b33f0d10bab5c0d68a006844f7eda264.jpg",
                 durasi: "1 Bulan", deskripsi: "Akses premium ChatGPT 1 bulan", tipe: "chatgpt" },
             { nama: "APPLE MUSIC 1BULAN", harga: 15000, img: "https://i.ibb.co.com/PZBmbnp8/6f5fe5d261b0b2f59c14bfaa0517bb15.jpg",
-                durasi: "1 Bulan", deskripsi: "Apple Music Premium 1 bulan", tipe: "applemusic" }
+                durasi: "1 Bulan", deskripsi: "Apple Music Premium 1 bulan", tipe: "applemusic" },
+
+            // ===== PRODUK BARU =====
+            { nama: "LOKLOK VIP BASIC 40HARI", harga: 33000, img: "https://i.ibb.co.com/hR9rmy2R/IMG-20260903-WA0002.jpg",
+                durasi: "40 Hari", deskripsi: "VIP Basic 40 hari", tipe: "loklok" },
+            { nama: "LOKLOK VIP STANDAR 1BULAN", harga: 62000, img: "https://i.ibb.co.com/hR9rmy2R/IMG-20260903-WA0002.jpg",
+                durasi: "1 Bulan", deskripsi: "VIP Standar 1 bulan", tipe: "loklok" },
+            { nama: "DISNEP SHARING 1BULAN", harga: 17000, img: "https://i.ibb.co.com/4ZM8BmyC/IMG-20260903-WA0004.jpg",
+                durasi: "1 Bulan", deskripsi: "Disney+ Sharing 1 bulan", tipe: "disnep" },
+            { nama: "WINK VIP PRIVATE 7HARI", harga: 24000, img: "https://i.ibb.co.com/j9xrxnN6/IMG-20260903-WA0025.jpg",
+                durasi: "7 Hari", deskripsi: "VIP Private 7 hari", tipe: "wink" },
+            { nama: "PISCRAT PRO PRIVATE 7HARI", harga: 6000, img: "https://i.ibb.co.com/kVS6WGqp/IMG-20260903-WA0022.jpg",
+                durasi: "7 Hari", deskripsi: "Picsart Pro Private 7 hari", tipe: "picsart" },
+            { nama: "ZOOM MEETING PRO 7HARI", harga: 4000, img: "https://i.ibb.co.com/S71PLcdC/9b8cb57cc18cae42846d01e36884abb2.jpg",
+                durasi: "7 Hari", deskripsi: "Zoom Meeting Pro 7 hari", tipe: "zoom" },
+            { nama: "ZOOM MEETING PRO 14HARI", harga: 5000, img: "https://i.ibb.co.com/S71PLcdC/9b8cb57cc18cae42846d01e36884abb2.jpg",
+                durasi: "14 Hari", deskripsi: "Zoom Meeting Pro 14 hari", tipe: "zoom" },
+            { nama: "ZOOM MEETING PRO 28HARI", harga: 7000, img: "https://i.ibb.co.com/S71PLcdC/9b8cb57cc18cae42846d01e36884abb2.jpg",
+                durasi: "28 Hari", deskripsi: "Zoom Meeting Pro 28 hari", tipe: "zoom" }
         ];
 
         const botDatabase = {
@@ -4341,7 +4363,8 @@ else if (action === 'coins') {
                 const map = { 'streaming': ['iqiyi', 'netflix', 'viu', 'wetv', 'youku', 'applemusic'],
                     'ai': ['gemini', 'chatgpt'], 'editing': ['capcut', 'alightmotion'], 'musik': ['spotify',
                         'bandlab'
-                    ], 'produktivitas': ['canva'] };
+                    ], 'produktivitas': ['canva'],
+                    'lainnya': ['loklok', 'wink', 'zoom', 'picsart', 'disnep'] };
                 const allowed = map[filter] || [];
                 products = extraProducts.filter(p => allowed.includes(p.tipe));
             }
@@ -4604,7 +4627,7 @@ else if (action === 'coins') {
         // FAQ
         // ============================================================
         const faqData = [
-            { q: "Apa saja produk yang dijual di RIKY STORE?", a: "RIKY STORE menyediakan top-up game (Free Fire, MLBB, AOV), sewa bot WhatsApp (Biasa, Premium, User Premium), aplikasi premium (iQiyi, CapCut, Netflix, Canva, Alight Motion, Viu, WeTV, Spotify, YOUKU, BANDLAB, AI Gemini, ChatGPT Pro, Apple Music), pulsa, tagihan, dan e-wallet." },
+            { q: "Apa saja produk yang dijual di RIKY STORE?", a: "RIKY STORE menyediakan top-up game (Free Fire, MLBB, AOV), sewa bot WhatsApp (Biasa, Premium, User Premium), aplikasi premium (iQiyi, CapCut, Netflix, Canva, Alight Motion, Viu, WeTV, Spotify, YOUKU, BANDLAB, AI Gemini, ChatGPT Pro, Apple Music, Loklok, Disney+, Wink, Picsart, Zoom Meeting), pulsa, tagihan, dan e-wallet." },
             { q: "Bagaimana cara melakukan pembelian?", a: "Pilih produk → Masukkan data yang diperlukan (ID game, link grup, atau nomor WA) → Checkout → Transfer melalui QRIS/Bank → Upload bukti transfer → Pesanan diproses 1-15 menit." },
             { q: "Apakah RIKY STORE aman dan terpercaya?", a: "Sangat aman! RIKY STORE telah melayani ratusan pelanggan dengan sistem keamanan berlapis. Data pribadi Anda tidak akan pernah dibagikan ke pihak ketiga." },
             { q: "Bagaimana jika terjadi kegagalan transaksi?", a: "Kami memberikan jaminan refund 100% jika terjadi kegagalan transaksi. Hubungi admin melalui WhatsApp dengan menyertakan bukti transaksi." },
@@ -8980,7 +9003,6 @@ function escapeHtml(text) {
                                 'Pesanan berhasil dikirim dan masuk ke sistem admin!',
 
                                 'success'
-
                             );
 
 
@@ -9021,7 +9043,6 @@ function escapeHtml(text) {
                                 firestoreError.message,
 
                                 'error'
-
                             );
 
                         }
@@ -9047,7 +9068,6 @@ function escapeHtml(text) {
                             'Gagal mengirim ke Telegram, coba lagi',
 
                             'error'
-
                         );
 
                     }
@@ -9075,7 +9095,6 @@ function escapeHtml(text) {
                         e.message,
 
                         'error'
-
                     );
 
                 }
