@@ -902,973 +902,1412 @@
                 flex-direction: column;
             }
         }
-/* ===== RIKY COIN ===== */
-/* ===== RIKY COIN ===== */
-.coin-balance-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 8px;
-}
-.coin-balance-card .coin-icon {
-    font-size: 24px;
-    color: #FBBF24;
-}
-.coin-balance-card .balance {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text);
-}
-.coin-balance-card .balance span {
-    color: var(--primary);
-}
-.coin-history-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-}
-.coin-history-item .amount.plus {
-    color: #22C55E;
-}
-.coin-history-item .amount.minus {
-    color: #EF4444;
-}
-
-/* === CHECKOUT COIN - PERBAIKAN === */
-.coin-checkout-section {
-    background: var(--card);
-    border-radius: var(--radiusSm);
-    padding: 14px 16px;
-    margin-top: 14px;
-    margin-bottom: 8px;
-    border: 1px solid var(--border);
-    width: 100%;
-    box-sizing: border-box;
-}
-.coin-checkout-section .coin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-.coin-checkout-section .coin-header .label {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-}
-.coin-checkout-section .coin-header .saldo {
-    font-size: 12px;
-    color: var(--textSec);
-}
-.coin-checkout-section .coin-header .saldo span {
-    color: #FBBF24;
-    font-weight: 700;
-}
-.coin-toggle-group {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-.coin-toggle-group .toggle-btn {
-    flex: 1;
-    padding: 8px 0;
-    border-radius: 9999px;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    color: var(--textSec);
-    font-weight: 600;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.coin-toggle-group .toggle-btn.active {
-    border-color: var(--primary);
-    background: rgba(37,99,235,0.15);
-    color: var(--primary);
-}
-/* =========================================
-   COIN AMOUNT CONTROL
-========================================= */
-
-.coin-amount-control {
-    display: grid;
-    grid-template-columns: 56px minmax(0, 1fr) 56px;
-    gap: 10px;
-    margin-top: 12px;
-    width: 100%;
-    align-items: center;
-}
+        /* ===== RIKY COIN ===== */
+        /* ===== RIKY COIN ===== */
+        .coin-balance-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+        .coin-balance-card .coin-icon {
+            font-size: 24px;
+            color: #FBBF24;
+        }
+        .coin-balance-card .balance {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .coin-balance-card .balance span {
+            color: var(--primary);
+        }
+        .coin-history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+        .coin-history-item .amount.plus {
+            color: #22C55E;
+        }
+        .coin-history-item .amount.minus {
+            color: #EF4444;
+        }
+
+        /* === CHECKOUT COIN - PERBAIKAN === */
+        .coin-checkout-section {
+            background: var(--card);
+            border-radius: var(--radiusSm);
+            padding: 14px 16px;
+            margin-top: 14px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .coin-checkout-section .coin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .coin-checkout-section .coin-header .label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .coin-checkout-section .coin-header .saldo {
+            font-size: 12px;
+            color: var(--textSec);
+        }
+        .coin-checkout-section .coin-header .saldo span {
+            color: #FBBF24;
+            font-weight: 700;
+        }
+        .coin-toggle-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .coin-toggle-group .toggle-btn {
+            flex: 1;
+            padding: 8px 0;
+            border-radius: 9999px;
+            border: 1.5px solid var(--border);
+            background: transparent;
+            color: var(--textSec);
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .coin-toggle-group .toggle-btn.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--primary);
+        }
+        /* =========================================
+           COIN AMOUNT CONTROL
+        ========================================= */
+
+        .coin-amount-control {
+            display: grid;
+            grid-template-columns: 56px minmax(0, 1fr) 56px;
+            gap: 10px;
+            margin-top: 12px;
+            width: 100%;
+            align-items: center;
+        }
 
 
-/* =========================================
-   TOMBOL MINUS & PLUS
-========================================= */
+        /* =========================================
+           TOMBOL MINUS & PLUS
+        ========================================= */
 
-.coin-amount-control button:not(.coin-max-btn) {
-    width: 56px;
-    height: 56px;
+        .coin-amount-control button:not(.coin-max-btn) {
+            width: 56px;
+            height: 56px;
 
-    border-radius: 50%;
+            border-radius: 50%;
 
-    border: 1.5px solid var(--border);
+            border: 1.5px solid var(--border);
 
-    background: var(--surface);
+            background: var(--surface);
 
-    color: var(--text);
+            color: var(--text);
 
-    font-size: 28px;
-    font-weight: 700;
+            font-size: 28px;
+            font-weight: 700;
 
-    cursor: pointer;
+            cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    transition: all 0.2s;
-}
+            transition: all 0.2s;
+        }
 
 
-.coin-amount-control button:not(.coin-max-btn):hover {
-    border-color: var(--primary);
-    color: var(--primary);
-}
+        .coin-amount-control button:not(.coin-max-btn):hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
 
 
-.coin-amount-control button:not(.coin-max-btn):active {
-    transform: scale(0.92);
-}
+        .coin-amount-control button:not(.coin-max-btn):active {
+            transform: scale(0.92);
+        }
 
 
-/* =========================================
-   INPUT JUMLAH COIN
-========================================= */
+        /* =========================================
+           INPUT JUMLAH COIN
+        ========================================= */
 
-.coin-amount-control input {
-    width: 100%;
-    min-width: 0;
+        .coin-amount-control input {
+            width: 100%;
+            min-width: 0;
 
-    height: 56px;
+            height: 56px;
 
-    box-sizing: border-box;
+            box-sizing: border-box;
 
-    text-align: center;
+            text-align: center;
 
-    background: var(--surface);
+            background: var(--surface);
 
-    border: 1.5px solid var(--border);
+            border: 1.5px solid var(--border);
 
-    border-radius: 12px;
+            border-radius: 12px;
 
-    padding: 0 8px;
+            padding: 0 8px;
 
-    color: var(--text);
+            color: var(--text);
 
-    font-weight: 700;
+            font-weight: 700;
 
-    font-size: 20px;
+            font-size: 20px;
 
-    outline: none;
-}
+            outline: none;
+        }
 
 
-.coin-amount-control input:focus {
-    border-color: var(--primary);
+        .coin-amount-control input:focus {
+            border-color: var(--primary);
 
-    box-shadow:
-        0 0 0 3px
-        rgba(37, 99, 235, 0.15);
-}
+            box-shadow:
+                0 0 0 3px
+                rgba(37, 99, 235, 0.15);
+        }
 
 
-/* =========================================
-   TOMBOL MAKSIMAL
-   DIBUAT BARIS SENDIRI
-========================================= */
+        /* =========================================
+           TOMBOL MAKSIMAL
+           DIBUAT BARIS SENDIRI
+        ========================================= */
 
-.coin-max-btn {
-    grid-column: 1 / -1;
+        .coin-max-btn {
+            grid-column: 1 / -1;
 
-    width: 100%;
+            width: 100%;
 
-    height: 48px;
+            height: 48px;
 
-    margin-top: 4px;
+            margin-top: 4px;
 
-    font-size: 15px;
+            font-size: 15px;
 
-    border-radius: 14px;
+            border-radius: 14px;
 
-    background: var(--primary);
+            background: var(--primary);
 
-    color: white;
+            color: white;
 
-    border: none;
+            border: none;
 
-    cursor: pointer;
+            cursor: pointer;
 
-    font-weight: 700;
+            font-weight: 700;
 
-    transition:
-        transform 0.2s,
-        opacity 0.2s;
+            transition:
+                transform 0.2s,
+                opacity 0.2s;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
 
-.coin-max-btn:hover {
-    opacity: 0.9;
-}
+        .coin-max-btn:hover {
+            opacity: 0.9;
+        }
 
 
-.coin-max-btn:active {
-    transform: scale(0.98);
-}
+        .coin-max-btn:active {
+            transform: scale(0.98);
+        }
 
 
-/* =========================================
-   INFO MAKSIMAL COIN
-========================================= */
+        /* =========================================
+           INFO MAKSIMAL COIN
+        ========================================= */
 
-.coin-info-text {
-    grid-column: 1 / -1;
+        .coin-info-text {
+            grid-column: 1 / -1;
 
-    font-size: 13px;
+            font-size: 13px;
 
-    color: var(--textSec);
+            color: var(--textSec);
 
-    margin-top: 0;
+            margin-top: 0;
 
-    width: 100%;
+            width: 100%;
 
-    text-align: center;
+            text-align: center;
 
-    line-height: 1.5;
-}
+            line-height: 1.5;
+        }
 
 
-/* =========================================
-   POTONGAN COIN
-========================================= */
+        /* =========================================
+           POTONGAN COIN
+        ========================================= */
 
-.coin-discount-display {
-    grid-column: 1 / -1;
+        .coin-discount-display {
+            grid-column: 1 / -1;
 
-    width: 100%;
+            width: 100%;
 
-    font-size: 15px;
+            font-size: 15px;
 
-    color: var(--textSec);
+            color: var(--textSec);
 
-    margin-top: 4px;
+            margin-top: 4px;
 
-    padding-top: 14px;
+            padding-top: 14px;
 
-    border-top:
-        1px solid var(--border);
+            border-top:
+                1px solid var(--border);
 
-    font-weight: 600;
+            font-weight: 600;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-/* ============================================
-   RIKY COIN MODAL
-============================================ */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        /* ============================================
+           RIKY COIN MODAL
+        ============================================ */
 
-.riky-coin-popup {
-    border-radius: 24px !important;
-    overflow: hidden !important;
-    border: 1px solid var(--border) !important;
-    box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.45) !important;
-    max-width: calc(100vw - 24px) !important;
-}
+        .riky-coin-popup {
+            border-radius: 24px !important;
+            overflow: hidden !important;
+            border: 1px solid var(--border) !important;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.45) !important;
+            max-width: calc(100vw - 24px) !important;
+        }
 
 
-/* ============================================
-   CONTAINER
-============================================ */
+        /* ============================================
+           CONTAINER
+        ============================================ */
 
-.riky-coin-modal {
-    width: 100%;
-    text-align: left;
-    padding: 20px;
-}
+        .riky-coin-modal {
+            width: 100%;
+            text-align: left;
+            padding: 20px;
+        }
 
 
-/* ============================================
-   HEADER
-============================================ */
+        /* ============================================
+           HEADER
+        ============================================ */
 
-.riky-coin-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
-}
+        .riky-coin-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
 
 
-.riky-coin-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
+        .riky-coin-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(251, 191, 36, 0.25),
-            rgba(245, 158, 11, 0.08)
-        );
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(251, 191, 36, 0.25),
+                    rgba(245, 158, 11, 0.08)
+                );
 
-    border:
-        1px solid
-        rgba(251, 191, 36, 0.3);
+            border:
+                1px solid
+                rgba(251, 191, 36, 0.3);
 
-    color: #FBBF24;
+            color: #FBBF24;
 
-    font-size: 22px;
+            font-size: 22px;
 
-    flex-shrink: 0;
-}
+            flex-shrink: 0;
+        }
 
 
-.riky-coin-header-text {
-    min-width: 0;
-}
+        .riky-coin-header-text {
+            min-width: 0;
+        }
 
 
-.riky-coin-header-text h2 {
-    margin: 0;
+        .riky-coin-header-text h2 {
+            margin: 0;
 
-    font-size: 20px;
+            font-size: 20px;
 
-    font-weight: 800;
+            font-weight: 800;
 
-    color: var(--text);
+            color: var(--text);
 
-    letter-spacing: 0.2px;
-}
+            letter-spacing: 0.2px;
+        }
 
 
-.riky-coin-header-text p {
-    margin: 4px 0 0;
+        .riky-coin-header-text p {
+            margin: 4px 0 0;
 
-    font-size: 12px;
+            font-size: 12px;
 
-    color: var(--textSec);
-}
+            color: var(--textSec);
+        }
 
 
-/* ============================================
-   BALANCE CARD
-============================================ */
+        /* ============================================
+           BALANCE CARD
+        ============================================ */
 
-.riky-coin-balance-card {
+        .riky-coin-balance-card {
 
-    position: relative;
+            position: relative;
 
-    overflow: hidden;
+            overflow: hidden;
 
-    padding: 18px;
+            padding: 18px;
 
-    border-radius: 18px;
+            border-radius: 18px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(251, 191, 36, 0.16),
-            rgba(245, 158, 11, 0.05)
-        );
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(251, 191, 36, 0.16),
+                    rgba(245, 158, 11, 0.05)
+                );
 
-    border:
-        1px solid
-        rgba(251, 191, 36, 0.25);
+            border:
+                1px solid
+                rgba(251, 191, 36, 0.25);
 
-    margin-bottom: 22px;
-}
+            margin-bottom: 22px;
+        }
 
 
-.riky-coin-balance-card::before {
+        .riky-coin-balance-card::before {
 
-    content: "";
+            content: "";
 
-    position: absolute;
+            position: absolute;
 
-    width: 130px;
-    height: 130px;
+            width: 130px;
+            height: 130px;
 
-    border-radius: 50%;
+            border-radius: 50%;
 
-    background:
-        rgba(251, 191, 36, 0.08);
+            background:
+                rgba(251, 191, 36, 0.08);
 
-    top: -70px;
-    right: -40px;
+            top: -70px;
+            right: -40px;
 
-    pointer-events: none;
-}
+            pointer-events: none;
+        }
 
 
-.riky-coin-balance-top {
+        .riky-coin-balance-top {
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    justify-content: space-between;
+            justify-content: space-between;
 
-    margin-bottom: 10px;
+            margin-bottom: 10px;
 
-    position: relative;
+            position: relative;
 
-    z-index: 1;
-}
+            z-index: 1;
+        }
 
 
-.riky-coin-label {
+        .riky-coin-label {
 
-    font-size: 10px;
+            font-size: 10px;
 
-    font-weight: 800;
+            font-weight: 800;
 
-    letter-spacing: 1px;
+            letter-spacing: 1px;
 
-    color: #FBBF24;
-}
+            color: #FBBF24;
+        }
 
 
-.riky-coin-small-icon {
+        .riky-coin-small-icon {
 
-    width: 32px;
-    height: 32px;
+            width: 32px;
+            height: 32px;
 
-    border-radius: 10px;
+            border-radius: 10px;
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    justify-content: center;
+            justify-content: center;
 
-    color: #FBBF24;
+            color: #FBBF24;
 
-    background:
-        rgba(251, 191, 36, 0.12);
-}
+            background:
+                rgba(251, 191, 36, 0.12);
+        }
 
 
-.riky-coin-balance-value {
+        .riky-coin-balance-value {
 
-    position: relative;
+            position: relative;
 
-    z-index: 1;
+            z-index: 1;
 
-    font-size: 30px;
+            font-size: 30px;
 
-    font-weight: 800;
+            font-weight: 800;
 
-    color: #FBBF24;
+            color: #FBBF24;
 
-    line-height: 1.2;
+            line-height: 1.2;
 
-    word-break: break-word;
-}
+            word-break: break-word;
+        }
 
 
-.riky-coin-balance-value span {
+        .riky-coin-balance-value span {
 
-    font-size: 14px;
+            font-size: 14px;
 
-    font-weight: 600;
+            font-weight: 600;
 
-    color: var(--textSec);
+            color: var(--textSec);
 
-    margin-left: 4px;
-}
+            margin-left: 4px;
+        }
 
 
-.riky-coin-balance-info {
+        .riky-coin-balance-info {
 
-    position: relative;
+            position: relative;
 
-    z-index: 1;
+            z-index: 1;
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    gap: 6px;
+            gap: 6px;
 
-    margin-top: 10px;
+            margin-top: 10px;
 
-    font-size: 11px;
+            font-size: 11px;
 
-    color: var(--textSec);
-}
+            color: var(--textSec);
+        }
 
 
-.riky-coin-balance-info i {
+        .riky-coin-balance-info i {
 
-    color: #FBBF24;
-}
+            color: #FBBF24;
+        }
 
 
-/* ============================================
-   HISTORY TITLE
-============================================ */
+        /* ============================================
+           HISTORY TITLE
+        ============================================ */
 
-.riky-coin-history-title {
+        .riky-coin-history-title {
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    justify-content: space-between;
+            justify-content: space-between;
 
-    margin-bottom: 12px;
-}
+            margin-bottom: 12px;
+        }
 
 
-.riky-coin-history-title h3 {
+        .riky-coin-history-title h3 {
 
-    margin: 0;
+            margin: 0;
 
-    font-size: 15px;
+            font-size: 15px;
 
-    font-weight: 750;
+            font-weight: 750;
 
-    color: var(--text);
-}
+            color: var(--text);
+        }
 
 
-.riky-coin-history-title p {
+        .riky-coin-history-title p {
 
-    margin: 3px 0 0;
+            margin: 3px 0 0;
 
-    font-size: 11px;
+            font-size: 11px;
 
-    color: var(--textSec);
-}
+            color: var(--textSec);
+        }
 
 
-.riky-coin-history-title > i {
+        .riky-coin-history-title > i {
 
-    color: var(--textSec);
+            color: var(--textSec);
 
-    font-size: 16px;
-}
+            font-size: 16px;
+        }
 
 
-/* ============================================
-   HISTORY LIST
-============================================ */
+        /* ============================================
+           HISTORY LIST
+        ============================================ */
 
-.riky-coin-history-list {
+        .riky-coin-history-list {
 
-    max-height: 320px;
+            max-height: 320px;
 
-    overflow-y: auto;
+            overflow-y: auto;
 
-    padding-right: 4px;
-}
+            padding-right: 4px;
+        }
 
 
-/* Scrollbar */
+        /* Scrollbar */
 
-.riky-coin-history-list::-webkit-scrollbar {
+        .riky-coin-history-list::-webkit-scrollbar {
 
-    width: 4px;
-}
+            width: 4px;
+        }
 
 
-.riky-coin-history-list::-webkit-scrollbar-track {
+        .riky-coin-history-list::-webkit-scrollbar-track {
 
-    background: transparent;
-}
+            background: transparent;
+        }
 
 
-.riky-coin-history-list::-webkit-scrollbar-thumb {
+        .riky-coin-history-list::-webkit-scrollbar-thumb {
 
-    background: var(--border);
+            background: var(--border);
 
-    border-radius: 999px;
-}
+            border-radius: 999px;
+        }
 
 
-/* ============================================
-   HISTORY ITEM
-============================================ */
+        /* ============================================
+           HISTORY ITEM
+        ============================================ */
 
-.riky-coin-history-item {
+        .riky-coin-history-item {
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    gap: 12px;
+            gap: 12px;
 
-    padding: 13px 4px;
+            padding: 13px 4px;
 
-    border-bottom:
-        1px solid
-        var(--border);
+            border-bottom:
+                1px solid
+                var(--border);
 
-    transition:
-        background 0.2s ease;
-}
+            transition:
+                background 0.2s ease;
+        }
 
 
-.riky-coin-history-item:last-child {
+        .riky-coin-history-item:last-child {
 
-    border-bottom: none;
-}
+            border-bottom: none;
+        }
 
 
-.riky-coin-history-item:hover {
+        .riky-coin-history-item:hover {
 
-    background:
-        rgba(255, 255, 255, 0.02);
-}
+            background:
+                rgba(255, 255, 255, 0.02);
+        }
 
 
-/* ============================================
-   HISTORY ICON
-============================================ */
+        /* ============================================
+           HISTORY ICON
+        ============================================ */
 
-.riky-coin-history-icon {
+        .riky-coin-history-icon {
 
-    width: 38px;
+            width: 38px;
 
-    height: 38px;
+            height: 38px;
 
-    border-radius: 12px;
+            border-radius: 12px;
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    justify-content: center;
+            justify-content: center;
 
-    flex-shrink: 0;
+            flex-shrink: 0;
 
-    font-size: 13px;
-}
+            font-size: 13px;
+        }
 
 
-.riky-coin-history-icon.plus {
+        .riky-coin-history-icon.plus {
 
-    color: #22C55E;
+            color: #22C55E;
 
-    background:
-        rgba(34, 197, 94, 0.12);
-}
+            background:
+                rgba(34, 197, 94, 0.12);
+        }
 
 
-.riky-coin-history-icon.minus {
+        .riky-coin-history-icon.minus {
 
-    color: #EF4444;
+            color: #EF4444;
 
-    background:
-        rgba(239, 68, 68, 0.12);
-}
+            background:
+                rgba(239, 68, 68, 0.12);
+        }
 
 
-/* ============================================
-   HISTORY INFO
-============================================ */
+        /* ============================================
+           HISTORY INFO
+        ============================================ */
 
-.riky-coin-history-info {
+        .riky-coin-history-info {
 
-    flex: 1;
+            flex: 1;
 
-    min-width: 0;
-}
+            min-width: 0;
+        }
 
 
-.riky-coin-history-reason {
+        .riky-coin-history-reason {
 
-    font-size: 13px;
+            font-size: 13px;
 
-    font-weight: 650;
+            font-weight: 650;
 
-    color: var(--text);
+            color: var(--text);
 
-    white-space: nowrap;
+            white-space: nowrap;
 
-    overflow: hidden;
+            overflow: hidden;
 
-    text-overflow: ellipsis;
-}
+            text-overflow: ellipsis;
+        }
 
 
-.riky-coin-history-date {
+        .riky-coin-history-date {
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    gap: 5px;
+            gap: 5px;
 
-    margin-top: 4px;
+            margin-top: 4px;
 
-    font-size: 10px;
+            font-size: 10px;
 
-    color: var(--textSec);
+            color: var(--textSec);
 
-    white-space: nowrap;
+            white-space: nowrap;
 
-    overflow: hidden;
+            overflow: hidden;
 
-    text-overflow: ellipsis;
-}
+            text-overflow: ellipsis;
+        }
 
 
-.riky-coin-dot {
+        .riky-coin-dot {
 
-    opacity: 0.6;
-}
+            opacity: 0.6;
+        }
 
 
-/* ============================================
-   HISTORY AMOUNT
-============================================ */
+        /* ============================================
+           HISTORY AMOUNT
+        ============================================ */
 
-.riky-coin-history-amount {
+        .riky-coin-history-amount {
 
-    display: flex;
+            display: flex;
 
-    flex-direction: column;
+            flex-direction: column;
 
-    align-items: flex-end;
+            align-items: flex-end;
 
-    flex-shrink: 0;
+            flex-shrink: 0;
 
-    font-size: 14px;
+            font-size: 14px;
 
-    font-weight: 800;
-}
+            font-weight: 800;
+        }
 
 
-.riky-coin-history-amount.plus {
+        .riky-coin-history-amount.plus {
 
-    color: #22C55E;
-}
+            color: #22C55E;
+        }
 
 
-.riky-coin-history-amount.minus {
+        .riky-coin-history-amount.minus {
 
-    color: #EF4444;
-}
+            color: #EF4444;
+        }
 
 
-.riky-coin-history-amount small {
+        .riky-coin-history-amount small {
 
-    margin-top: 2px;
+            margin-top: 2px;
 
-    font-size: 9px;
+            font-size: 9px;
 
-    font-weight: 600;
+            font-weight: 600;
 
-    color: var(--textSec);
-}
+            color: var(--textSec);
+        }
 
 
-/* ============================================
-   EMPTY STATE
-============================================ */
+        /* ============================================
+           EMPTY STATE
+        ============================================ */
 
-.riky-coin-empty {
+        .riky-coin-empty {
 
-    text-align: center;
+            text-align: center;
 
-    padding:
-        18px 10px
-        8px;
-}
+            padding:
+                18px 10px
+                8px;
+        }
 
 
-.riky-coin-empty-icon {
+        .riky-coin-empty-icon {
 
-    width: 62px;
+            width: 62px;
 
-    height: 62px;
+            height: 62px;
 
-    margin:
-        0 auto
-        14px;
+            margin:
+                0 auto
+                14px;
 
-    border-radius: 20px;
+            border-radius: 20px;
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    justify-content: center;
+            justify-content: center;
 
-    font-size: 24px;
+            font-size: 24px;
 
-    color: var(--textSec);
+            color: var(--textSec);
 
-    background:
-        var(--card);
+            background:
+                var(--card);
 
-    border:
-        1px solid
-        var(--border);
-}
+            border:
+                1px solid
+                var(--border);
+        }
 
 
-.riky-coin-empty h3 {
+        .riky-coin-empty h3 {
 
-    margin: 0;
+            margin: 0;
 
-    font-size: 16px;
+            font-size: 16px;
 
-    color: var(--text);
-}
+            color: var(--text);
+        }
 
 
-.riky-coin-empty p {
+        .riky-coin-empty p {
 
-    max-width: 260px;
+            max-width: 260px;
 
-    margin:
-        8px auto
-        0;
+            margin:
+                8px auto
+                0;
 
-    font-size: 12px;
+            font-size: 12px;
 
-    line-height: 1.6;
+            line-height: 1.6;
 
-    color: var(--textSec);
-}
+            color: var(--textSec);
+        }
 
 
-/* ============================================
-   SWEETALERT CLOSE BUTTON
-============================================ */
+        /* ============================================
+           SWEETALERT CLOSE BUTTON
+        ============================================ */
 
-.riky-coin-close-btn {
+        .riky-coin-close-btn {
 
-    width: calc(100% - 40px) !important;
+            width: calc(100% - 40px) !important;
 
-    margin:
-        0 20px
-        20px !important;
+            margin:
+                0 20px
+                20px !important;
 
-    padding:
-        13px 20px !important;
+            padding:
+                13px 20px !important;
 
-    border-radius:
-        14px !important;
+            border-radius:
+                14px !important;
 
-    border: none !important;
+            border: none !important;
 
-    background:
-        var(--primary) !important;
+            background:
+                var(--primary) !important;
 
-    color:
-        white !important;
+            color:
+                white !important;
 
-    font-size:
-        14px !important;
+            font-size:
+                14px !important;
 
-    font-weight:
-        700 !important;
+            font-weight:
+                700 !important;
 
-    cursor:
-        pointer !important;
+            cursor:
+                pointer !important;
 
-    transition:
-        all 0.2s ease !important;
-}
+            transition:
+                all 0.2s ease !important;
+        }
 
 
-.riky-coin-close-btn:active {
+        .riky-coin-close-btn:active {
 
-    transform:
-        scale(0.97);
-}
+            transform:
+                scale(0.97);
+        }
 
 
-/* ============================================
-   MOBILE
-============================================ */
+        /* ============================================
+           MOBILE
+        ============================================ */
 
-@media (max-width: 480px) {
+        @media (max-width: 480px) {
 
-    .riky-coin-modal {
+            .riky-coin-modal {
 
-        padding: 16px;
-    }
+                padding: 16px;
+            }
 
 
-    .riky-coin-popup {
+            .riky-coin-popup {
 
-        width:
-            calc(100vw - 20px)
-            !important;
-    }
+                width:
+                    calc(100vw - 20px)
+                    !important;
+            }
 
 
-    .riky-coin-balance-value {
+            .riky-coin-balance-value {
 
-        font-size: 26px;
-    }
+                font-size: 26px;
+            }
 
 
-    .riky-coin-history-list {
+            .riky-coin-history-list {
 
-        max-height: 280px;
-    }
+                max-height: 280px;
+            }
 
 
-    .riky-coin-history-item {
+            .riky-coin-history-item {
 
-        gap: 9px;
+                gap: 9px;
 
-        padding:
-            12px 2px;
-    }
+                padding:
+                    12px 2px;
+            }
 
 
-    .riky-coin-history-icon {
+            .riky-coin-history-icon {
 
-        width: 34px;
+                width: 34px;
 
-        height: 34px;
+                height: 34px;
 
-        border-radius: 10px;
-    }
+                border-radius: 10px;
+            }
 
 
-    .riky-coin-history-reason {
+            .riky-coin-history-reason {
 
-        font-size: 12px;
-    }
+                font-size: 12px;
+            }
 
 
-    .riky-coin-history-amount {
+            .riky-coin-history-amount {
 
-        font-size: 12px;
-    }
+                font-size: 12px;
+            }
 
-}
+        }
+
+        /* ============================================
+           RANKING / LEADERBOARD CSS - PREMIUM
+        ============================================ */
+
+        .rank-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .rank-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .rank-header .trophy-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.05));
+            border: 1px solid rgba(251,191,36,0.3);
+            font-size: 28px;
+            color: #FBBF24;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .rank-header .rank-title {
+            position: relative;
+            z-index: 1;
+        }
+        .rank-header .rank-title h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+        .rank-header .rank-title p {
+            font-size: 13px;
+            color: var(--textSec);
+            margin-top: 2px;
+        }
+
+        /* Statistik */
+        .rank-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .rank-stat-box {
+            background: var(--card);
+            border-radius: var(--radiusSm);
+            padding: 14px 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .rank-stat-box:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadowSm);
+        }
+        .rank-stat-box .value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        .rank-stat-box .label {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--textSec);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* My Rank Card */
+        .my-rank-card {
+            background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(99,102,241,0.03));
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .my-rank-card::after {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .my-rank-card .my-rank-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .my-rank-card .my-rank-left .rank-pos {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            min-width: 44px;
+        }
+        .my-rank-card .my-rank-left .rank-detail .name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+        }
+        .my-rank-card .my-rank-left .rank-detail .label {
+            font-size: 11px;
+            color: var(--textSec);
+        }
+        .my-rank-card .my-rank-right {
+            text-align: right;
+            position: relative;
+            z-index: 1;
+        }
+        .my-rank-card .my-rank-right .total {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--primary);
+        }
+        .my-rank-card .my-rank-right .label {
+            font-size: 9px;
+            color: var(--textSec);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Ranking Tabs */
+        .rank-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 18px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .rank-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .rank-tabs .rank-tab {
+            padding: 7px 18px;
+            border-radius: 9999px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--textSec);
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+        }
+        .rank-tabs .rank-tab.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+        }
+        .rank-tabs .rank-tab:hover:not(.active) {
+            border-color: var(--primary);
+            color: var(--text);
+        }
+
+        /* Ranking List Item */
+        .rank-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: var(--radiusSm);
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 8px;
+            animation: rankFadeIn 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .rank-item:hover {
+            border-color: var(--primary);
+            transform: translateX(6px);
+            box-shadow: var(--shadowSm);
+        }
+        .rank-item .rank-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            color: var(--textSec);
+            transition: all 0.3s;
+        }
+        .rank-item .rank-number.gold {
+            background: linear-gradient(135deg, #FBBF24, #F59E0B);
+            color: #fff;
+            border-color: #FBBF24;
+            box-shadow: 0 0 24px rgba(251,191,36,0.3);
+        }
+        .rank-item .rank-number.silver {
+            background: linear-gradient(135deg, #D1D5DB, #9CA3AF);
+            color: #fff;
+            border-color: #D1D5DB;
+            box-shadow: 0 0 24px rgba(209,213,219,0.3);
+        }
+        .rank-item .rank-number.bronze {
+            background: linear-gradient(135deg, #FCA5A5, #EF4444);
+            color: #fff;
+            border-color: #FCA5A5;
+            box-shadow: 0 0 24px rgba(252,165,165,0.3);
+        }
+        .rank-item .rank-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--primary), #8B5CF6);
+            color: #fff;
+            border: 2px solid var(--primary);
+        }
+        .rank-item .rank-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .rank-item .rank-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .rank-item .rank-info .name {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .rank-item .rank-info .name .medal {
+            font-size: 18px;
+        }
+        .rank-item .rank-info .stats {
+            display: flex;
+            gap: 14px;
+            font-size: 11px;
+            color: var(--textSec);
+            margin-top: 3px;
+        }
+        .rank-item .rank-info .stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .rank-item .rank-info .stats i {
+            font-size: 10px;
+            color: var(--primary);
+        }
+        .rank-item .rank-total {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+        .rank-item .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 1px 10px;
+            border-radius: 9999px;
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .rank-item .rank-badge.vip {
+            background: rgba(168,85,247,0.15);
+            color: #A855F7;
+        }
+        .rank-item .rank-badge.whale {
+            background: rgba(239,68,68,0.15);
+            color: #EF4444;
+        }
+        .rank-item .rank-badge.regular {
+            background: rgba(37,99,235,0.15);
+            color: var(--primaryLight);
+        }
+        .rank-item .rank-badge.newbie {
+            background: rgba(148,163,184,0.15);
+            color: var(--textSec);
+        }
+
+        /* Highlight untuk diri sendiri */
+        .rank-item.rank-highlight {
+            background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(99,102,241,0.03));
+            border-color: var(--primary);
+            border-width: 2px;
+        }
+        .rank-item.rank-highlight .rank-number {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Animasi muncul */
+        @keyframes rankFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .rank-item:nth-child(1) { animation-delay: 0.05s; }
+        .rank-item:nth-child(2) { animation-delay: 0.10s; }
+        .rank-item:nth-child(3) { animation-delay: 0.15s; }
+        .rank-item:nth-child(4) { animation-delay: 0.20s; }
+        .rank-item:nth-child(5) { animation-delay: 0.25s; }
+        .rank-item:nth-child(6) { animation-delay: 0.30s; }
+        .rank-item:nth-child(7) { animation-delay: 0.35s; }
+        .rank-item:nth-child(8) { animation-delay: 0.40s; }
+        .rank-item:nth-child(9) { animation-delay: 0.45s; }
+        .rank-item:nth-child(10) { animation-delay: 0.50s; }
+
+        /* Skeleton */
+        .rank-skeleton {
+            animation: shimmer 1.5s infinite;
+            background: linear-gradient(90deg, var(--card) 25%, var(--cardHover) 50%, var(--card) 75%);
+            background-size: 200% 100%;
+            border-radius: var(--radiusSm);
+            height: 68px;
+            margin-bottom: 8px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .rank-header {
+                padding: 14px 16px;
+                gap: 12px;
+            }
+            .rank-header .trophy-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+            }
+            .rank-header .rank-title h2 {
+                font-size: 17px;
+            }
+            .rank-stats-grid {
+                gap: 6px;
+            }
+            .rank-stat-box .value {
+                font-size: 18px;
+            }
+            .my-rank-card {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                text-align: center;
+            }
+            .my-rank-card .my-rank-left {
+                justify-content: center;
+            }
+            .my-rank-card .my-rank-right {
+                text-align: center;
+            }
+            .rank-item {
+                padding: 10px 12px;
+                gap: 10px;
+            }
+            .rank-item .rank-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+            .rank-item .rank-number {
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+            }
+            .rank-item .rank-total {
+                font-size: 14px;
+            }
+            .rank-item .rank-info .name {
+                font-size: 12px;
+            }
+            .rank-item .rank-info .stats {
+                font-size: 9px;
+                gap: 8px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -2019,6 +2458,8 @@
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="topup"><i class="fas fa-gamepad text-primary w-5 text-center"></i> Top Up Game</button>
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="premium"><i class="fas fa-crown text-primary w-5 text-center"></i> APK Premium</button>
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="allproducts"><i class="fas fa-th-large text-primary w-5 text-center"></i> Semua Produk</button>
+                    <!-- RANKING - Menu Baru -->
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="ranking"><i class="fas fa-trophy text-yellow-500 w-5 text-center"></i> Peringkat Pelanggan</button>
                 </div>
             </div>
 
@@ -2031,10 +2472,10 @@
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="history"><i class="fas fa-clock-rotate-left text-primary w-5 text-center"></i> Riwayat</button>
                     <!-- RESELLER: Menu Reseller di bagian Akun -->
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="reseller"><i class="fas fa-store text-primary w-5 text-center"></i> Reseller</button>
-<button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="coins">
-    <i class="fas fa-coins text-yellow-500 w-5 text-center"></i> RIKY COIN
-    <span class="ml-auto text-xs bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded-full" id="drawerCoinBalance">0</span>
-</button>
+                    <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-action="coins">
+                        <i class="fas fa-coins text-yellow-500 w-5 text-center"></i> RIKY COIN
+                        <span class="ml-auto text-xs bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded-full" id="drawerCoinBalance">0</span>
+                    </button>
                 </div>
             </div>
 
@@ -2417,8 +2858,6 @@
                 <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="editing">Editing</button>
                 <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="musik">Musik</button>
                 <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="produktivitas">Produktivitas</button>
-                <!-- TOMBOL KATEGORI BARU: LAINNYA -->
-                <button class="premium-cat px-3 py-1.5 rounded-full text-[10px] font-semibold bg-card border border-borderColor hover:border-primary transition" style="color:var(--text);" data-cat="lainnya">Lainnya</button>
             </div>
         </div>
         <div class="mt-3 grid grid-cols-2 gap-2.5" id="premiumProductsContainer"></div>
@@ -2526,6 +2965,74 @@
             </div>
             <p class="text-sm" style="color:var(--textSec);">Tentukan harga jual Anda untuk setiap produk.</p>
             <div class="mt-3" id="resellerPriceList"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PAGE: RANKING / LEADERBOARD (BARU)
+    ============================================================ -->
+    <div class="page" id="page-ranking">
+        <div class="mt-3">
+            <!-- Header Premium -->
+            <div class="rank-header">
+                <div class="trophy-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="rank-title">
+                    <h2>🏆 Peringkat Pelanggan</h2>
+                    <p>Pelanggan dengan total transaksi tertinggi</p>
+                </div>
+            </div>
+
+            <!-- Statistik -->
+            <div class="rank-stats-grid" id="rankHeaderStats">
+                <div class="rank-stat-box">
+                    <div class="value" id="rankTotalPembeli">0</div>
+                    <div class="label">Total Pembeli</div>
+                </div>
+                <div class="rank-stat-box">
+                    <div class="value" id="rankTotalTransaksi">Rp0</div>
+                    <div class="label">Total Transaksi</div>
+                </div>
+                <div class="rank-stat-box">
+                    <div class="value" id="rankTotalOrder">0</div>
+                    <div class="label">Total Pesanan</div>
+                </div>
+            </div>
+
+            <!-- Peringkat Saya -->
+            <div id="myRankContainer"></div>
+
+            <!-- Filter Tab -->
+            <div class="rank-tabs" id="rankTabs">
+                <button class="rank-tab active" data-rank="semua">🏅 Semua</button>
+                <button class="rank-tab" data-rank="top10">⭐ Top 10</button>
+                <button class="rank-tab" data-rank="vip">👑 VIP</button>
+                <button class="rank-tab" data-rank="reseller">🏪 Reseller</button>
+            </div>
+
+            <!-- Daftar Peringkat -->
+            <div id="rankListContainer">
+                <!-- Akan diisi oleh renderRanking() -->
+            </div>
+
+            <!-- Tombol Refresh -->
+            <div class="mt-4 text-center">
+                <button class="btn-outline text-xs py-1.5 px-4" id="refreshRankBtn">
+                    <i class="fas fa-sync"></i> Perbarui Peringkat
+                </button>
+            </div>
+
+            <!-- Informasi -->
+            <div class="mt-3 card p-3.5" style="border-left:4px solid var(--primary);">
+                <div class="flex items-start gap-2.5">
+                    <i class="fas fa-circle-info text-primary text-base mt-0.5"></i>
+                    <div>
+                        <p class="text-xs font-semibold" style="color:var(--text);">Bagaimana Peringkat Dihitung?</p>
+                        <p class="text-[10px]" style="color:var(--textSec);">Peringkat didasarkan pada total nominal transaksi (Rp) yang pernah dilakukan. Semakin tinggi total transaksi, semakin tinggi peringkat. Data diperbarui secara otomatis setiap kali ada pesanan baru.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2983,7 +3490,7 @@
             { nama: "AOV 2390 Voucher", harga: 489000, img: "https://i.ibb.co.com/Q7h78MCL/b019cc1879859c1bb4defa46a1207c1e.jpg" }
         ];
 
-        // ===== PERUBAHAN HARGA CANVA & SPOTIFY + PRODUK BARU =====
+        // ===== PERUBAHAN HARGA CAPCUT DI SINI =====
         const extraProducts = [
             { nama: "IQYI 1BULAN", harga: 16000, img: "https://i.ibb.co.com/wrpRGBHQ/IMG-20260620-WA0040.jpg",
                 durasi: "1 Bulan", deskripsi: "Akses premium iQiyi 1 bulan", tipe: "iqiyi" },
@@ -2993,11 +3500,9 @@
                 durasi: "30 Hari", deskripsi: "Akses premium 30 hari", tipe: "capcut" },
             { nama: "Netflix Pro 1 Bulan", harga: 25000, img: "https://i.ibb.co.com/8nMwgnrf/72a0500ff35991d147a6b48e4bffc721.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Netflix", tipe: "netflix" },
-            // Spotify diubah dari 20000 menjadi 18000
-            { nama: "Spotify Pro 1 Bulan", harga: 18000, img: "https://i.ibb.co.com/cjKWYZC/f396eb27ae5d20c91b04473360772710.jpg",
+            { nama: "Spotify Pro 1 Bulan", harga: 20000, img: "https://i.ibb.co.com/cjKWYZC/f396eb27ae5d20c91b04473360772710.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Spotify 1 bulan", tipe: "spotify" },
-            // Canva diubah dari 10000 menjadi 7000
-            { nama: "Canva Pro 1 Bulan", harga: 7000, img: "https://i.ibb.co.com/C5HqPJLG/b224bcfb58a1861dee8afc847a5d657d.jpg",
+            { nama: "Canva Pro 1 Bulan", harga: 10000, img: "https://i.ibb.co.com/C5HqPJLG/b224bcfb58a1861dee8afc847a5d657d.jpg",
                 durasi: "30 Hari", deskripsi: "Akses premium Canva", tipe: "canva" },
             { nama: "Alight Motion 1 Tahun", harga: 2000, img: "https://i.ibb.co.com/C3brrSqB/b81d4234e3172874f0d44e0cfa36c72a.jpg",
                 durasi: "1 Tahun", deskripsi: "Akses premium 1 tahun", tipe: "alightmotion" },
@@ -3016,25 +3521,7 @@
             { nama: "ChatGPT Pro 1 Bulan", harga: 35000, img: "https://i.ibb.co.com/FLF0X35s/b33f0d10bab5c0d68a006844f7eda264.jpg",
                 durasi: "1 Bulan", deskripsi: "Akses premium ChatGPT 1 bulan", tipe: "chatgpt" },
             { nama: "APPLE MUSIC 1BULAN", harga: 15000, img: "https://i.ibb.co.com/PZBmbnp8/6f5fe5d261b0b2f59c14bfaa0517bb15.jpg",
-                durasi: "1 Bulan", deskripsi: "Apple Music Premium 1 bulan", tipe: "applemusic" },
-
-            // ===== PRODUK BARU =====
-            { nama: "LOKLOK VIP BASIC 40HARI", harga: 33000, img: "https://i.ibb.co.com/hR9rmy2R/IMG-20260903-WA0002.jpg",
-                durasi: "40 Hari", deskripsi: "VIP Basic 40 hari", tipe: "loklok" },
-            { nama: "LOKLOK VIP STANDAR 1BULAN", harga: 62000, img: "https://i.ibb.co.com/hR9rmy2R/IMG-20260903-WA0002.jpg",
-                durasi: "1 Bulan", deskripsi: "VIP Standar 1 bulan", tipe: "loklok" },
-            { nama: "DISNEP SHARING 1BULAN", harga: 17000, img: "https://i.ibb.co.com/4ZM8BmyC/IMG-20260903-WA0004.jpg",
-                durasi: "1 Bulan", deskripsi: "Disney+ Sharing 1 bulan", tipe: "disnep" },
-            { nama: "WINK VIP PRIVATE 7HARI", harga: 24000, img: "https://i.ibb.co.com/j9xrxnN6/IMG-20260903-WA0025.jpg",
-                durasi: "7 Hari", deskripsi: "VIP Private 7 hari", tipe: "wink" },
-            { nama: "PISCRAT PRO PRIVATE 7HARI", harga: 6000, img: "https://i.ibb.co.com/kVS6WGqp/IMG-20260903-WA0022.jpg",
-                durasi: "7 Hari", deskripsi: "Picsart Pro Private 7 hari", tipe: "picsart" },
-            { nama: "ZOOM MEETING PRO 7HARI", harga: 4000, img: "https://i.ibb.co.com/S71PLcdC/9b8cb57cc18cae42846d01e36884abb2.jpg",
-                durasi: "7 Hari", deskripsi: "Zoom Meeting Pro 7 hari", tipe: "zoom" },
-            { nama: "ZOOM MEETING PRO 14HARI", harga: 5000, img: "https://i.ibb.co.com/S71PLcdC/9b8cb57cc18cae42846d01e36884abb2.jpg",
-                durasi: "14 Hari", deskripsi: "Zoom Meeting Pro 14 hari", tipe: "zoom" },
-            { nama: "ZOOM MEETING PRO 28HARI", harga: 7000, img: "https://i.ibb.co.com/S71PLcdC/9b8cb57cc18cae42846d01e36884abb2.jpg",
-                durasi: "28 Hari", deskripsi: "Zoom Meeting Pro 28 hari", tipe: "zoom" }
+                durasi: "1 Bulan", deskripsi: "Apple Music Premium 1 bulan", tipe: "applemusic" }
         ];
 
         const botDatabase = {
@@ -3757,6 +4244,9 @@
                 if (getLoggedInUser()) renderResellerPriceEditor();
                 else navigateTo('reseller');
             }
+            if (page === 'ranking') {
+                renderRanking();
+            }
         }
 
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
@@ -3827,15 +4317,15 @@
                     document.body.classList.remove('drawer-open');
                     openResellerPage();
                 }
-else if (action === 'coins') {
-    // Tutup drawer
-    document.getElementById('drawer').classList.remove('open');
-    document.getElementById('drawerOverlay').classList.remove('open');
-    document.body.classList.remove('drawer-open');
+                else if (action === 'coins') {
+                    // Tutup drawer
+                    document.getElementById('drawer').classList.remove('open');
+                    document.getElementById('drawerOverlay').classList.remove('open');
+                    document.body.classList.remove('drawer-open');
 
-    // Tampilkan riwayat coin
-    showCoinHistory();
-}
+                    // Tampilkan riwayat coin
+                    showCoinHistory();
+                }
                 
             });
         });
@@ -4363,8 +4853,7 @@ else if (action === 'coins') {
                 const map = { 'streaming': ['iqiyi', 'netflix', 'viu', 'wetv', 'youku', 'applemusic'],
                     'ai': ['gemini', 'chatgpt'], 'editing': ['capcut', 'alightmotion'], 'musik': ['spotify',
                         'bandlab'
-                    ], 'produktivitas': ['canva'],
-                    'lainnya': ['loklok', 'wink', 'zoom', 'picsart', 'disnep'] };
+                    ], 'produktivitas': ['canva'] };
                 const allowed = map[filter] || [];
                 products = extraProducts.filter(p => allowed.includes(p.tipe));
             }
@@ -4627,7 +5116,7 @@ else if (action === 'coins') {
         // FAQ
         // ============================================================
         const faqData = [
-            { q: "Apa saja produk yang dijual di RIKY STORE?", a: "RIKY STORE menyediakan top-up game (Free Fire, MLBB, AOV), sewa bot WhatsApp (Biasa, Premium, User Premium), aplikasi premium (iQiyi, CapCut, Netflix, Canva, Alight Motion, Viu, WeTV, Spotify, YOUKU, BANDLAB, AI Gemini, ChatGPT Pro, Apple Music, Loklok, Disney+, Wink, Picsart, Zoom Meeting), pulsa, tagihan, dan e-wallet." },
+            { q: "Apa saja produk yang dijual di RIKY STORE?", a: "RIKY STORE menyediakan top-up game (Free Fire, MLBB, AOV), sewa bot WhatsApp (Biasa, Premium, User Premium), aplikasi premium (iQiyi, CapCut, Netflix, Canva, Alight Motion, Viu, WeTV, Spotify, YOUKU, BANDLAB, AI Gemini, ChatGPT Pro, Apple Music), pulsa, tagihan, dan e-wallet." },
             { q: "Bagaimana cara melakukan pembelian?", a: "Pilih produk → Masukkan data yang diperlukan (ID game, link grup, atau nomor WA) → Checkout → Transfer melalui QRIS/Bank → Upload bukti transfer → Pesanan diproses 1-15 menit." },
             { q: "Apakah RIKY STORE aman dan terpercaya?", a: "Sangat aman! RIKY STORE telah melayani ratusan pelanggan dengan sistem keamanan berlapis. Data pribadi Anda tidak akan pernah dibagikan ke pihak ketiga." },
             { q: "Bagaimana jika terjadi kegagalan transaksi?", a: "Kami memberikan jaminan refund 100% jika terjadi kegagalan transaksi. Hubungi admin melalui WhatsApp dengan menyertakan bukti transaksi." },
@@ -4834,6 +5323,8 @@ else if (action === 'coins') {
                     document.getElementById('checkoutVoucherInput').value = '';
                     document.getElementById('voucherDetail').classList.add('hidden');
                     document.getElementById('voucherMessage').innerHTML = '';
+                    // Perbarui peringkat setelah transaksi baru
+                    renderRanking();
                 } else showToast('Gagal kirim, coba lagi', 'error');
             } catch (e) { showToast('Error jaringan, coba lagi', 'error'); } finally { this.textContent = 'Kirim';
                 this.disabled = false; }
@@ -5021,640 +5512,899 @@ else if (action === 'coins') {
                 }
             });
         }
-// ============================================
-// FUNGSI SHOW COIN HISTORY
-// ============================================
-function showCoinHistory() {
+        // ============================================
+        // FUNGSI SHOW COIN HISTORY
+        // ============================================
+        function showCoinHistory() {
 
-    const user = getLoggedInUser();
+            const user = getLoggedInUser();
 
-    if (!user) {
+            if (!user) {
 
-        showToast(
-            'Login dulu untuk melihat riwayat coin',
-            'error'
-        );
+                showToast(
+                    'Login dulu untuk melihat riwayat coin',
+                    'error'
+                );
 
-        openAuthModal();
+                openAuthModal();
 
-        return;
-    }
-
-
-    // ============================================
-    // AMBIL DATA COIN
-    // ============================================
-
-    const balance =
-        getCoinBalance(user.username);
+                return;
+            }
 
 
-    const history =
-        (window.firestoreCoinHistory &&
-        window.firestoreCoinHistory[user.username])
+            // ============================================
+            // AMBIL DATA COIN
+            // ============================================
 
-        ||
-
-        (getUserCoinData(user.username)?.history || []);
-
-
-    // ============================================
-    // FORMAT SALDO
-    // ============================================
-
-    const formattedBalance =
-        Number(balance || 0)
-        .toLocaleString('id-ID');
+            const balance =
+                getCoinBalance(user.username);
 
 
-    // ============================================
-    // TAMPILAN JIKA BELUM ADA RIWAYAT
-    // ============================================
+            const history =
+                (window.firestoreCoinHistory &&
+                window.firestoreCoinHistory[user.username])
 
-    if (!history || history.length === 0) {
+                ||
 
-        Swal.fire({
-
-            width: 430,
-
-            background:
-                'var(--surface)',
-
-            color:
-                'var(--text)',
-
-            padding:
-                '0',
-
-            showCloseButton:
-                true,
-
-            confirmButtonText:
-                'Tutup',
-
-            buttonsStyling:
-                false,
-
-            customClass: {
-
-                popup:
-                    'riky-coin-popup',
-
-                confirmButton:
-                    'riky-coin-close-btn'
-
-            },
+                (getUserCoinData(user.username)?.history || []);
 
 
-            html: `
+            // ============================================
+            // FORMAT SALDO
+            // ============================================
 
-                <div class="riky-coin-modal">
-
-
-                    <!-- HEADER -->
-
-                    <div class="riky-coin-header">
-
-
-                        <div class="riky-coin-icon">
-
-                            <i class="fas fa-coins"></i>
-
-                        </div>
+            const formattedBalance =
+                Number(balance || 0)
+                .toLocaleString('id-ID');
 
 
-                        <div class="riky-coin-header-text">
+            // ============================================
+            // TAMPILAN JIKA BELUM ADA RIWAYAT
+            // ============================================
 
-                            <h2>
-                                RIKY COIN
-                            </h2>
+            if (!history || history.length === 0) {
 
-                            <p>
-                                Saldo & Riwayat Coin
-                            </p>
+                Swal.fire({
 
-                        </div>
+                    width: 430,
 
-                    </div>
+                    background:
+                        'var(--surface)',
+
+                    color:
+                        'var(--text)',
+
+                    padding:
+                        '0',
+
+                    showCloseButton:
+                        true,
+
+                    confirmButtonText:
+                        'Tutup',
+
+                    buttonsStyling:
+                        false,
+
+                    customClass: {
+
+                        popup:
+                            'riky-coin-popup',
+
+                        confirmButton:
+                            'riky-coin-close-btn'
+
+                    },
 
 
+                    html: `
 
-                    <!-- BALANCE CARD -->
-
-                    <div class="riky-coin-balance-card">
-
-
-                        <div class="riky-coin-balance-top">
-
-                            <span class="riky-coin-label">
-
-                                SALDO SAAT INI
-
-                            </span>
+                        <div class="riky-coin-modal">
 
 
-                            <div class="riky-coin-small-icon">
+                            <!-- HEADER -->
 
-                                <i class="fas fa-wallet"></i>
+                            <div class="riky-coin-header">
+
+
+                                <div class="riky-coin-icon">
+
+                                    <i class="fas fa-coins"></i>
+
+                                </div>
+
+
+                                <div class="riky-coin-header-text">
+
+                                    <h2>
+                                        RIKY COIN
+                                    </h2>
+
+                                    <p>
+                                        Saldo & Riwayat Coin
+                                    </p>
+
+                                </div>
 
                             </div>
 
-                        </div>
 
 
-                        <div class="riky-coin-balance-value">
+                            <!-- BALANCE CARD -->
 
-                            ${formattedBalance}
+                            <div class="riky-coin-balance-card">
 
-                            <span>
-                                Coin
-                            </span>
 
-                        </div>
+                                <div class="riky-coin-balance-top">
 
+                                    <span class="riky-coin-label">
 
-                        <div class="riky-coin-balance-info">
+                                        SALDO SAAT INI
 
-                            <i class="fas fa-circle-check"></i>
+                                    </span>
 
-                            Saldo RIKY COIN Anda
 
-                        </div>
+                                    <div class="riky-coin-small-icon">
 
-                    </div>
+                                        <i class="fas fa-wallet"></i>
 
+                                    </div>
 
+                                </div>
 
-                    <!-- EMPTY STATE -->
 
-                    <div class="riky-coin-empty">
+                                <div class="riky-coin-balance-value">
 
+                                    ${formattedBalance}
 
-                        <div class="riky-coin-empty-icon">
+                                    <span>
+                                        Coin
+                                    </span>
 
-                            <i class="fas fa-receipt"></i>
+                                </div>
 
-                        </div>
 
+                                <div class="riky-coin-balance-info">
 
-                        <h3>
+                                    <i class="fas fa-circle-check"></i>
 
-                            Belum Ada Riwayat
+                                    Saldo RIKY COIN Anda
 
-                        </h3>
+                                </div>
 
+                            </div>
 
-                        <p>
 
-                            Transaksi penggunaan dan
-                            penambahan coin akan muncul
-                            di sini.
 
-                        </p>
+                            <!-- EMPTY STATE -->
 
-                    </div>
+                            <div class="riky-coin-empty">
 
 
-                </div>
+                                <div class="riky-coin-empty-icon">
 
-            `
+                                    <i class="fas fa-receipt"></i>
 
-        });
+                                </div>
 
-        return;
 
-    }
+                                <h3>
 
+                                    Belum Ada Riwayat
 
-    // ============================================
-    // BUAT LIST RIWAYAT
-    // ============================================
+                                </h3>
 
-    let listHtml =
 
-        history
-        .slice(0, 20)
-        .map((h, index) => {
+                                <p>
 
+                                    Transaksi penggunaan dan
+                                    penambahan coin akan muncul
+                                    di sini.
 
-            const amount =
-                Number(h.amount || 0);
+                                </p>
 
+                            </div>
 
-            const isPlus =
-                amount >= 0;
-
-
-            const sign =
-                amount > 0
-                    ? '+'
-                    : '';
-
-
-            const amountClass =
-                isPlus
-                    ? 'plus'
-                    : 'minus';
-
-
-            const icon =
-                isPlus
-                    ? 'fa-arrow-trend-up'
-                    : 'fa-arrow-trend-down';
-
-
-            const typeText =
-                isPlus
-                    ? 'Coin Masuk'
-                    : 'Coin Digunakan';
-
-
-            const date =
-                h.date || '-';
-
-
-            return `
-
-                <div class="riky-coin-history-item">
-
-
-                    <!-- ICON -->
-
-                    <div
-                        class="
-                            riky-coin-history-icon
-                            ${amountClass}
-                        "
-                    >
-
-                        <i
-                            class="
-                                fas
-                                ${icon}
-                            "
-                        ></i>
-
-                    </div>
-
-
-
-                    <!-- INFO -->
-
-                    <div
-                        class="
-                            riky-coin-history-info
-                        "
-                    >
-
-
-                        <div
-                            class="
-                                riky-coin-history-reason
-                            "
-                        >
-
-                            ${escapeHtml(
-                                h.reason ||
-                                'Transaksi Coin'
-                            )}
 
                         </div>
 
+                    `
 
-                        <div
-                            class="
-                                riky-coin-history-date
-                            "
-                        >
+                });
 
-                            <span>
+                return;
 
-                                ${typeText}
-
-                            </span>
+            }
 
 
-                            <span
+            // ============================================
+            // BUAT LIST RIWAYAT
+            // ============================================
+
+            let listHtml =
+
+                history
+                .slice(0, 20)
+                .map((h, index) => {
+
+
+                    const amount =
+                        Number(h.amount || 0);
+
+
+                    const isPlus =
+                        amount >= 0;
+
+
+                    const sign =
+                        amount > 0
+                            ? '+'
+                            : '';
+
+
+                    const amountClass =
+                        isPlus
+                            ? 'plus'
+                            : 'minus';
+
+
+                    const icon =
+                        isPlus
+                            ? 'fa-arrow-trend-up'
+                            : 'fa-arrow-trend-down';
+
+
+                    const typeText =
+                        isPlus
+                            ? 'Coin Masuk'
+                            : 'Coin Digunakan';
+
+
+                    const date =
+                        h.date || '-';
+
+
+                    return `
+
+                        <div class="riky-coin-history-item">
+
+
+                            <!-- ICON -->
+
+                            <div
                                 class="
-                                    riky-coin-dot
+                                    riky-coin-history-icon
+                                    ${amountClass}
                                 "
                             >
-                                •
-                            </span>
+
+                                <i
+                                    class="
+                                        fas
+                                        ${icon}
+                                    "
+                                ></i>
+
+                            </div>
 
 
-                            <span>
 
-                                ${escapeHtml(date)}
+                            <!-- INFO -->
 
-                            </span>
+                            <div
+                                class="
+                                    riky-coin-history-info
+                                "
+                            >
+
+
+                                <div
+                                    class="
+                                        riky-coin-history-reason
+                                    "
+                                >
+
+                                    ${escapeHtml(
+                                        h.reason ||
+                                        'Transaksi Coin'
+                                    )}
+
+                                </div>
+
+
+                                <div
+                                    class="
+                                        riky-coin-history-date
+                                    "
+                                >
+
+                                    <span>
+
+                                        ${typeText}
+
+                                    </span>
+
+
+                                    <span
+                                        class="
+                                            riky-coin-dot
+                                        "
+                                    >
+                                        •
+                                    </span>
+
+
+                                    <span>
+
+                                        ${escapeHtml(date)}
+
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- AMOUNT -->
+
+                            <div
+                                class="
+                                    riky-coin-history-amount
+                                    ${amountClass}
+                                "
+                            >
+
+                                ${sign}${amount
+                                    .toLocaleString('id-ID')}
+
+                                <small>
+
+                                    Coin
+
+                                </small>
+
+                            </div>
+
+
+                        </div>
+
+                    `;
+
+                })
+                .join('');
+
+
+            // ============================================
+            // TAMPILAN RIWAYAT
+            // ============================================
+
+            Swal.fire({
+
+                width: 430,
+
+                background:
+                    'var(--surface)',
+
+                color:
+                    'var(--text)',
+
+                padding:
+                    '0',
+
+                showCloseButton:
+                    true,
+
+                confirmButtonText:
+                    'Tutup',
+
+                buttonsStyling:
+                    false,
+
+                customClass: {
+
+                    popup:
+                        'riky-coin-popup',
+
+                    confirmButton:
+                        'riky-coin-close-btn'
+
+                },
+
+
+                html: `
+
+                    <div class="riky-coin-modal">
+
+
+                        <!-- HEADER -->
+
+                        <div class="riky-coin-header">
+
+
+                            <div class="riky-coin-icon">
+
+                                <i class="fas fa-coins"></i>
+
+                            </div>
+
+
+                            <div class="riky-coin-header-text">
+
+
+                                <h2>
+
+                                    RIKY COIN
+
+                                </h2>
+
+
+                                <p>
+
+                                    Saldo & Riwayat Coin
+
+                                </p>
+
+
+                            </div>
+
 
                         </div>
 
 
-                    </div>
 
-
-
-                    <!-- AMOUNT -->
-
-                    <div
-                        class="
-                            riky-coin-history-amount
-                            ${amountClass}
-                        "
-                    >
-
-                        ${sign}${amount
-                            .toLocaleString('id-ID')}
-
-                        <small>
-
-                            Coin
-
-                        </small>
-
-                    </div>
-
-
-                </div>
-
-            `;
-
-        })
-        .join('');
-
-
-    // ============================================
-    // TAMPILAN RIWAYAT
-    // ============================================
-
-    Swal.fire({
-
-        width: 430,
-
-        background:
-            'var(--surface)',
-
-        color:
-            'var(--text)',
-
-        padding:
-            '0',
-
-        showCloseButton:
-            true,
-
-        confirmButtonText:
-            'Tutup',
-
-        buttonsStyling:
-            false,
-
-        customClass: {
-
-            popup:
-                'riky-coin-popup',
-
-            confirmButton:
-                'riky-coin-close-btn'
-
-        },
-
-
-        html: `
-
-            <div class="riky-coin-modal">
-
-
-                <!-- HEADER -->
-
-                <div class="riky-coin-header">
-
-
-                    <div class="riky-coin-icon">
-
-                        <i class="fas fa-coins"></i>
-
-                    </div>
-
-
-                    <div class="riky-coin-header-text">
-
-
-                        <h2>
-
-                            RIKY COIN
-
-                        </h2>
-
-
-                        <p>
-
-                            Saldo & Riwayat Coin
-
-                        </p>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- BALANCE CARD -->
-
-                <div
-                    class="
-                        riky-coin-balance-card
-                    "
-                >
-
-
-                    <div
-                        class="
-                            riky-coin-balance-top
-                        "
-                    >
-
-
-                        <span
-                            class="
-                                riky-coin-label
-                            "
-                        >
-
-                            SALDO SAAT INI
-
-                        </span>
-
+                        <!-- BALANCE CARD -->
 
                         <div
                             class="
-                                riky-coin-small-icon
+                                riky-coin-balance-card
                             "
                         >
+
+
+                            <div
+                                class="
+                                    riky-coin-balance-top
+                                "
+                            >
+
+
+                                <span
+                                    class="
+                                        riky-coin-label
+                                    "
+                                >
+
+                                    SALDO SAAT INI
+
+                                </span>
+
+
+                                <div
+                                    class="
+                                        riky-coin-small-icon
+                                    "
+                                >
+
+                                    <i
+                                        class="
+                                            fas
+                                            fa-wallet
+                                        "
+                                    ></i>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div
+                                class="
+                                    riky-coin-balance-value
+                                "
+                            >
+
+                                ${formattedBalance}
+
+                                <span>
+
+                                    Coin
+
+                                </span>
+
+
+                            </div>
+
+
+
+                            <div
+                                class="
+                                    riky-coin-balance-info
+                                "
+                            >
+
+                                <i
+                                    class="
+                                        fas
+                                        fa-clock-rotate-left
+                                    "
+                                ></i>
+
+                                ${history.length} Riwayat Transaksi
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- HISTORY TITLE -->
+
+                        <div
+                            class="
+                                riky-coin-history-title
+                            "
+                        >
+
+
+                            <div>
+
+                                <h3>
+
+                                    Riwayat Transaksi
+
+                                </h3>
+
+
+                                <p>
+
+                                    20 transaksi terbaru
+
+                                </p>
+
+                            </div>
+
 
                             <i
                                 class="
                                     fas
-                                    fa-wallet
+                                    fa-list
                                 "
                             ></i>
+
+
+                        </div>
+
+
+
+                        <!-- HISTORY LIST -->
+
+                        <div
+                            class="
+                                riky-coin-history-list
+                            "
+                        >
+
+                            ${listHtml}
 
                         </div>
 
 
                     </div>
 
+                `
 
-
-                    <div
-                        class="
-                            riky-coin-balance-value
-                        "
-                    >
-
-                        ${formattedBalance}
-
-                        <span>
-
-                            Coin
-
-                        </span>
-
-
-                    </div>
-
-
-
-                    <div
-                        class="
-                            riky-coin-balance-info
-                        "
-                    >
-
-                        <i
-                            class="
-                                fas
-                                fa-clock-rotate-left
-                            "
-                        ></i>
-
-                        ${history.length} Riwayat Transaksi
-
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- HISTORY TITLE -->
-
-                <div
-                    class="
-                        riky-coin-history-title
-                    "
-                >
-
-
-                    <div>
-
-                        <h3>
-
-                            Riwayat Transaksi
-
-                        </h3>
-
-
-                        <p>
-
-                            20 transaksi terbaru
-
-                        </p>
-
-                    </div>
-
-
-                    <i
-                        class="
-                            fas
-                            fa-list
-                        "
-                    ></i>
-
-
-                </div>
-
-
-
-                <!-- HISTORY LIST -->
-
-                <div
-                    class="
-                        riky-coin-history-list
-                    "
-                >
-
-                    ${listHtml}
-
-                </div>
-
-
-            </div>
-
-        `
-
-    });
-
-}
-
-
-
-// ============================================
-// FUNGSI ESCAPE HTML
-// ============================================
-function escapeHtml(text) {
-
-    if (!text) return '';
-
-
-    const map = {
-
-        '&':
-            '&amp;',
-
-        '<':
-            '&lt;',
-
-        '>':
-            '&gt;',
-
-        '"':
-            '&quot;',
-
-        "'":
-            '&#039;'
-
-    };
-
-
-    return String(text).replace(
-
-        /[&<>"']/g,
-
-        function(m) {
-
-            return map[m];
+            });
 
         }
 
-    );
 
-}
+
+        // ============================================
+        // FUNGSI ESCAPE HTML
+        // ============================================
+        function escapeHtml(text) {
+
+            if (!text) return '';
+
+
+            const map = {
+
+                '&':
+                    '&amp;',
+
+                '<':
+                    '&lt;',
+
+                '>':
+                    '&gt;',
+
+                '"':
+                    '&quot;',
+
+                "'":
+                    '&#039;'
+
+            };
+
+
+            return String(text).replace(
+
+                /[&<>"']/g,
+
+                function(m) {
+
+                    return map[m];
+
+                }
+
+            );
+
+        }
+
+        // ============================================================
+        // RANKING / LEADERBOARD FUNCTIONS - PREMIUM VERSION
+        // ============================================================
+        function computeRankingData() {
+            const users = getUsers();
+            const orders = orderHistory;
+            const rankingMap = {};
+
+            // Inisialisasi semua user dengan 0
+            users.forEach(u => {
+                const username = u.username || 'guest';
+                if (username && username !== 'guest') {
+                    rankingMap[username] = {
+                        username: username,
+                        nama: u.nama || username,
+                        foto: u.foto || null,
+                        totalSpent: 0,
+                        orderCount: 0,
+                        role: u.role || 'customer',
+                        resellerStatus: u.resellerStatus || 'none',
+                        joinDate: u.joinDate || new Date().toISOString()
+                    };
+                }
+            });
+
+            // Tambahkan user yang mungkin ada di orders tapi tidak di users (guest)
+            orders.forEach(o => {
+                const username = o.username || 'guest';
+                if (username !== 'guest') {
+                    if (!rankingMap[username]) {
+                        rankingMap[username] = {
+                            username: username,
+                            nama: username,
+                            foto: null,
+                            totalSpent: 0,
+                            orderCount: 0,
+                            role: 'customer',
+                            resellerStatus: 'none',
+                            joinDate: new Date().toISOString()
+                        };
+                    }
+                }
+            });
+
+            // Hitung total per user dari orderHistory
+            orders.forEach(o => {
+                const username = o.username || 'guest';
+                if (username !== 'guest' && rankingMap[username]) {
+                    rankingMap[username].totalSpent += Number(o.total || 0);
+                    rankingMap[username].orderCount += 1;
+                }
+            });
+
+            // Ubah ke array dan urutkan
+            const rankingArray = Object.values(rankingMap);
+            rankingArray.sort((a, b) => {
+                if (b.totalSpent !== a.totalSpent) {
+                    return b.totalSpent - a.totalSpent;
+                }
+                return b.orderCount - a.orderCount;
+            });
+
+            return rankingArray;
+        }
+
+        function renderRanking(filter = 'semua') {
+            const container = document.getElementById('rankListContainer');
+            if (!container) return;
+
+            // Tampilkan skeleton loading dulu
+            container.innerHTML = `
+                        <div class="rank-skeleton"></div>
+                        <div class="rank-skeleton"></div>
+                        <div class="rank-skeleton"></div>
+                        <div class="rank-skeleton"></div>
+                        <div class="rank-skeleton"></div>
+                    `;
+
+            // Gunakan setTimeout agar rendering tidak blocking UI
+            setTimeout(() => {
+                const data = computeRankingData();
+                const user = getLoggedInUser();
+
+                // Filter data berdasarkan tab
+                let filteredData = [...data];
+                if (filter === 'top10') {
+                    filteredData = filteredData.slice(0, 10);
+                } else if (filter === 'vip') {
+                    filteredData = filteredData.filter(item => item.totalSpent >= 100000);
+                } else if (filter === 'reseller') {
+                    filteredData = filteredData.filter(item => 
+                        item.role === 'reseller_free' || item.role === 'reseller_premium'
+                    );
+                }
+
+                // Update statistik header
+                const totalPembeli = data.filter(d => d.totalSpent > 0).length;
+                const totalTransaksi = data.reduce((sum, d) => sum + d.totalSpent, 0);
+                const totalOrder = data.reduce((sum, d) => sum + d.orderCount, 0);
+
+                document.getElementById('rankTotalPembeli').textContent = totalPembeli;
+                document.getElementById('rankTotalTransaksi').textContent = `Rp${totalTransaksi.toLocaleString()}`;
+                document.getElementById('rankTotalOrder').textContent = totalOrder;
+
+                // My Rank
+                const myRankContainer = document.getElementById('myRankContainer');
+                if (user && user.username) {
+                    const myData = data.find(d => d.username === user.username);
+                    if (myData && myData.totalSpent > 0) {
+                        const myIndex = data.findIndex(d => d.username === user.username) + 1;
+                        let medal = '';
+                        if (myIndex === 1) medal = '🥇';
+                        else if (myIndex === 2) medal = '🥈';
+                        else if (myIndex === 3) medal = '🥉';
+                        else medal = `#${myIndex}`;
+                        myRankContainer.innerHTML = `
+                                    <div class="my-rank-card">
+                                        <div class="my-rank-left">
+                                            <div class="rank-pos">${medal}</div>
+                                            <div class="rank-detail">
+                                                <div class="name">${user.nama || user.username}</div>
+                                                <div class="label">Peringkat Anda</div>
+                                            </div>
+                                        </div>
+                                        <div class="my-rank-right">
+                                            <div class="total">Rp${myData.totalSpent.toLocaleString()}</div>
+                                            <div class="label">${myData.orderCount} Pesanan</div>
+                                        </div>
+                                    </div>
+                                `;
+                    } else {
+                        myRankContainer.innerHTML = `
+                                    <div class="card p-3 text-center" style="border-color:var(--border);">
+                                        <p class="text-sm" style="color:var(--textSec);">Anda belum memiliki transaksi. Mulai berbelanja untuk masuk peringkat!</p>
+                                    </div>
+                                `;
+                    }
+                } else {
+                    myRankContainer.innerHTML = `
+                                <div class="card p-3 text-center" style="border-color:var(--border);">
+                                    <p class="text-sm" style="color:var(--textSec);"><i class="fas fa-sign-in-alt text-primary"></i> Login untuk melihat peringkat Anda.</p>
+                                </div>
+                            `;
+                }
+
+                // Daftar peringkat
+                if (filteredData.length === 0) {
+                    container.innerHTML = `
+                                <div class="card p-4 text-center" style="border-color:var(--border);">
+                                    <i class="fas fa-trophy text-3xl opacity-30" style="color:var(--textSec);"></i>
+                                    <p class="text-sm mt-1" style="color:var(--textSec);">Belum ada data peringkat untuk filter ini.</p>
+                                </div>
+                            `;
+                    return;
+                }
+
+                // Peringkat hanya untuk yang punya transaksi > 0
+                const rankedData = filteredData.filter(d => d.totalSpent > 0);
+
+                if (rankedData.length === 0) {
+                    container.innerHTML = `
+                                <div class="card p-4 text-center" style="border-color:var(--border);">
+                                    <i class="fas fa-coins text-3xl opacity-30" style="color:var(--textSec);"></i>
+                                    <p class="text-sm mt-1" style="color:var(--textSec);">Belum ada pembeli untuk filter ini.</p>
+                                </div>
+                            `;
+                    return;
+                }
+
+                let html = '';
+                rankedData.forEach((item, index) => {
+                    const rank = index + 1;
+                    let rankClass = '';
+                    let medalIcon = '';
+                    if (rank === 1) { rankClass = 'gold';
+                        medalIcon = '🥇'; } else if (rank === 2) { rankClass = 'silver';
+                        medalIcon = '🥈'; } else if (rank === 3) { rankClass = 'bronze';
+                        medalIcon = '🥉'; }
+
+                    const isCurrentUser = user && user.username === item.username;
+                    const highlightClass = isCurrentUser ? 'rank-highlight' : '';
+
+                    const initials = item.nama ? item.nama.charAt(0).toUpperCase() : 'U';
+                    const hasFoto = item.foto && item.foto.length > 50;
+
+                    // Badge berdasarkan total spent
+                    let badgeHtml = '';
+                    if (item.totalSpent >= 1000000) {
+                        badgeHtml = '<span class="rank-badge whale"><i class="fas fa-whale"></i> WHALE</span>';
+                    } else if (item.totalSpent >= 250000) {
+                        badgeHtml = '<span class="rank-badge vip"><i class="fas fa-crown"></i> VIP</span>';
+                    } else if (item.totalSpent >= 50000) {
+                        badgeHtml = '<span class="rank-badge regular"><i class="fas fa-store"></i> REGULAR</span>';
+                    } else if (item.totalSpent > 0) {
+                        badgeHtml = '<span class="rank-badge newbie"><i class="fas fa-seedling"></i> NEWBIE</span>';
+                    }
+
+                    // Badge reseller
+                    let resellerBadge = '';
+                    if (item.role === 'reseller_premium' && item.resellerStatus === 'approved') {
+                        resellerBadge = '<span class="reseller-badge premium" style="font-size:7px;padding:1px 6px;"><i class="fas fa-crown"></i> PREMIUM</span>';
+                    } else if (item.role === 'reseller_free' && item.resellerStatus === 'approved') {
+                        resellerBadge = '<span class="reseller-badge gratis" style="font-size:7px;padding:1px 6px;"><i class="fas fa-store"></i> RESELLER</span>';
+                    }
+
+                    html += `
+                                <div class="rank-item ${highlightClass}" style="animation-delay: ${(index * 0.05)}s">
+                                    <div class="rank-number ${rankClass}">
+                                        ${medalIcon || rank}
+                                    </div>
+                                    <div class="rank-avatar">
+                                        ${hasFoto ? `<img src="${item.foto}" alt="${item.nama}">` : initials}
+                                    </div>
+                                    <div class="rank-info">
+                                        <div class="name">
+                                            ${item.nama}
+                                            ${medalIcon ? `<span class="medal">${medalIcon}</span>` : ''}
+                                            ${badgeHtml}
+                                            ${resellerBadge}
+                                            ${isCurrentUser ? '<span class="text-xs text-primary font-bold">(Anda)</span>' : ''}
+                                        </div>
+                                        <div class="stats">
+                                            <span><i class="fas fa-shopping-bag"></i> ${item.orderCount} pesanan</span>
+                                            <span><i class="fas fa-calendar"></i> Bergabung: ${item.joinDate ? new Date(item.joinDate).toLocaleDateString('id-ID') : '-'}</span>
+                                        </div>
+                                    </div>
+                                    <div class="rank-total">Rp${item.totalSpent.toLocaleString()}</div>
+                                </div>
+                            `;
+                });
+
+                container.innerHTML = html;
+
+            }, 200);
+        }
+
+        // ============================================================
+        // RANKING TABS
+        // ============================================================
+        document.querySelectorAll('.rank-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.rank-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.dataset.rank || 'semua';
+                renderRanking(filter);
+            });
+        });
+
+        // ============================================================
+        // REFRESH RANKING BUTTON
+        // ============================================================
+        document.getElementById('refreshRankBtn')?.addEventListener('click', function() {
+            const activeTab = document.querySelector('.rank-tab.active');
+            const filter = activeTab ? activeTab.dataset.rank : 'semua';
+            renderRanking(filter);
+            showToast('Peringkat diperbarui!', 'success');
+        });
+
         // ============================================================
         // EXPOSE FUNGSI RESELLER (tambahan)
         // ============================================================
@@ -5686,6 +6436,9 @@ function escapeHtml(text) {
             document.querySelector('.all-filter[data-filter="all"]')?.classList.add('bg-primary', 'text-white');
 
             updateResellerView();
+
+            // Render ranking awal
+            renderRanking('semua');
         }
         document.addEventListener('DOMContentLoaded', init);
 
@@ -5706,6 +6459,7 @@ function escapeHtml(text) {
         window.openResellerPage = openResellerPage;
         window.openResellerForm = openResellerForm;
         window.renderResellerPriceEditor = renderResellerPriceEditor;
+        window.renderRanking = renderRanking;
     </script>
 
     <!-- Firebase SDK -->
@@ -6648,54 +7402,54 @@ function escapeHtml(text) {
 
                         if (!doc.exists) {
 
-    console.warn(
-        '⚠️ User belum ditemukan di Firestore, membuat user baru:',
-        username
-    );
+                            console.warn(
+                                '⚠️ User belum ditemukan di Firestore, membuat user baru:',
+                                username
+                            );
 
-    const localCoinBalance =
-        Number(user.coinBalance || 0);
+                            const localCoinBalance =
+                                Number(user.coinBalance || 0);
 
-    const localCoinHistory =
-        Array.isArray(user.coinHistory)
-            ? user.coinHistory
-            : [];
+                            const localCoinHistory =
+                                Array.isArray(user.coinHistory)
+                                    ? user.coinHistory
+                                    : [];
 
-    db.collection('users')
-        .doc(username)
-        .set({
-            username: username,
-            coinBalance: localCoinBalance,
-            coinHistory: localCoinHistory,
-            createdAt:
-                firebase.firestore
-                .FieldValue
-                .serverTimestamp(),
-            updatedAt:
-                firebase.firestore
-                .FieldValue
-                .serverTimestamp()
-        })
-        .then(() => {
+                            db.collection('users')
+                                .doc(username)
+                                .set({
+                                    username: username,
+                                    coinBalance: localCoinBalance,
+                                    coinHistory: localCoinHistory,
+                                    createdAt:
+                                        firebase.firestore
+                                        .FieldValue
+                                        .serverTimestamp(),
+                                    updatedAt:
+                                        firebase.firestore
+                                        .FieldValue
+                                        .serverTimestamp()
+                                })
+                                .then(() => {
 
-            console.log(
-                '✅ User berhasil dibuat di Firestore:',
-                username
-            );
+                                    console.log(
+                                        '✅ User berhasil dibuat di Firestore:',
+                                        username
+                                    );
 
-        })
-        .catch(error => {
+                                })
+                                .catch(error => {
 
-            console.error(
-                '❌ Gagal membuat user di Firestore:',
-                error
-            );
+                                    console.error(
+                                        '❌ Gagal membuat user di Firestore:',
+                                        error
+                                    );
 
-        });
+                                });
 
-    return;
+                            return;
 
-}
+                        }
                         const data =
                             doc.data();
 
@@ -9005,6 +9759,9 @@ function escapeHtml(text) {
                                 'success'
                             );
 
+                            // Perbarui peringkat setelah transaksi
+                            renderRanking();
+
 
                         }
 
@@ -9044,6 +9801,9 @@ function escapeHtml(text) {
 
                                 'error'
                             );
+
+                            // Tetap perbarui peringkat
+                            renderRanking();
 
                         }
 
