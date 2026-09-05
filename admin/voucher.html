@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Voucher - RIKY STORE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        body { background: #0B1121; color: #F1F5F9; font-family: 'Inter', sans-serif; padding: 20px; }
+        .card { background: #1E293B; border-radius: 16px; padding: 20px; border: 1px solid #334155; }
+        .input { background: #0F172A; border: 1px solid #334155; border-radius: 10px; padding: 10px 14px; color: white; width: 100%; }
+        .btn-primary { background: #2563EB; border: none; padding: 10px 20px; border-radius: 9999px; font-weight: 700; color: white; cursor: pointer; }
+        .btn-primary:hover { opacity: 0.9; }
+        .badge { padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+        .badge-green { background: rgba(34,197,94,0.2); color: #22C55E; }
+        .badge-red { background: rgba(239,68,68,0.2); color: #EF4444; }
+        .badge-yellow { background: rgba(234,179,8,0.2); color: #EAB308; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { padding: 10px 8px; border-bottom: 1px solid #334155; text-align: left; }
+        th { color: #94A3B8; font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+    </style>
+</head>
+<body>
+
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-2xl font-extrabold mb-2">🎫 <span class="text-blue-500">RIKY</span> STORE - Admin Voucher</h1>
+    <p class="text-sm text-gray-400 mb-6">Buat dan kelola voucher diskon, serta kirim notifikasi ke semua pelanggan.</p>
+
+    <!-- FORM BUAT VOUCHER -->
+    <div class="card mb-6">
+        <h2 class="text-lg font-bold mb-4"><i class="fas fa-plus-circle text-blue-500 mr-2"></i>Buat Voucher Baru</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="text-xs font-bold uppercase text-gray-400 block mb-1">Kode Voucher</label>
+                <input type="text" id="voucherCode" class="input" placeholder="CONTOH10" value="PROMO10" />
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase text-gray-400 block mb-1">Diskon (%)</label>
+                <input type="number" id="discountPercent" class="input" placeholder="10" value="10" min="1" max="100" />
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase text-gray-400 block mb-1">Kuota (jumlah pemakaian)</label>
+                <input type="number" id="maxUses" class="input" placeholder="100" value="50" min="1" />
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase text-gray-400 block mb-1">Berlaku (hari)</label>
+                <input type="number" id="expiresDays" class="input" placeholder="7" value="7" min="1" />
+            </div>
+        </div>
+        <button id="createVoucherBtn" class="btn-primary mt-4 w-full md:w-auto px-8"><i class="fas fa-paper-plane mr-2"></i>Buat & Kirim Notifikasi</button>
+    </div>
+
+    <!-- DAFTAR VOUCHER AKTIF -->
+    <div class="card">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold"><i class="fas fa-list text-blue-500 mr-2"></i>Daftar Voucher Aktif</h2>
+            <button id="refreshBtn" class="text-sm text-blue-400 hover:text-blue-300"><i class="fas fa-sync"></i> Refresh</button>
+        </div>
+        <div id="voucherList" class="overflow-x-auto">
+            <p class="text-gray-400 text-sm">Memuat data...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===== KONFIGURASI FIREBASE =====
+    const firebaseConfig = {
+        apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
+        authDomain: "riky-store-push.firebaseapp.com",
+        projectId: "riky-store-push",
+        storageBucket: "riky-store-push.firebasestorage.app",
+        messagingSenderId: "700709840952",
+        appId: "1:700709840952:web:d2efb042652f931d269ecd"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ===== FUNGSI LOAD VOUCHER =====
+    async function loadVouchers() {
+        const container = document.getElementById('voucherList');
+        try {
+            const snapshot = await db.collection('vouchers')
+                .where('active', '==', true)
+                .orderBy('createdAt', 'desc')
+                .get();
+
+            if (snapshot.empty) {
+                container.innerHTML = `<p class="text-gray-400 text-sm">Belum ada voucher aktif.</p>`;
+                return;
+            }
+
+            let rows = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                const used = data.usedCount || 0;
+                const quota = data.maxUses || 0;
+                const remaining = quota - used;
+                const expired = data.expiresAt && data.expiresAt.toDate ? data.expiresAt.toDate() : null;
+                const now = new Date();
+                const isExpired = expired && expired < now;
+                const status = isExpired ? 'expired' : (remaining > 0 ? 'active' : 'full');
+                let badge = '';
+                if (status === 'active') badge = `<span class="badge badge-green">Aktif (${remaining} tersisa)</span>`;
+                else if (status === 'full') badge = `<span class="badge badge-red">Habis</span>`;
+                else if (status === 'expired') badge = `<span class="badge badge-yellow">Kadaluarsa</span>`;
+
+                rows += `
+                    <tr>
+                        <td><strong>${data.code}</strong></td>
+                        <td>${data.discountPercent}%</td>
+                        <td>${used} / ${quota}</td>
+                        <td>${expired ? expired.toLocaleDateString('id-ID') : '-'}</td>
+                        <td>${badge}</td>
+                        <td>
+                            <button class="text-red-400 hover:text-red-300 text-sm" onclick="deleteVoucher('${id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Diskon</th>
+                            <th>Kuota</th>
+                            <th>Berlaku sampai</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        } catch (err) {
+            console.error(err);
+            container.innerHTML = `<p class="text-red-400 text-sm">Gagal memuat data: ${err.message}</p>`;
+        }
+    }
+
+    // ===== DELETE VOUCHER =====
+    async function deleteVoucher(id) {
+        const confirm = await Swal.fire({
+            title: 'Hapus voucher?',
+            text: 'Tindakan ini tidak bisa dibatalkan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#EF4444',
+            confirmButtonText: 'Ya, hapus!',
+            background: '#1E293B',
+            color: '#F1F5F9'
+        });
+        if (!confirm.isConfirmed) return;
+        try {
+            await db.collection('vouchers').doc(id).update({ active: false });
+            showToast('Voucher dinonaktifkan', 'success');
+            loadVouchers();
+        } catch (err) {
+            showToast('Gagal: ' + err.message, 'error');
+        }
+    }
+
+    // ===== TOAST =====
+    function showToast(msg, type = 'info') {
+        Swal.fire({ text: msg, icon: type, toast: true, position: 'top-end', showConfirmButton: false, timer: 3000,
+            background: '#1E293B', color: '#F1F5F9' });
+    }
+
+    // ===== BUAT VOUCHER =====
+    document.getElementById('createVoucherBtn').addEventListener('click', async function() {
+        const code = document.getElementById('voucherCode').value.trim().toUpperCase();
+        const discountPercent = parseInt(document.getElementById('discountPercent').value) || 0;
+        const maxUses = parseInt(document.getElementById('maxUses').value) || 0;
+        const expiresDays = parseInt(document.getElementById('expiresDays').value) || 0;
+
+        if (!code) { showToast('Masukkan kode voucher', 'error'); return; }
+        if (discountPercent < 1 || discountPercent > 100) { showToast('Diskon harus 1-100%', 'error'); return; }
+        if (maxUses < 1) { showToast('Kuota minimal 1', 'error'); return; }
+        if (expiresDays < 1) { showToast('Masa berlaku minimal 1 hari', 'error'); return; }
+
+        // Cek apakah kode sudah ada (aktif)
+        const existing = await db.collection('vouchers').where('code', '==', code).where('active', '==', true).get();
+        if (!existing.empty) {
+            showToast('Kode voucher sudah aktif!', 'error');
+            return;
+        }
+
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+        try {
+            const expiresAt = new Date();
+            expiresAt.setDate(expiresAt.getDate() + expiresDays);
+
+            // Simpan ke Firestore
+            const docRef = await db.collection('vouchers').add({
+                code,
+                discountPercent,
+                maxUses,
+                usedCount: 0,
+                expiresAt: firebase.firestore.Timestamp.fromDate(expiresAt),
+                active: true,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            // Kirim notifikasi ke semua subscriber via API (panggil serverless function)
+            const response = await fetch('/api/create-voucher', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    voucherId: docRef.id,
+                    code,
+                    discountPercent,
+                    maxUses,
+                    expiresDays
+                })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                showToast(`Voucher ${code} berhasil dibuat dan notifikasi dikirim!`, 'success');
+                loadVouchers();
+                // Reset form
+                document.getElementById('voucherCode').value = '';
+                document.getElementById('discountPercent').value = '10';
+                document.getElementById('maxUses').value = '50';
+                document.getElementById('expiresDays').value = '7';
+            } else {
+                showToast('Voucher tersimpan, tapi notifikasi gagal: ' + (result.error || ''), 'warning');
+            }
+        } catch (err) {
+            showToast('Error: ' + err.message, 'error');
+        } finally {
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Buat & Kirim Notifikasi';
+        }
+    });
+
+    // ===== REFRESH =====
+    document.getElementById('refreshBtn').addEventListener('click', loadVouchers);
+
+    // ===== INIT =====
+    loadVouchers();
+</script>
+</body>
+</html>
