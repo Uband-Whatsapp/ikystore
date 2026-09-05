@@ -2405,14 +2405,552 @@
 
 @media (max-width: 520px) {
 
+  /* =========================================================
+   CHECKOUT MODAL — CLEAN PROFESSIONAL UI
+========================================================= */
+
+.checkout-modal {
+    width: min(94vw, 620px) !important;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 !important;
+    border-radius: 22px !important;
+    background: #0b1629 !important;
+    border: 1px solid rgba(71, 91, 120, 0.55) !important;
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.58),
+        0 0 40px rgba(37, 99, 235, 0.06);
+}
+
+/* Scrollbar */
+.checkout-modal::-webkit-scrollbar {
+    width: 5px;
+}
+
+.checkout-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.checkout-modal::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 20px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.checkout-header {
+    min-height: 72px;
+    padding: 0 22px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    background: #0d192d;
+    border-bottom: 1px solid rgba(71, 91, 120, 0.42) !important;
+}
+
+.checkout-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.checkout-title-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #122b56;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+    font-size: 17px;
+}
+
+.checkout-title h3 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.checkout-close {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #94a3b8 !important;
+    font-size: 29px !important;
+    line-height: 1;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.checkout-close:hover {
+    background: rgba(148, 163, 184, 0.08);
+    color: #f8fafc !important;
+}
+
+/* =========================================================
+   PRODUCT DETAIL
+========================================================= */
+
+.checkout-body {
+    padding: 19px 22px 16px !important;
+}
+
+.checkout-body > div {
+    margin-bottom: 0 !important;
+}
+
+.checkout-body p {
+    margin: 0;
+}
+
+/* =========================================================
+   RIKY COIN
+========================================================= */
+
+.coin-checkout-section {
+    margin: 0 22px 18px;
+    padding: 17px;
+    background: #142239;
+    border: 1px solid #30445f;
+    border-radius: 17px;
+    box-shadow: none;
+}
+
+/* Coin Header */
+
+.coin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.coin-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.coin-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #263447;
+    border: 1px solid rgba(234, 179, 8, 0.18);
+    color: #facc15;
+    font-size: 17px;
+}
+
+.coin-brand .label {
+    color: #f1f5f9;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.25px;
+}
+
+.coin-header .saldo {
+    color: #94a3b8;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.coin-header .saldo strong {
+    color: #facc15;
+    font-size: 15px;
+    font-weight: 800;
+    margin-left: 4px;
+}
+
+.coin-header .saldo span {
+    color: #94a3b8;
+    margin-left: 2px;
+}
+
+/* =========================================================
+   COIN TOGGLE
+========================================================= */
+
+.coin-toggle-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+.toggle-btn {
+    min-height: 46px;
+    padding: 9px 12px;
+    border-radius: 13px;
+    border: 1px solid #34465f;
+    background: #101c2e;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.toggle-btn:hover {
+    border-color: #475b78;
+    color: #cbd5e1;
+}
+
+.toggle-btn:active {
+    transform: scale(0.98);
+}
+
+.toggle-btn.active {
+    background: rgba(37, 99, 235, 0.12);
+    border-color: #2563eb;
+    color: #60a5fa;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.08);
+}
+
+/* =========================================================
+   COIN AMOUNT
+========================================================= */
+
+.coin-amount-section {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #30445f;
+}
+
+.coin-amount-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 9px;
+    color: #d3dce8;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.coin-value-hint {
+    color: #718198;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Coin controls */
+
+.coin-amount-control {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    gap: 8px;
+    align-items: center;
+}
+
+.coin-control-btn {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    border: 1px solid #34465f;
+    background: #0f1a2c;
+    color: #e2e8f0;
+    font-size: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.coin-control-btn:hover {
+    border-color: #3b82f6;
+    color: #60a5fa;
+    background: rgba(37, 99, 235, 0.08);
+}
+
+.coin-control-btn:active {
+    transform: scale(0.95);
+}
+
+.coin-input-wrap {
+    height: 48px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    border-radius: 13px;
+    background: #0f1a2c;
+    border: 1px solid #34465f;
+}
+
+.coin-input-wrap:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+.coin-input-wrap input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #f8fafc;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.coin-input-wrap input::-webkit-inner-spin-button,
+.coin-input-wrap input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.coin-input-wrap input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.coin-input-wrap span {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   MAX COIN
+========================================================= */
+
+.coin-max-btn {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 9px;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    border-radius: 12px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.15);
+}
+
+.coin-max-btn:hover {
+    background: #1d4ed8;
+}
+
+.coin-max-btn:active {
+    transform: scale(0.99);
+}
+
+.coin-max-btn i {
+    margin-right: 5px;
+}
+
+/* Info */
+
+.coin-info-text {
+    margin-top: 8px;
+    color: #7f8fa6;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.coin-info-text span {
+    color: #aab7c8;
+    font-weight: 700;
+}
+
+/* =========================================================
+   COIN DISCOUNT
+========================================================= */
+
+.coin-discount-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 13px;
+    padding-top: 13px;
+    border-top: 1px solid #30445f;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.coin-discount-display strong {
+    color: #60a5fa;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   VOUCHER
+========================================================= */
+
+.checkout-voucher {
+    padding: 0 22px 18px;
+}
+
+.voucher-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+    color: #aab7c8;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.voucher-label i {
+    color: #60a5fa;
+    font-size: 13px;
+}
+
+.voucher-input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 105px;
+    gap: 9px;
+    align-items: center;
+}
+
+.checkout-voucher .input-modern {
+    width: 100%;
+    height: 47px;
+    padding: 0 14px;
+    border-radius: 13px;
+    background: #111e32;
+    border: 1px solid #34465f;
+    color: #f8fafc;
+    outline: none;
+    font-size: 13px;
+    transition: 0.2s ease;
+}
+
+.checkout-voucher .input-modern::placeholder {
+    color: #64748b;
+}
+
+.checkout-voucher .input-modern:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+.voucher-apply-btn {
+    width: 105px;
+    height: 47px;
+    padding: 0 12px !important;
+    border-radius: 13px !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    white-space: nowrap;
+}
+
+.voucher-message {
+    min-height: 0;
+    margin-top: 6px;
+    font-size: 11px;
+}
+
+.voucher-detail {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    background: rgba(37, 99, 235, 0.07);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.checkout-footer {
+    padding: 16px 22px 19px !important;
+    background: #0b1629;
+    border-top: 1px solid rgba(71, 91, 120, 0.42) !important;
+}
+
+.checkout-total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 13px;
+}
+
+.total-label {
+    display: block;
+    color: #d5deea;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.total-subtitle {
+    display: block;
+    margin-top: 3px;
+    color: #66758b;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.checkout-total-price {
+    color: #f8fafc;
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 900;
+    white-space: nowrap;
+    letter-spacing: -0.6px;
+}
+
+.checkout-qris-btn {
+    width: 100%;
+    min-height: 51px;
+    border-radius: 13px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.18);
+}
+
+.checkout-qris-btn i {
+    font-size: 15px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
     .checkout-modal {
-        width: calc(100vw - 20px) !important;
-        max-height: 92vh;
+        width: calc(100vw - 18px) !important;
+        max-height: 93vh;
         border-radius: 19px !important;
     }
 
     .checkout-header {
-        min-height: 64px;
+        min-height: 63px;
         padding: 0 16px !important;
     }
 
@@ -2421,9 +2959,10 @@
     }
 
     .checkout-title-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
+        width: 35px;
+        height: 35px;
+        border-radius: 10px;
+        font-size: 15px;
     }
 
     .checkout-title h3 {
@@ -2437,103 +2976,158 @@
     }
 
     .checkout-body {
-        padding: 16px 16px 14px !important;
+        padding: 15px 16px 13px !important;
     }
 
+    /* COIN CARD */
     .coin-checkout-section {
-        margin: 0 0 14px;
+        margin: 0 16px 16px;
         padding: 15px;
         border-radius: 16px;
+        background: #142239;
     }
 
     .coin-header {
-        margin-bottom: 13px;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .coin-brand {
+        gap: 9px;
+    }
+
+    .coin-icon {
+        width: 33px;
+        height: 33px;
+        border-radius: 9px;
+        font-size: 15px;
     }
 
     .coin-brand .label {
         font-size: 16px;
     }
 
-    .coin-icon {
-        width: 32px;
-        height: 32px;
-    }
-
     .coin-header .saldo {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .coin-header .saldo strong {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .coin-toggle-group {
-        gap: 8px;
+        gap: 7px;
     }
 
     .toggle-btn {
-        min-height: 45px;
-        padding: 8px 7px;
-        font-size: 12px;
+        min-height: 44px;
+        padding: 8px 6px;
         border-radius: 12px;
+        font-size: 12px;
+    }
+
+    .coin-amount-section {
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+
+    .coin-amount-label {
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+
+    .coin-value-hint {
+        font-size: 10px;
     }
 
     .coin-amount-control {
-        grid-template-columns: 47px minmax(0, 1fr) 47px;
+        grid-template-columns: 44px minmax(0, 1fr) 44px;
         gap: 7px;
     }
 
     .coin-control-btn {
-        width: 47px;
-        height: 47px;
-        font-size: 24px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 23px;
     }
 
     .coin-input-wrap {
-        height: 47px;
+        height: 44px;
         padding: 0 10px;
+        border-radius: 12px;
     }
 
     .coin-input-wrap input {
-        font-size: 19px;
+        font-size: 18px;
     }
 
     .coin-max-btn {
-        min-height: 45px;
+        min-height: 43px;
+        margin-top: 8px;
+        border-radius: 11px;
+        font-size: 12px;
+    }
+
+    .coin-info-text {
+        margin-top: 7px;
+        font-size: 10px;
+    }
+
+    .coin-discount-display {
+        margin-top: 12px;
+        padding-top: 12px;
+        font-size: 12px;
+    }
+
+    .coin-discount-display strong {
         font-size: 13px;
     }
 
+    /* VOUCHER */
     .checkout-voucher {
-        padding: 0 16px 15px;
+        padding: 0 16px 16px;
+    }
+
+    .voucher-label {
+        margin-bottom: 7px;
+        font-size: 12px;
     }
 
     .voucher-input-row {
+        grid-template-columns: minmax(0, 1fr) 91px;
         gap: 7px;
     }
 
     .checkout-voucher .input-modern {
-        height: 46px;
-        font-size: 13px;
+        height: 45px;
         padding: 0 12px;
+        border-radius: 12px;
+        font-size: 12px;
     }
 
     .voucher-apply-btn {
-        min-width: 91px;
-        height: 46px;
-        padding: 0 12px !important;
+        width: 91px;
+        height: 45px;
+        border-radius: 12px !important;
         font-size: 12px !important;
     }
 
+    /* FOOTER */
     .checkout-footer {
         padding: 15px 16px 17px !important;
     }
 
     .checkout-total-row {
-        margin-bottom: 12px;
+        margin-bottom: 11px;
     }
 
     .total-label {
         font-size: 13px;
+    }
+
+    .total-subtitle {
+        font-size: 9px;
     }
 
     .checkout-total-price {
@@ -2541,8 +3135,9 @@
     }
 
     .checkout-qris-btn {
-        min-height: 50px;
-        font-size: 14px !important;
+        min-height: 49px;
+        border-radius: 12px !important;
+        font-size: 13px !important;
     }
 }
 
@@ -2556,24 +3151,54 @@
         width: calc(100vw - 12px) !important;
     }
 
-    .coin-checkout-section {
-        padding: 13px;
+    .checkout-header {
+        padding: 0 14px !important;
     }
 
-    .coin-header .saldo {
-        font-size: 11px;
+    .checkout-body {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+    }
+
+    .coin-checkout-section {
+        margin-left: 14px;
+        margin-right: 14px;
+        padding: 13px;
     }
 
     .coin-brand .label {
         font-size: 15px;
     }
 
+    .coin-header .saldo {
+        font-size: 10px;
+    }
+
+    .coin-header .saldo strong {
+        font-size: 12px;
+    }
+
     .toggle-btn {
         font-size: 11px;
     }
 
+    .checkout-voucher {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .voucher-input-row {
+        grid-template-columns: minmax(0, 1fr) 83px;
+    }
+
     .voucher-apply-btn {
-        min-width: 82px;
+        width: 83px;
+        font-size: 11px !important;
+    }
+
+    .checkout-footer {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
     }
 
     .checkout-total-price {
