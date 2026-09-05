@@ -8,8 +8,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -22,19 +21,23 @@
 
         :root {
             --bg: #080d19;
-            --panel: #0f172a;
-            --panel-2: #111c31;
-            --border: #22304a;
+            --bg-secondary: #0d1424;
+            --card: rgba(17, 27, 45, 0.88);
+            --card-solid: #111b2d;
+            --border: rgba(148, 163, 184, 0.12);
+            --border-hover: rgba(96, 165, 250, 0.25);
             --text: #f8fafc;
             --muted: #94a3b8;
+            --muted-2: #64748b;
             --blue: #3b82f6;
-            --blue-dark: #2563eb;
+            --blue-light: #60a5fa;
             --green: #22c55e;
             --red: #ef4444;
             --yellow: #eab308;
         }
 
         html {
+            min-height: 100%;
             background: var(--bg);
         }
 
@@ -42,10 +45,11 @@
             margin: 0;
             min-height: 100vh;
             background:
-                radial-gradient(circle at 50% -10%, rgba(37, 99, 235, .14), transparent 35%),
-                var(--bg);
+                radial-gradient(circle at 15% 0%, rgba(37, 99, 235, 0.13), transparent 30%),
+                radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.08), transparent 25%),
+                linear-gradient(180deg, #080d19 0%, #0a1020 100%);
             color: var(--text);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         button,
@@ -53,11 +57,11 @@
             font-family: inherit;
         }
 
-        /* =========================
+        /* =========================================================
            LOGIN
-        ========================= */
+        ========================================================= */
 
-        #adminLogin {
+        #loginScreen {
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -70,645 +74,757 @@
             max-width: 410px;
         }
 
-        .login-brand {
-            text-align: center;
-            margin-bottom: 24px;
+        .login-card {
+            position: relative;
+            overflow: hidden;
+            background: rgba(13, 20, 36, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.13);
+            border-radius: 24px;
+            padding: 34px 30px 30px;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.025);
+            backdrop-filter: blur(18px);
         }
 
-        .brand-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 16px;
+        .login-card::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(37, 99, 235, 0.18);
+            filter: blur(45px);
+            pointer-events: none;
+        }
+
+        .login-icon {
+            position: relative;
+            width: 66px;
+            height: 66px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            box-shadow: 0 18px 45px rgba(37, 99, 235, .28);
+            border-radius: 18px;
+            background: linear-gradient(145deg, #2563eb, #1d4ed8);
+            box-shadow: 0 14px 35px rgba(37, 99, 235, 0.28);
             font-size: 25px;
+            color: white;
         }
 
-        .brand-title {
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
             margin: 0;
-            font-size: 25px;
-            font-weight: 800;
-            letter-spacing: -.5px;
         }
 
-        .brand-title span {
-            color: #60a5fa;
+        .login-title span {
+            color: var(--blue-light);
         }
 
-        .brand-subtitle {
-            margin: 7px 0 0;
+        .login-subtitle {
+            text-align: center;
             color: var(--muted);
             font-size: 13px;
+            line-height: 1.6;
+            margin: 8px 0 26px;
         }
 
-        .login-card {
-            background: rgba(15, 23, 42, .9);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 24px;
-            box-shadow:
-                0 25px 70px rgba(0, 0, 0, .35),
-                inset 0 1px 0 rgba(255, 255, 255, .025);
-            backdrop-filter: blur(14px);
-        }
-
-        .login-heading {
-            font-size: 17px;
-            font-weight: 750;
-            margin-bottom: 5px;
-        }
-
-        .login-description {
-            color: var(--muted);
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-
-        .input-label {
+        .login-label {
             display: block;
             color: #cbd5e1;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: .5px;
         }
 
-        .password-wrap {
+        .password-wrapper {
             position: relative;
         }
 
-        .password-wrap input {
-            padding-right: 48px;
+        .password-input {
+            width: 100%;
+            height: 50px;
+            padding: 0 48px 0 44px;
+            background: #080f1d;
+            border: 1px solid #26344a;
+            border-radius: 13px;
+            color: white;
+            outline: none;
+            font-size: 16px;
+            letter-spacing: 3px;
+            transition: 0.2s ease;
         }
 
-        .password-toggle {
+        .password-input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.10);
+        }
+
+        .password-input::placeholder {
+            letter-spacing: 0;
+            color: #475569;
+        }
+
+        .input-left-icon {
             position: absolute;
-            right: 4px;
-            top: 4px;
-            width: 42px;
-            height: calc(100% - 8px);
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            pointer-events: none;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
             border: 0;
             background: transparent;
             color: #64748b;
             cursor: pointer;
+            padding: 5px;
         }
 
-        .password-toggle:hover {
+        .toggle-password:hover {
             color: #cbd5e1;
-        }
-
-        .input {
-            width: 100%;
-            height: 48px;
-            padding: 0 14px;
-            color: #fff;
-            background: #080f1e;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            outline: none;
-            transition: .2s ease;
-        }
-
-        .input::placeholder {
-            color: #475569;
-        }
-
-        .input:focus {
-            border-color: rgba(59, 130, 246, .75);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, .1);
         }
 
         .login-button {
             width: 100%;
-            height: 48px;
-            margin-top: 15px;
+            height: 50px;
+            margin-top: 16px;
             border: 0;
-            border-radius: 12px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            font-size: 13px;
-            font-weight: 750;
+            font-size: 14px;
+            font-weight: 800;
             cursor: pointer;
-            transition: .2s ease;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, .2);
+            transition: 0.2s ease;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
         }
 
         .login-button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(37, 99, 235, .28);
+            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
         }
 
         .login-footer {
             text-align: center;
-            color: #64748b;
+            color: #475569;
             font-size: 11px;
-            margin-top: 18px;
+            margin-top: 22px;
         }
 
-        /* =========================
+        /* =========================================================
            DASHBOARD
-        ========================= */
+        ========================================================= */
 
         #adminDashboard {
             display: none;
         }
 
         .page {
-            width: min(100% - 28px, 1050px);
+            width: 100%;
+            max-width: 1050px;
             margin: 0 auto;
-            padding: 24px 0 45px;
+            padding: 26px 18px 40px;
         }
 
         .topbar {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 22px;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 25px;
         }
 
-        .topbar-left {
+        .brand-area {
             display: flex;
             align-items: center;
             gap: 13px;
         }
 
-        .top-icon {
+        .brand-icon {
             width: 46px;
             height: 46px;
+            flex: 0 0 46px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 14px;
-            background: rgba(37, 99, 235, .13);
-            border: 1px solid rgba(59, 130, 246, .2);
-            color: #60a5fa;
+            border-radius: 13px;
+            background: rgba(37, 99, 235, 0.14);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--blue-light);
             font-size: 18px;
         }
 
-        .top-title {
+        .brand-name {
+            font-size: 19px;
+            font-weight: 850;
+            line-height: 1.1;
             margin: 0;
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -.3px;
         }
 
-        .top-subtitle {
-            margin: 3px 0 0;
+        .brand-name span {
+            color: var(--blue-light);
+        }
+
+        .brand-desc {
             color: var(--muted);
-            font-size: 11px;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-link,
+        .logout-button {
+            height: 38px;
+            padding: 0 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .top-link {
+            color: #cbd5e1;
+            background: rgba(148, 163, 184, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        .top-link:hover {
+            color: white;
+            border-color: var(--border-hover);
+            background: rgba(59, 130, 246, 0.08);
         }
 
         .logout-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            height: 38px;
-            padding: 0 13px;
-            border-radius: 10px;
-            color: #cbd5e1;
-            background: rgba(15, 23, 42, .8);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 650;
-            transition: .2s;
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.15);
         }
 
         .logout-button:hover {
-            color: #fff;
-            border-color: #334155;
-            background: #111c31;
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.25);
         }
 
-        /* stats */
+        /* Header panel */
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .stat-card {
+        .hero {
             position: relative;
             overflow: hidden;
-            background: linear-gradient(145deg, #101a2d, #0d1627);
+            min-height: 155px;
+            padding: 25px;
+            margin-bottom: 18px;
+            border-radius: 19px;
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 17px;
+            background:
+                linear-gradient(120deg, rgba(37, 99, 235, 0.13), transparent 45%),
+                rgba(17, 27, 45, 0.78);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.18);
         }
 
-        .stat-card::after {
+        .hero::after {
             content: "";
             position: absolute;
-            width: 80px;
-            height: 80px;
-            right: -30px;
-            bottom: -35px;
+            width: 260px;
+            height: 260px;
+            right: -100px;
+            top: -130px;
             border-radius: 50%;
-            background: rgba(59, 130, 246, .07);
+            background: rgba(59, 130, 246, 0.09);
+            filter: blur(25px);
+            pointer-events: none;
         }
 
-        .stat-label {
-            color: var(--muted);
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .5px;
+        .hero-content {
+            position: relative;
+            z-index: 1;
         }
 
-        .stat-value {
-            margin-top: 6px;
-            font-size: 23px;
-            font-weight: 800;
-        }
-
-        .stat-icon {
-            float: right;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 9px;
-            color: #60a5fa;
-            background: rgba(59, 130, 246, .1);
-        }
-
-        /* cards */
-
-        .section-card {
-            background: rgba(15, 23, 42, .88);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 15px 45px rgba(0, 0, 0, .15);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            padding: 18px 20px;
-            border-bottom: 1px solid rgba(34, 48, 74, .8);
-        }
-
-        .section-heading {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-        }
-
-        .section-heading-icon {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            background: rgba(59, 130, 246, .1);
-            color: #60a5fa;
-        }
-
-        .section-title {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 750;
-        }
-
-        .section-subtitle {
-            margin: 3px 0 0;
-            color: var(--muted);
-            font-size: 10px;
-        }
-
-        .refresh-button {
-            height: 35px;
-            padding: 0 12px;
+        .hero-label {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            background: #0b1425;
-            color: #cbd5e1;
-            cursor: pointer;
+            color: #93c5fd;
             font-size: 11px;
-            font-weight: 650;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
         }
 
-        .refresh-button:hover {
-            background: #111c31;
-            color: #fff;
+        .hero h1 {
+            font-size: 26px;
+            line-height: 1.2;
+            font-weight: 850;
+            margin: 0;
+            letter-spacing: -0.6px;
         }
 
-        .refresh-button:active i {
-            transform: rotate(180deg);
+        .hero p {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 8px 0 0;
+            max-width: 620px;
+            line-height: 1.6;
         }
 
-        .form-card {
-            padding: 20px;
-            margin-bottom: 16px;
+        /* Cards */
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.17),
+                inset 0 1px 0 rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(12px);
+        }
+
+        .card + .card {
+            margin-top: 18px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            font-size: 16px;
+            font-weight: 800;
+            color: #f8fafc;
+        }
+
+        .section-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(37, 99, 235, 0.12);
+            color: var(--blue-light);
+            font-size: 13px;
+        }
+
+        .section-desc {
+            color: var(--muted-2);
+            font-size: 11px;
+            margin: 4px 0 0 44px;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 15px;
         }
 
-        .field-label {
+        .field label {
             display: block;
-            margin-bottom: 7px;
-            color: #cbd5e1;
+            color: #94a3b8;
             font-size: 10px;
-            font-weight: 750;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: .45px;
+            letter-spacing: 0.55px;
+            margin-bottom: 7px;
         }
 
-        .field {
+        .input {
             width: 100%;
-            height: 45px;
+            height: 46px;
             padding: 0 13px;
-            border: 1px solid var(--border);
             border-radius: 11px;
+            border: 1px solid #29374d;
+            background: #09111f;
+            color: #f8fafc;
+            font-size: 13px;
             outline: none;
-            background: #0a1323;
-            color: #fff;
-            font-size: 12px;
-            transition: .2s;
+            transition: 0.2s ease;
         }
 
-        .field:focus {
-            border-color: rgba(59, 130, 246, .75);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, .08);
+        .input:hover {
+            border-color: #34455f;
         }
 
-        .field::placeholder {
+        .input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.09);
+        }
+
+        .input::placeholder {
             color: #475569;
         }
 
         .create-button {
-            width: 100%;
-            height: 46px;
+            min-height: 46px;
             margin-top: 17px;
+            padding: 0 19px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             border: 0;
             border-radius: 11px;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
-            font-size: 12px;
-            font-weight: 750;
+            font-size: 13px;
+            font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, .15);
-            transition: .2s;
+            transition: 0.2s ease;
+            box-shadow: 0 9px 22px rgba(37, 99, 235, 0.16);
         }
 
         .create-button:hover {
             transform: translateY(-1px);
+            box-shadow: 0 12px 27px rgba(37, 99, 235, 0.24);
         }
 
         .create-button:disabled {
-            opacity: .65;
+            opacity: 0.55;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
-        /* voucher list */
-
-        #voucherList {
-            padding: 0;
+        .form-status {
+            min-height: 18px;
+            margin-top: 9px;
+            font-size: 12px;
         }
 
-        .table-wrap {
+        /* Voucher list */
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .list-title-area {
+            min-width: 0;
+        }
+
+        .list-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .count {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 7px;
+            border-radius: 7px;
+            background: rgba(148, 163, 184, 0.07);
+        }
+
+        .refresh-btn {
+            height: 36px;
+            padding: 0 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border-radius: 9px;
+            border: 1px solid var(--border);
+            background: rgba(148, 163, 184, 0.04);
+            color: #93c5fd;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .refresh-btn i {
+            transition: transform 0.5s ease;
+        }
+
+        .table-wrapper {
             overflow-x: auto;
+            border: 1px solid rgba(148, 163, 184, 0.08);
+            border-radius: 13px;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
             min-width: 700px;
+            border-collapse: collapse;
             font-size: 12px;
         }
 
-        th {
-            padding: 12px 17px;
-            text-align: left;
-            color: #64748b;
-            background: rgba(8, 13, 25, .45);
-            border-bottom: 1px solid var(--border);
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: .6px;
-            font-weight: 750;
-        }
-
+        th,
         td {
-            padding: 14px 17px;
-            border-bottom: 1px solid rgba(34, 48, 74, .65);
-            color: #cbd5e1;
+            padding: 13px 12px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+            text-align: left;
         }
 
-        tr:last-child td {
+        th {
+            background: rgba(148, 163, 184, 0.025);
+            color: #64748b;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            white-space: nowrap;
+        }
+
+        tbody tr:last-child td {
             border-bottom: 0;
         }
 
-        tr:hover td {
-            background: rgba(59, 130, 246, .025);
+        tbody tr {
+            transition: background 0.15s ease;
         }
 
-        .voucher-code {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            font-weight: 800;
+        tbody tr:hover {
+            background: rgba(59, 130, 246, 0.025);
+        }
+
+        .code-cell {
             color: #f8fafc;
-            letter-spacing: .3px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
         }
 
-        .voucher-code i {
+        .discount-cell {
             color: #60a5fa;
-            font-size: 11px;
+            font-weight: 800;
         }
 
-        .discount {
-            color: #60a5fa;
-            font-weight: 750;
+        .muted-cell {
+            color: #94a3b8;
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             padding: 5px 9px;
             border-radius: 999px;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 750;
             white-space: nowrap;
         }
 
         .badge-green {
-            background: rgba(34, 197, 94, .1);
+            background: rgba(34, 197, 94, 0.09);
             color: #4ade80;
-            border: 1px solid rgba(34, 197, 94, .14);
+            border: 1px solid rgba(34, 197, 94, 0.12);
         }
 
         .badge-red {
-            background: rgba(239, 68, 68, .1);
+            background: rgba(239, 68, 68, 0.09);
             color: #f87171;
-            border: 1px solid rgba(239, 68, 68, .14);
+            border: 1px solid rgba(239, 68, 68, 0.12);
         }
 
         .badge-yellow {
-            background: rgba(234, 179, 8, .1);
+            background: rgba(234, 179, 8, 0.09);
             color: #facc15;
-            border: 1px solid rgba(234, 179, 8, .14);
+            border: 1px solid rgba(234, 179, 8, 0.12);
         }
 
-        .delete-button {
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.active {
+            background: #22c55e;
+            box-shadow: 0 0 7px rgba(34, 197, 94, 0.5);
+        }
+
+        .status-dot.expired {
+            background: #eab308;
+        }
+
+        .status-dot.full {
+            background: #ef4444;
+        }
+
+        .btn-danger {
             width: 32px;
             height: 32px;
-            border: 1px solid rgba(239, 68, 68, .15);
-            border-radius: 9px;
-            background: rgba(239, 68, 68, .07);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.07);
             color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.12);
             cursor: pointer;
-            transition: .2s;
+            transition: 0.2s ease;
         }
 
-        .delete-button:hover {
-            background: rgba(239, 68, 68, .15);
-            border-color: rgba(239, 68, 68, .3);
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.14);
+            border-color: rgba(239, 68, 68, 0.22);
         }
 
         .empty-state {
+            text-align: center;
             padding: 45px 20px;
-            text-align: center;
-        }
-
-        .empty-icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            border-radius: 14px;
-            background: #111c31;
             color: #64748b;
         }
 
-        .empty-title {
-            color: #cbd5e1;
+        .empty-state i {
+            display: block;
+            margin-bottom: 14px;
+            font-size: 35px;
+            opacity: 0.28;
+        }
+
+        .empty-state p {
+            margin: 0;
             font-size: 13px;
-            font-weight: 700;
         }
 
-        .empty-text {
-            color: #64748b;
-            font-size: 10px;
-            margin-top: 4px;
+        .empty-state p + p {
+            margin-top: 6px;
         }
 
-        .loading-state {
-            padding: 35px 20px;
+        .footer {
             text-align: center;
-            color: #64748b;
-            font-size: 11px;
+            padding-top: 24px;
+            margin-top: 25px;
+            border-top: 1px solid rgba(148, 163, 184, 0.06);
+            color: #475569;
+            font-size: 10px;
         }
 
-        .loading-state i {
-            margin-right: 7px;
-            color: #3b82f6;
-        }
+        /* =========================================================
+           MOBILE
+        ========================================================= */
 
-        @media (max-width: 650px) {
+        @media (max-width: 700px) {
             .page {
-                width: min(100% - 20px, 1050px);
-                padding-top: 15px;
+                padding: 16px 11px 30px;
             }
 
             .topbar {
                 align-items: flex-start;
             }
 
-            .top-title {
+            .brand-icon {
+                width: 42px;
+                height: 42px;
+                flex-basis: 42px;
+            }
+
+            .brand-name {
                 font-size: 17px;
             }
 
-            .top-subtitle {
-                max-width: 210px;
+            .brand-desc {
+                font-size: 11px;
             }
 
-            .logout-button span {
-                display: none;
+            .top-actions {
+                width: 100%;
+                justify-content: flex-end;
             }
 
-            .logout-button {
-                width: 37px;
-                justify-content: center;
-                padding: 0;
+            .hero {
+                padding: 21px 18px;
+                min-height: auto;
             }
 
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 7px;
+            .hero h1 {
+                font-size: 22px;
             }
 
-            .stat-card {
-                padding: 12px 10px;
-                border-radius: 13px;
-            }
-
-            .stat-icon {
-                display: none;
-            }
-
-            .stat-label {
-                font-size: 8px;
-            }
-
-            .stat-value {
-                font-size: 17px;
+            .card {
+                padding: 17px;
+                border-radius: 16px;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 13px;
             }
 
-            .section-header {
-                padding: 15px;
+            .create-button {
+                width: 100%;
             }
 
-            .form-card {
-                padding: 15px;
-            }
-
-            .section-subtitle {
-                display: none;
-            }
-
-            .refresh-button {
-                font-size: 0;
-                width: 34px;
-                justify-content: center;
-                padding: 0;
-            }
-
-            .refresh-button i {
-                font-size: 11px;
+            .list-header {
+                align-items: center;
             }
 
             .login-card {
-                padding: 21px;
+                padding: 30px 21px 24px;
+                border-radius: 20px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .topbar {
+                flex-direction: column;
+            }
+
+            .top-actions {
+                justify-content: flex-start;
+            }
+
+            .top-link,
+            .logout-button {
+                flex: 1;
+            }
+
+            .hero h1 {
+                font-size: 20px;
+            }
+
+            .section-desc {
+                display: none;
             }
         }
     </style>
@@ -716,248 +832,329 @@
 
 <body>
 
-<!-- =========================
-     LOGIN ADMIN
-========================= -->
-<div id="adminLogin">
+<!-- ============================================================
+     LOGIN SCREEN
+============================================================ -->
+<div id="loginScreen">
     <div class="login-wrapper">
+        <div class="login-card">
 
-        <div class="login-brand">
-            <div class="brand-icon">
-                <i class="fas fa-ticket"></i>
+            <div class="login-icon">
+                <i class="fas fa-shield-halved"></i>
             </div>
 
-            <h1 class="brand-title">
+            <h1 class="login-title">
                 <span>RIKY</span> STORE
             </h1>
 
-            <p class="brand-subtitle">
-                Voucher Management Panel
+            <p class="login-subtitle">
+                Admin Voucher<br>
+                Masukkan password untuk melanjutkan ke dashboard.
             </p>
-        </div>
 
-        <div class="login-card">
-            <div class="login-heading">Login Administrator</div>
+            <form id="loginForm">
+                <label class="login-label" for="adminPassword">
+                    Password Admin
+                </label>
 
-            <div class="login-description">
-                Masukkan password untuk mengakses pengelolaan voucher.
-            </div>
+                <div class="password-wrapper">
+                    <i class="fas fa-lock input-left-icon"></i>
 
-            <label class="input-label">Password Admin</label>
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        class="password-input"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        placeholder="Masukkan password"
+                        maxlength="20"
+                    />
 
-            <div class="password-wrap">
-                <input
-                    type="password"
-                    id="adminPassword"
-                    class="input"
-                    placeholder="Masukkan password"
-                    autocomplete="current-password"
-                    onkeydown="if(event.key === 'Enter') adminLogin()"
-                />
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        class="toggle-password"
+                        aria-label="Tampilkan password"
+                    >
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
 
-                <button
-                    type="button"
-                    class="password-toggle"
-                    onclick="togglePassword()"
-                    aria-label="Tampilkan password"
-                >
-                    <i id="passwordIcon" class="fas fa-eye"></i>
+                <button type="submit" class="login-button">
+                    <i class="fas fa-right-to-bracket"></i>
+                    Masuk ke Dashboard
                 </button>
-            </div>
-
-            <button class="login-button" onclick="adminLogin()">
-                <i class="fas fa-right-to-bracket"></i>
-                &nbsp; Masuk ke Panel
-            </button>
+            </form>
 
             <div class="login-footer">
-                RIKY STORE Admin System
+                RIKY STORE Admin Panel • 2026
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
 
 
-<!-- =========================
-     DASHBOARD
-========================= -->
+<!-- ============================================================
+     ADMIN DASHBOARD
+============================================================ -->
 <div id="adminDashboard">
 
     <main class="page">
 
         <!-- TOPBAR -->
-        <header class="topbar">
+        <div class="topbar">
 
-            <div class="topbar-left">
-                <div class="top-icon">
+            <div class="brand-area">
+                <div class="brand-icon">
                     <i class="fas fa-ticket"></i>
                 </div>
 
                 <div>
-                    <h1 class="top-title">Voucher Management</h1>
-                    <p class="top-subtitle">
-                        Kelola voucher dan notifikasi pelanggan
-                    </p>
+                    <h2 class="brand-name">
+                        <span>RIKY</span> STORE
+                    </h2>
+
+                    <div class="brand-desc">
+                        Admin Voucher Management
+                    </div>
                 </div>
             </div>
 
-            <button class="logout-button" onclick="logoutAdmin()">
-                <i class="fas fa-right-from-bracket"></i>
-                <span>Logout</span>
-            </button>
+            <div class="top-actions">
 
-        </header>
+                <a
+                    href="/"
+                    target="_blank"
+                    class="top-link"
+                >
+                    <i class="fas fa-store"></i>
+                    Buka Toko
+                </a>
 
+                <button
+                    type="button"
+                    id="logoutBtn"
+                    class="logout-button"
+                >
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    Keluar
+                </button>
 
-        <!-- STATISTICS -->
-        <div class="stats-grid">
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-ticket"></i>
-                </div>
-
-                <div class="stat-label">Voucher</div>
-                <div class="stat-value" id="statTotal">-</div>
             </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-circle-check"></i>
-                </div>
-
-                <div class="stat-label">Aktif</div>
-                <div class="stat-value" id="statActive">-</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-layer-group"></i>
-                </div>
-
-                <div class="stat-label">Terpakai</div>
-                <div class="stat-value" id="statUsed">-</div>
-            </div>
-
         </div>
 
 
-        <!-- CREATE VOUCHER -->
-        <section class="section-card form-card">
+        <!-- HERO -->
+        <section class="hero">
 
-            <div class="section-heading" style="margin-bottom: 18px;">
-                <div class="section-heading-icon">
-                    <i class="fas fa-plus"></i>
+            <div class="hero-content">
+
+                <div class="hero-label">
+                    <i class="fas fa-chart-line"></i>
+                    Admin Dashboard
                 </div>
+
+                <h1>
+                    Kelola Voucher
+                </h1>
+
+                <p>
+                    Buat voucher diskon, atur kuota penggunaan,
+                    tentukan masa berlaku, dan kirim notifikasi
+                    voucher kepada pelanggan.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FORM BUAT VOUCHER
+        ====================================================== -->
+        <section class="card">
+
+            <div class="card-header">
 
                 <div>
-                    <h2 class="section-title">Buat Voucher Baru</h2>
-                    <p class="section-subtitle">
-                        Voucher akan disimpan ke database dan notifikasi dikirim ke subscriber.
+                    <h2 class="section-title">
+                        <span class="section-icon">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        Buat Voucher Baru
+                    </h2>
+
+                    <p class="section-desc">
+                        Tambahkan voucher diskon baru ke sistem.
                     </p>
                 </div>
+
             </div>
+
 
             <div class="form-grid">
 
-                <div>
-                    <label class="field-label">Kode Voucher</label>
+                <!-- KODE -->
+                <div class="field">
+
+                    <label for="voucherCode">
+                        Kode Voucher
+                    </label>
 
                     <input
                         type="text"
                         id="voucherCode"
-                        class="field"
+                        class="input"
                         placeholder="CONTOH10"
                         value="PROMO10"
+                        autocomplete="off"
                     />
+
                 </div>
 
-                <div>
-                    <label class="field-label">Diskon (%)</label>
+
+                <!-- DISKON -->
+                <div class="field">
+
+                    <label for="discountPercent">
+                        Diskon (%)
+                    </label>
 
                     <input
                         type="number"
                         id="discountPercent"
-                        class="field"
+                        class="input"
                         placeholder="10"
                         value="10"
                         min="1"
                         max="100"
                     />
+
                 </div>
 
-                <div>
-                    <label class="field-label">Kuota Pemakaian</label>
+
+                <!-- KUOTA -->
+                <div class="field">
+
+                    <label for="maxUses">
+                        Kuota Pemakaian
+                    </label>
 
                     <input
                         type="number"
                         id="maxUses"
-                        class="field"
+                        class="input"
                         placeholder="100"
                         value="50"
                         min="1"
                     />
+
                 </div>
 
-                <div>
-                    <label class="field-label">Masa Berlaku</label>
+
+                <!-- BERLAKU -->
+                <div class="field">
+
+                    <label for="expiresDays">
+                        Berlaku (Hari)
+                    </label>
 
                     <input
                         type="number"
                         id="expiresDays"
-                        class="field"
+                        class="input"
                         placeholder="7"
                         value="7"
                         min="1"
                     />
+
                 </div>
 
             </div>
 
-            <button id="createVoucherBtn" class="create-button">
+
+            <button
+                id="createVoucherBtn"
+                class="create-button"
+            >
                 <i class="fas fa-paper-plane"></i>
-                &nbsp; Buat Voucher & Kirim Notifikasi
+                Buat & Kirim Notifikasi
             </button>
+
+            <div
+                id="formStatus"
+                class="form-status"
+            ></div>
 
         </section>
 
 
-        <!-- VOUCHER LIST -->
-        <section class="section-card">
+        <!-- =====================================================
+             DAFTAR VOUCHER
+        ====================================================== -->
+        <section class="card">
 
-            <div class="section-header">
+            <div class="list-header">
 
-                <div class="section-heading">
+                <div class="list-title-area">
 
-                    <div class="section-heading-icon">
-                        <i class="fas fa-list"></i>
-                    </div>
+                    <h2 class="list-title">
 
-                    <div>
-                        <h2 class="section-title">Daftar Voucher</h2>
-                        <p class="section-subtitle">
-                            Pantau voucher aktif, kuota, dan masa berlaku.
-                        </p>
-                    </div>
+                        <span class="section-icon">
+                            <i class="fas fa-list"></i>
+                        </span>
+
+                        Voucher Aktif
+
+                        <span
+                            id="voucherCount"
+                            class="count"
+                        >
+                            (0)
+                        </span>
+
+                    </h2>
 
                 </div>
 
-                <button id="refreshBtn" class="refresh-button">
-                    <i class="fas fa-sync-alt"></i>
-                    <span>Refresh</span>
+
+                <button
+                    id="refreshBtn"
+                    class="refresh-btn"
+                    title="Refresh daftar voucher"
+                >
+                    <i class="fas fa-sync"></i>
+                    Refresh
                 </button>
 
             </div>
 
-            <div id="voucherList">
-                <div class="loading-state">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    Memuat data voucher...
+
+            <div
+                id="voucherList"
+                class="table-wrapper"
+            >
+
+                <div class="empty-state">
+
+                    <i class="fas fa-ticket"></i>
+
+                    <p>
+                        Memuat data voucher...
+                    </p>
+
                 </div>
+
             </div>
 
         </section>
+
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            © 2026 RIKY STORE — Admin Voucher Panel
+        </footer>
 
     </main>
 
@@ -965,7 +1162,144 @@
 
 
 <script>
-    // ===== KONFIGURASI FIREBASE =====
+    // ============================================================
+    // LOGIN ADMIN
+    // ============================================================
+
+    const ADMIN_PASSWORD = "1";
+
+    const loginScreen = document.getElementById("loginScreen");
+    const adminDashboard = document.getElementById("adminDashboard");
+    const loginForm = document.getElementById("loginForm");
+    const adminPassword = document.getElementById("adminPassword");
+    const togglePassword = document.getElementById("togglePassword");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function showDashboard() {
+        loginScreen.style.display = "none";
+        adminDashboard.style.display = "block";
+
+        loadVouchers();
+    }
+
+    function showLogin() {
+        adminDashboard.style.display = "none";
+        loginScreen.style.display = "flex";
+
+        adminPassword.value = "";
+
+        setTimeout(() => {
+            adminPassword.focus();
+        }, 100);
+    }
+
+    loginForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const password = adminPassword.value;
+
+        if (password === ADMIN_PASSWORD) {
+
+            sessionStorage.setItem(
+                "rikyVoucherAdminLogin",
+                "true"
+            );
+
+            Swal.fire({
+                icon: "success",
+                title: "Login berhasil",
+                text: "Selamat datang di Admin Voucher.",
+                background: "#111b2d",
+                color: "#f8fafc",
+                confirmButtonColor: "#2563eb",
+                timer: 1100,
+                showConfirmButton: false
+            }).then(() => {
+                showDashboard();
+            });
+
+        } else {
+
+            adminPassword.value = "";
+            adminPassword.focus();
+
+            Swal.fire({
+                icon: "error",
+                title: "Password salah",
+                text: "Password yang dimasukkan tidak sesuai.",
+                background: "#111b2d",
+                color: "#f8fafc",
+                confirmButtonColor: "#2563eb"
+            });
+
+        }
+    });
+
+
+    // ============================================================
+    // SHOW / HIDE PASSWORD
+    // ============================================================
+
+    togglePassword.addEventListener("click", function() {
+
+        const icon = this.querySelector("i");
+
+        if (adminPassword.type === "password") {
+
+            adminPassword.type = "text";
+
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+
+        } else {
+
+            adminPassword.type = "password";
+
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+
+        }
+
+    });
+
+
+    // ============================================================
+    // LOGOUT
+    // ============================================================
+
+    logoutBtn.addEventListener("click", function() {
+
+        Swal.fire({
+            title: "Keluar dari admin?",
+            text: "Kamu perlu login kembali untuk membuka dashboard.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Ya, keluar",
+            cancelButtonText: "Batal",
+            confirmButtonColor: "#ef4444",
+            background: "#111b2d",
+            color: "#f8fafc"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                sessionStorage.removeItem(
+                    "rikyVoucherAdminLogin"
+                );
+
+                showLogin();
+
+            }
+
+        });
+
+    });
+
+
+    // ============================================================
+    // KONFIGURASI FIREBASE
+    // ============================================================
+
     const firebaseConfig = {
         apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
         authDomain: "riky-store-push.firebaseapp.com",
@@ -975,342 +1309,447 @@
         appId: "1:700709840952:web:d2efb042652f931d269ecd"
     };
 
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
 
     const db = firebase.firestore();
 
 
-    // ===== LOGIN ADMIN =====
-    function adminLogin() {
-        const password = document.getElementById('adminPassword').value;
+    // ============================================================
+    // FUNGSI LOAD VOUCHER
+    // ============================================================
 
-        if (password === '1') {
-
-            document.getElementById('adminLogin').style.display = 'none';
-            document.getElementById('adminDashboard').style.display = 'block';
-
-            localStorage.setItem('adminVoucherSession', 'true');
-
-            loadVouchers();
-
-        } else {
-
-            Swal.fire({
-                title: 'Login gagal',
-                text: 'Password admin salah.',
-                icon: 'error',
-                background: '#0f172a',
-                color: '#f1f5f9',
-                confirmButtonColor: '#2563eb'
-            });
-
-        }
-    }
-
-
-    // ===== LOGOUT =====
-    function logoutAdmin() {
-
-        localStorage.removeItem('adminVoucherSession');
-
-        document.getElementById('adminLogin').style.display = 'flex';
-        document.getElementById('adminDashboard').style.display = 'none';
-
-        document.getElementById('adminPassword').value = '';
-
-    }
-
-
-    // ===== TOGGLE PASSWORD =====
-    function togglePassword() {
-
-        const input = document.getElementById('adminPassword');
-        const icon = document.getElementById('passwordIcon');
-
-        if (input.type === 'password') {
-
-            input.type = 'text';
-
-            icon.className = 'fas fa-eye-slash';
-
-        } else {
-
-            input.type = 'password';
-
-            icon.className = 'fas fa-eye';
-
-        }
-
-    }
-
-
-    // ===== FUNGSI LOAD VOUCHER =====
     async function loadVouchers() {
 
-        const container = document.getElementById('voucherList');
+        const container =
+            document.getElementById("voucherList");
+
+        const countEl =
+            document.getElementById("voucherCount");
 
         try {
 
-            const snapshot = await db.collection('vouchers')
-                .where('active', '==', true)
-                .orderBy('createdAt', 'desc')
-                .get();
+            let snapshot;
 
+            try {
 
-            if (snapshot.empty) {
+                snapshot = await db
+                    .collection("vouchers")
+                    .where("active", "==", true)
+                    .orderBy("createdAt", "desc")
+                    .get();
 
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">
-                            <i class="fas fa-ticket"></i>
-                        </div>
+            } catch (indexError) {
 
-                        <div class="empty-title">
-                            Belum ada voucher aktif
-                        </div>
+                console.warn(
+                    "Index belum dibuat, pakai query tanpa orderBy:",
+                    indexError.message
+                );
 
-                        <div class="empty-text">
-                            Buat voucher baru menggunakan form di atas.
-                        </div>
-                    </div>
-                `;
+                snapshot = await db
+                    .collection("vouchers")
+                    .where("active", "==", true)
+                    .get();
 
-                document.getElementById('statTotal').textContent = '0';
-                document.getElementById('statActive').textContent = '0';
-                document.getElementById('statUsed').textContent = '0';
+                const docs = [];
+
+                snapshot.forEach(doc => {
+
+                    docs.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+
+                });
+
+                docs.sort((a, b) => {
+
+                    const dateA =
+                        a.createdAt?.toDate?.() ||
+                        new Date(0);
+
+                    const dateB =
+                        b.createdAt?.toDate?.() ||
+                        new Date(0);
+
+                    return dateB - dateA;
+
+                });
+
+                renderVoucherList(
+                    docs,
+                    container,
+                    countEl
+                );
 
                 return;
             }
 
 
-            let rows = '';
-
-            let totalVoucher = 0;
-            let activeVoucher = 0;
-            let totalUsed = 0;
-
+            const docs = [];
 
             snapshot.forEach(doc => {
 
-                const data = doc.data();
-
-                const id = doc.id;
-
-                const used = data.usedCount || 0;
-
-                const quota = data.maxUses || 0;
-
-                const remaining = quota - used;
-
-                const expired =
-                    data.expiresAt && data.expiresAt.toDate
-                        ? data.expiresAt.toDate()
-                        : null;
-
-                const now = new Date();
-
-                const isExpired =
-                    expired && expired < now;
-
-                const status =
-                    isExpired
-                        ? 'expired'
-                        : (remaining > 0 ? 'active' : 'full');
-
-
-                totalVoucher++;
-
-                totalUsed += used;
-
-                if (status === 'active') {
-                    activeVoucher++;
-                }
-
-
-                let badge = '';
-
-                if (status === 'active') {
-
-                    badge = `
-                        <span class="badge badge-green">
-                            <i class="fas fa-circle-check"></i>
-                            Aktif · ${remaining} tersisa
-                        </span>
-                    `;
-
-                } else if (status === 'full') {
-
-                    badge = `
-                        <span class="badge badge-red">
-                            <i class="fas fa-ban"></i>
-                            Habis
-                        </span>
-                    `;
-
-                } else if (status === 'expired') {
-
-                    badge = `
-                        <span class="badge badge-yellow">
-                            <i class="fas fa-clock"></i>
-                            Kadaluarsa
-                        </span>
-                    `;
-
-                }
-
-
-                rows += `
-                    <tr>
-
-                        <td>
-                            <span class="voucher-code">
-                                <i class="fas fa-ticket"></i>
-                                ${data.code}
-                            </span>
-                        </td>
-
-                        <td>
-                            <span class="discount">
-                                ${data.discountPercent}%
-                            </span>
-                        </td>
-
-                        <td>
-                            ${used} / ${quota}
-                        </td>
-
-                        <td>
-                            ${expired
-                                ? expired.toLocaleDateString('id-ID')
-                                : '-'
-                            }
-                        </td>
-
-                        <td>
-                            ${badge}
-                        </td>
-
-                        <td>
-                            <button
-                                class="delete-button"
-                                onclick="deleteVoucher('${id}')"
-                                title="Nonaktifkan voucher"
-                            >
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-
-                    </tr>
-                `;
+                docs.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
 
             });
 
-
-            container.innerHTML = `
-                <div class="table-wrap">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Kode</th>
-                                <th>Diskon</th>
-                                <th>Kuota</th>
-                                <th>Berlaku Sampai</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-                            ${rows}
-                        </tbody>
-
-                    </table>
-
-                </div>
-            `;
-
-
-            document.getElementById('statTotal').textContent = totalVoucher;
-
-            document.getElementById('statActive').textContent = activeVoucher;
-
-            document.getElementById('statUsed').textContent = totalUsed;
-
+            renderVoucherList(
+                docs,
+                container,
+                countEl
+            );
 
         } catch (err) {
 
-            console.error(err);
+            console.error(
+                "Gagal load vouchers:",
+                err
+            );
 
             container.innerHTML = `
-                <div class="empty-state">
+                <div class="empty-state" style="color:#ef4444; padding:40px 20px;">
+                    <i class="fas fa-circle-exclamation"></i>
 
-                    <div class="empty-icon" style="color:#f87171;">
-                        <i class="fas fa-triangle-exclamation"></i>
-                    </div>
+                    <p>
+                        Gagal memuat data voucher.
+                    </p>
 
-                    <div class="empty-title">
-                        Gagal memuat data
-                    </div>
-
-                    <div class="empty-text">
+                    <p style="
+                        font-size:11px;
+                        margin-top:8px;
+                        color:#64748b;
+                    ">
                         ${err.message}
-                    </div>
+                    </p>
 
+                    ${
+                        err.message.includes("index")
+                        ? `
+                            <p style="
+                                font-size:11px;
+                                margin-top:8px;
+                                color:#64748b;
+                            ">
+                                Buat index di Firebase Console →
+                                Firestore → Indexes.
+                            </p>
+                        `
+                        : ""
+                    }
+
+                    <button
+                        onclick="loadVouchers()"
+                        class="create-button"
+                        style="
+                            margin-top:15px;
+                            min-height:38px;
+                            font-size:11px;
+                        "
+                    >
+                        <i class="fas fa-sync"></i>
+                        Coba Lagi
+                    </button>
                 </div>
             `;
+
+            if (countEl) {
+                countEl.textContent = "(0)";
+            }
 
         }
 
     }
 
 
-    // ===== DELETE VOUCHER =====
-    async function deleteVoucher(id) {
+    // ============================================================
+    // RENDER VOUCHER
+    // ============================================================
 
-        const confirm = await Swal.fire({
+    function renderVoucherList(
+        docs,
+        container,
+        countEl
+    ) {
 
-            title: 'Nonaktifkan voucher?',
+        if (!docs || docs.length === 0) {
 
-            text: 'Voucher akan dinonaktifkan dan tidak dapat digunakan lagi.',
+            container.className = "";
 
-            icon: 'warning',
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-ticket"></i>
 
-            showCancelButton: true,
+                    <p>
+                        Belum ada voucher aktif.
+                    </p>
 
-            confirmButtonColor: '#ef4444',
+                    <p style="
+                        font-size:11px;
+                        color:#475569;
+                    ">
+                        Buat voucher baru menggunakan form di atas.
+                    </p>
+                </div>
+            `;
 
-            cancelButtonColor: '#334155',
+            if (countEl) {
+                countEl.textContent = "(0)";
+            }
 
-            confirmButtonText: 'Ya, nonaktifkan',
+            return;
+        }
 
-            cancelButtonText: 'Batal',
 
-            background: '#0f172a',
+        container.className = "table-wrapper";
 
-            color: '#f1f5f9'
+
+        let rows = "";
+
+
+        docs.forEach(doc => {
+
+            const data = doc;
+
+            const id = doc.id;
+
+            const used =
+                data.usedCount || 0;
+
+            const quota =
+                data.maxUses || 0;
+
+            const remaining =
+                quota - used;
+
+
+            let expired = null;
+
+
+            if (data.expiresAt) {
+
+                if (data.expiresAt.toDate) {
+
+                    expired =
+                        data.expiresAt.toDate();
+
+                } else if (data.expiresAt.seconds) {
+
+                    expired =
+                        new Date(
+                            data.expiresAt.seconds * 1000
+                        );
+
+                } else {
+
+                    expired =
+                        new Date(data.expiresAt);
+
+                }
+
+            }
+
+
+            const now = new Date();
+
+            const isExpired =
+                expired && expired < now;
+
+
+            let statusBadge = "";
+
+
+            if (isExpired) {
+
+                statusBadge = `
+                    <span class="badge badge-yellow">
+                        <span class="status-dot expired"></span>
+                        Kadaluarsa
+                    </span>
+                `;
+
+            } else if (remaining <= 0) {
+
+                statusBadge = `
+                    <span class="badge badge-red">
+                        <span class="status-dot full"></span>
+                        Habis
+                    </span>
+                `;
+
+            } else {
+
+                statusBadge = `
+                    <span class="badge badge-green">
+                        <span class="status-dot active"></span>
+                        Aktif (${remaining} tersisa)
+                    </span>
+                `;
+
+            }
+
+
+            const expiredDateStr =
+                expired
+                    ? expired.toLocaleDateString(
+                        "id-ID",
+                        {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    )
+                    : "-";
+
+
+            rows += `
+                <tr>
+
+                    <td class="code-cell">
+                        ${data.code}
+                    </td>
+
+                    <td class="discount-cell">
+                        ${data.discountPercent}%
+                    </td>
+
+                    <td class="muted-cell">
+                        ${used} / ${quota}
+                    </td>
+
+                    <td
+                        class="muted-cell"
+                        style="font-size:11px;"
+                    >
+                        ${expiredDateStr}
+                    </td>
+
+                    <td>
+                        ${statusBadge}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn-danger"
+                            onclick="deleteVoucher('${id}')"
+                            title="Nonaktifkan voucher"
+                        >
+                            <i class="fas fa-trash"></i>
+                        </button>
+
+                    </td>
+
+                </tr>
+            `;
 
         });
 
 
-        if (!confirm.isConfirmed) return;
+        container.innerHTML = `
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Kode</th>
+
+                        <th>Diskon</th>
+
+                        <th>Kuota</th>
+
+                        <th>Berlaku Sampai</th>
+
+                        <th>Status</th>
+
+                        <th>Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    ${rows}
+                </tbody>
+
+            </table>
+        `;
+
+
+        if (countEl) {
+
+            countEl.textContent =
+                `(${docs.length})`;
+
+        }
+
+    }
+
+
+    // ============================================================
+    // DELETE VOUCHER
+    // ============================================================
+
+    async function deleteVoucher(id) {
+
+        const confirm =
+            await Swal.fire({
+
+                title: "Nonaktifkan voucher?",
+
+                text:
+                    "Voucher akan dinonaktifkan dan tidak bisa digunakan lagi.",
+
+                icon: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonColor: "#EF4444",
+
+                confirmButtonText:
+                    "Ya, nonaktifkan!",
+
+                cancelButtonText:
+                    "Batal",
+
+                background:
+                    "#111b2d",
+
+                color:
+                    "#F1F5F9"
+
+            });
+
+
+        if (!confirm.isConfirmed) {
+            return;
+        }
 
 
         try {
 
-            await db.collection('vouchers')
+            await db
+                .collection("vouchers")
                 .doc(id)
                 .update({
-                    active: false
+
+                    active: false,
+
+                    updatedAt:
+                        firebase.firestore.FieldValue
+                            .serverTimestamp()
+
                 });
 
 
             showToast(
-                'Voucher berhasil dinonaktifkan',
-                'success'
+                "Voucher berhasil dinonaktifkan",
+                "success"
             );
 
 
@@ -1320,8 +1759,8 @@
         } catch (err) {
 
             showToast(
-                'Gagal: ' + err.message,
-                'error'
+                "Gagal: " + err.message,
+                "error"
             );
 
         }
@@ -1329,294 +1768,516 @@
     }
 
 
-    // ===== TOAST =====
-    function showToast(msg, type = 'info') {
+    // ============================================================
+    // TOAST
+    // ============================================================
+
+    function showToast(
+        message,
+        type = "info"
+    ) {
 
         Swal.fire({
 
-            text: msg,
+            text: message,
 
             icon: type,
 
             toast: true,
 
-            position: 'top-end',
+            position: "top-end",
 
             showConfirmButton: false,
 
-            timer: 3000,
+            timer: 4000,
 
-            background: '#0f172a',
+            background: "#111b2d",
 
-            color: '#f1f5f9'
+            color: "#F1F5F9",
+
+            timerProgressBar: true
 
         });
 
     }
 
 
-    // ===== BUAT VOUCHER =====
+    // ============================================================
+    // CREATE VOUCHER
+    // ============================================================
+
     document
-        .getElementById('createVoucherBtn')
-        .addEventListener('click', async function() {
+        .getElementById("createVoucherBtn")
+        .addEventListener(
+            "click",
+            async function() {
 
-        const code =
-            document
-                .getElementById('voucherCode')
-                .value
-                .trim()
-                .toUpperCase();
-
-        const discountPercent =
-            parseInt(
-                document
-                    .getElementById('discountPercent')
-                    .value
-            ) || 0;
-
-        const maxUses =
-            parseInt(
-                document
-                    .getElementById('maxUses')
-                    .value
-            ) || 0;
-
-        const expiresDays =
-            parseInt(
-                document
-                    .getElementById('expiresDays')
-                    .value
-            ) || 0;
+                const code =
+                    document
+                        .getElementById("voucherCode")
+                        .value
+                        .trim()
+                        .toUpperCase();
 
 
-        if (!code) {
-
-            showToast(
-                'Masukkan kode voucher',
-                'error'
-            );
-
-            return;
-        }
+                const discountPercent =
+                    parseInt(
+                        document
+                            .getElementById("discountPercent")
+                            .value
+                    ) || 0;
 
 
-        if (
-            discountPercent < 1 ||
-            discountPercent > 100
-        ) {
-
-            showToast(
-                'Diskon harus 1-100%',
-                'error'
-            );
-
-            return;
-        }
+                const maxUses =
+                    parseInt(
+                        document
+                            .getElementById("maxUses")
+                            .value
+                    ) || 0;
 
 
-        if (maxUses < 1) {
-
-            showToast(
-                'Kuota minimal 1',
-                'error'
-            );
-
-            return;
-        }
+                const expiresDays =
+                    parseInt(
+                        document
+                            .getElementById("expiresDays")
+                            .value
+                    ) || 0;
 
 
-        if (expiresDays < 1) {
-
-            showToast(
-                'Masa berlaku minimal 1 hari',
-                'error'
-            );
-
-            return;
-        }
+                const statusEl =
+                    document.getElementById(
+                        "formStatus"
+                    );
 
 
-        // Cek apakah kode sudah ada (aktif)
-        const existing =
-            await db.collection('vouchers')
-                .where('code', '==', code)
-                .where('active', '==', true)
-                .get();
+                // Validasi
+
+                if (!code) {
+
+                    showToast(
+                        "Masukkan kode voucher",
+                        "error"
+                    );
+
+                    return;
+
+                }
 
 
-        if (!existing.empty) {
+                if (code.length < 3) {
 
-            showToast(
-                'Kode voucher sudah aktif!',
-                'error'
-            );
+                    showToast(
+                        "Kode minimal 3 karakter",
+                        "error"
+                    );
 
-            return;
-        }
+                    return;
 
-
-        this.disabled = true;
-
-        this.innerHTML = `
-            <i class="fas fa-spinner fa-spin"></i>
-            &nbsp; Memproses...
-        `;
+                }
 
 
-        try {
+                if (
+                    discountPercent < 1 ||
+                    discountPercent > 100
+                ) {
 
-            const expiresAt = new Date();
+                    showToast(
+                        "Diskon harus antara 1-100%",
+                        "error"
+                    );
 
-            expiresAt.setDate(
-                expiresAt.getDate() + expiresDays
-            );
+                    return;
 
-
-            // Simpan ke Firestore
-            const docRef =
-                await db.collection('vouchers').add({
-
-                code,
-
-                discountPercent,
-
-                maxUses,
-
-                usedCount: 0,
-
-                expiresAt:
-                    firebase.firestore.Timestamp
-                        .fromDate(expiresAt),
-
-                active: true,
-
-                createdAt:
-                    firebase.firestore.FieldValue
-                        .serverTimestamp()
-
-            });
+                }
 
 
-            // Kirim notifikasi ke semua subscriber via API
-            const response =
-                await fetch('/api/create-voucher', {
+                if (maxUses < 1) {
 
-                method: 'POST',
+                    showToast(
+                        "Kuota minimal 1",
+                        "error"
+                    );
 
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                    return;
 
-                body: JSON.stringify({
-
-                    voucherId: docRef.id,
-
-                    code,
-
-                    discountPercent,
-
-                    maxUses,
-
-                    expiresDays
-
-                })
-
-            });
+                }
 
 
-            const result =
-                await response.json();
+                if (expiresDays < 1) {
+
+                    showToast(
+                        "Masa berlaku minimal 1 hari",
+                        "error"
+                    );
+
+                    return;
+
+                }
 
 
-            if (response.ok) {
+                // Cek kode
 
-                showToast(
-                    `Voucher ${code} berhasil dibuat dan notifikasi dikirim!`,
-                    'success'
-                );
+                try {
+
+                    const existing =
+                        await db
+                            .collection("vouchers")
+                            .where(
+                                "code",
+                                "==",
+                                code
+                            )
+                            .where(
+                                "active",
+                                "==",
+                                true
+                            )
+                            .get();
+
+
+                    if (!existing.empty) {
+
+                        showToast(
+                            "Kode voucher sudah aktif!",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+                } catch (err) {
+
+                    showToast(
+                        "Error cek kode: " +
+                        err.message,
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                // Disable button
+
+                this.disabled = true;
+
+                this.innerHTML = `
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Memproses...
+                `;
+
+                statusEl.innerHTML = "";
+
+
+                try {
+
+                    const expiresAt =
+                        new Date();
+
+                    expiresAt.setDate(
+                        expiresAt.getDate() +
+                        expiresDays
+                    );
+
+
+                    // Simpan Firestore
+
+                    const docRef =
+                        await db
+                            .collection("vouchers")
+                            .add({
+
+                                code: code,
+
+                                discountPercent:
+                                    discountPercent,
+
+                                maxUses:
+                                    maxUses,
+
+                                usedCount:
+                                    0,
+
+                                expiresAt:
+                                    firebase.firestore
+                                        .Timestamp
+                                        .fromDate(
+                                            expiresAt
+                                        ),
+
+                                active:
+                                    true,
+
+                                createdAt:
+                                    firebase.firestore
+                                        .FieldValue
+                                        .serverTimestamp()
+
+                            });
+
+
+                    // Kirim notifikasi via API
+
+                    let notifResult = null;
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                "/api/create-voucher",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+
+                                            voucherId:
+                                                docRef.id,
+
+                                            code:
+                                                code,
+
+                                            discountPercent:
+                                                discountPercent,
+
+                                            maxUses:
+                                                maxUses,
+
+                                            expiresDays:
+                                                expiresDays
+
+                                        })
+                                }
+                            );
+
+
+                        if (response.ok) {
+
+                            notifResult =
+                                await response.json();
+
+
+                            showToast(
+                                `Voucher ${code} dibuat! Notifikasi dikirim ke ${notifResult.success || 0} perangkat.`,
+                                "success"
+                            );
+
+
+                        } else {
+
+                            const errorText =
+                                await response.text();
+
+                            console.error(
+                                "API error:",
+                                errorText
+                            );
+
+
+                            showToast(
+                                `Voucher ${code} dibuat, tapi notifikasi gagal (${response.status})`,
+                                "warning"
+                            );
+
+                        }
+
+
+                    } catch (apiErr) {
+
+                        console.error(
+                            "API call error:",
+                            apiErr
+                        );
+
+
+                        showToast(
+                            `Voucher ${code} dibuat, tapi notifikasi gagal.`,
+                            "warning"
+                        );
+
+                    }
+
+
+                    // Reset form
+
+                    document
+                        .getElementById(
+                            "voucherCode"
+                        )
+                        .value = "";
+
+
+                    document
+                        .getElementById(
+                            "discountPercent"
+                        )
+                        .value = "10";
+
+
+                    document
+                        .getElementById(
+                            "maxUses"
+                        )
+                        .value = "50";
+
+
+                    document
+                        .getElementById(
+                            "expiresDays"
+                        )
+                        .value = "7";
+
+
+                    statusEl.innerHTML = `
+                        <span style="color:#22c55e;">
+                            <i class="fas fa-circle-check"></i>
+                            Voucher ${code} berhasil dibuat!
+                        </span>
+                    `;
+
+
+                    // Refresh
+
+                    loadVouchers();
+
+
+                } catch (err) {
+
+                    console.error(
+                        "Error create voucher:",
+                        err
+                    );
+
+
+                    showToast(
+                        "Error: " + err.message,
+                        "error"
+                    );
+
+
+                    statusEl.innerHTML = `
+                        <span style="color:#ef4444;">
+                            <i class="fas fa-circle-xmark"></i>
+                            Gagal: ${err.message}
+                        </span>
+                    `;
+
+                } finally {
+
+                    this.disabled = false;
+
+                    this.innerHTML = `
+                        <i class="fas fa-paper-plane"></i>
+                        Buat & Kirim Notifikasi
+                    `;
+
+                }
+
+            }
+        );
+
+
+    // ============================================================
+    // REFRESH
+    // ============================================================
+
+    document
+        .getElementById("refreshBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                const icon =
+                    this.querySelector("i");
+
+
+                icon.style.transform =
+                    "rotate(360deg)";
+
+
+                setTimeout(() => {
+
+                    icon.style.transform = "";
+
+                }, 500);
 
 
                 loadVouchers();
 
 
-                // Reset form
-                document
-                    .getElementById('voucherCode')
-                    .value = '';
-
-                document
-                    .getElementById('discountPercent')
-                    .value = '10';
-
-                document
-                    .getElementById('maxUses')
-                    .value = '50';
-
-                document
-                    .getElementById('expiresDays')
-                    .value = '7';
-
-
-            } else {
-
                 showToast(
-                    'Voucher tersimpan, tapi notifikasi gagal: ' +
-                    (result.error || ''),
-                    'warning'
+                    "Memuat ulang data...",
+                    "info"
                 );
 
             }
-
-
-        } catch (err) {
-
-            showToast(
-                'Error: ' + err.message,
-                'error'
-            );
-
-
-        } finally {
-
-            this.disabled = false;
-
-            this.innerHTML = `
-                <i class="fas fa-paper-plane"></i>
-                &nbsp; Buat Voucher & Kirim Notifikasi
-            `;
-
-        }
-
-    });
-
-
-    // ===== REFRESH =====
-    document
-        .getElementById('refreshBtn')
-        .addEventListener(
-            'click',
-            loadVouchers
         );
 
 
-    // ===== AUTO LOGIN =====
-    if (
-        localStorage.getItem(
-            'adminVoucherSession'
-        ) === 'true'
-    ) {
+    // ============================================================
+    // ENTER UNTUK SUBMIT
+    // ============================================================
 
-        document
-            .getElementById('adminLogin')
-            .style.display = 'none';
+    document
+        .querySelectorAll(
+            "#voucherCode, #discountPercent, #maxUses, #expiresDays"
+        )
+        .forEach(input => {
 
-        document
-            .getElementById('adminDashboard')
-            .style.display = 'block';
+            input.addEventListener(
+                "keydown",
+                function(e) {
 
-        loadVouchers();
+                    if (e.key === "Enter") {
 
-    }
+                        document
+                            .getElementById(
+                                "createVoucherBtn"
+                            )
+                            .click();
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    // ============================================================
+    // INIT
+    // ============================================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const isLoggedIn =
+                sessionStorage.getItem(
+                    "rikyVoucherAdminLogin"
+                ) === "true";
+
+
+            if (isLoggedIn) {
+
+                showDashboard();
+
+            } else {
+
+                showLogin();
+
+            }
+
+        }
+    );
 
 </script>
 
