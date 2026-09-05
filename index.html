@@ -1869,6 +1869,717 @@
     }
 
 }
+/* =========================================================
+   CHECKOUT MODAL - PROFESSIONAL UI
+========================================================= */
+
+.checkout-modal {
+    width: min(94vw, 620px) !important;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 !important;
+    border-radius: 22px !important;
+    background: #0d172a !important;
+    border: 1px solid rgba(100, 116, 139, 0.45) !important;
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.55),
+        0 0 35px rgba(37, 99, 235, 0.08);
+}
+
+/* scrollbar */
+.checkout-modal::-webkit-scrollbar {
+    width: 5px;
+}
+
+.checkout-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.checkout-modal::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 20px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.checkout-header {
+    min-height: 72px;
+    padding: 0 20px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #26364d !important;
+    background: #0e192d;
+}
+
+.checkout-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.checkout-title-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(37, 99, 235, 0.13);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    color: #60a5fa;
+    font-size: 16px;
+}
+
+.checkout-title h3 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 800;
+    color: #f8fafc;
+}
+
+.checkout-close {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: transparent;
+    border: 0;
+    font-size: 30px !important;
+    line-height: 1;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.checkout-close:hover {
+    background: rgba(148, 163, 184, 0.08);
+    color: #f8fafc !important;
+}
+
+/* =========================================================
+   PRODUCT DETAIL
+========================================================= */
+
+.checkout-body {
+    padding: 18px 20px 16px !important;
+}
+
+/* elemen yang biasanya dibuat oleh checkoutDetails */
+.checkout-body > div {
+    margin-bottom: 0 !important;
+}
+
+.checkout-body p {
+    margin: 0;
+}
+
+/* =========================================================
+   RIKY COIN CARD
+========================================================= */
+
+.coin-checkout-section {
+    margin: 0 20px 16px;
+    padding: 18px;
+    background: #1b293e;
+    border: 1px solid #34455d;
+    border-radius: 17px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+/* Header Coin */
+
+.coin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.coin-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.coin-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(234, 179, 8, 0.12);
+    color: #facc15;
+    font-size: 17px;
+}
+
+.coin-brand .label {
+    color: #f1f5f9;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+}
+
+.coin-header .saldo {
+    color: #94a3b8;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.coin-header .saldo strong {
+    color: #facc15;
+    font-size: 16px;
+    font-weight: 800;
+    margin-left: 3px;
+}
+
+.coin-header .saldo span {
+    color: #94a3b8;
+    margin-left: 2px;
+}
+
+/* =========================================================
+   COIN TOGGLE
+========================================================= */
+
+.coin-toggle-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.toggle-btn {
+    min-height: 48px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid #34455d;
+    background: rgba(15, 23, 42, 0.35);
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.toggle-btn:hover {
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+.toggle-btn:active {
+    transform: scale(0.98);
+}
+
+.toggle-btn.active {
+    background: rgba(37, 99, 235, 0.12);
+    border-color: #2563eb;
+    color: #3b82f6;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================================================
+   COIN AMOUNT
+========================================================= */
+
+.coin-amount-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #34455d;
+}
+
+.coin-amount-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.coin-value-hint {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* minus / input / plus */
+
+.coin-amount-control {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) 52px;
+    gap: 9px;
+    align-items: center;
+}
+
+.coin-control-btn {
+    height: 52px;
+    width: 52px;
+    border-radius: 50%;
+    border: 1px solid #34455d;
+    background: #101a2c;
+    color: #e2e8f0;
+    font-size: 27px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.coin-control-btn:hover {
+    border-color: #3b82f6;
+    color: #60a5fa;
+    background: rgba(37, 99, 235, 0.08);
+}
+
+.coin-control-btn:active {
+    transform: scale(0.94);
+}
+
+.coin-input-wrap {
+    height: 52px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 15px;
+    border-radius: 14px;
+    background: #0f192b;
+    border: 1px solid #34455d;
+}
+
+.coin-input-wrap:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.coin-input-wrap input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #f8fafc;
+    text-align: center;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.coin-input-wrap input::-webkit-inner-spin-button,
+.coin-input-wrap input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.coin-input-wrap input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.coin-input-wrap span {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   MAX BUTTON
+========================================================= */
+
+.coin-max-btn {
+    width: 100%;
+    min-height: 47px;
+    margin-top: 10px;
+    border: 0;
+    border-radius: 13px;
+    background: #2563eb;
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-shadow: 0 7px 18px rgba(37, 99, 235, 0.18);
+}
+
+.coin-max-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.coin-max-btn:active {
+    transform: translateY(0);
+}
+
+.coin-max-btn i {
+    margin-right: 6px;
+}
+
+/* =========================================================
+   COIN INFO
+========================================================= */
+
+.coin-info-text {
+    margin-top: 9px;
+    color: #94a3b8;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.coin-info-text span {
+    color: #a8b4c7;
+    font-weight: 600;
+}
+
+/* =========================================================
+   COIN DISCOUNT
+========================================================= */
+
+.coin-discount-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #34455d;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.coin-discount-display strong {
+    color: #60a5fa;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   VOUCHER
+========================================================= */
+
+.checkout-voucher {
+    padding: 0 20px 18px;
+}
+
+.voucher-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.voucher-label i {
+    color: #60a5fa;
+}
+
+.voucher-input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 9px;
+    align-items: center;
+}
+
+.checkout-voucher .input-modern {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border-radius: 13px;
+    background: #172337;
+    border: 1px solid #34455d;
+    color: #f8fafc;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.checkout-voucher .input-modern::placeholder {
+    color: #64748b;
+}
+
+.checkout-voucher .input-modern:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.voucher-apply-btn {
+    height: 48px;
+    min-width: 105px;
+    padding: 0 17px !important;
+    border-radius: 13px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+}
+
+.voucher-message {
+    min-height: 0;
+    margin-top: 7px;
+    font-size: 12px;
+}
+
+.voucher-detail {
+    margin-top: 5px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.16);
+}
+
+/* =========================================================
+   FOOTER / TOTAL
+========================================================= */
+
+.checkout-footer {
+    padding: 17px 20px 20px !important;
+    border-top: 1px solid #26364d !important;
+    background: #0d172a;
+}
+
+.checkout-total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 14px;
+}
+
+.total-label {
+    display: block;
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.total-subtitle {
+    display: block;
+    margin-top: 2px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.checkout-total-price {
+    color: #f8fafc;
+    font-size: 25px;
+    line-height: 1;
+    font-weight: 900;
+    white-space: nowrap;
+    letter-spacing: -0.6px;
+}
+
+.checkout-qris-btn {
+    width: 100%;
+    min-height: 52px;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 9px 24px rgba(37, 99, 235, 0.20);
+}
+
+.checkout-qris-btn i {
+    font-size: 15px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .checkout-modal {
+        width: calc(100vw - 20px) !important;
+        max-height: 92vh;
+        border-radius: 19px !important;
+    }
+
+    .checkout-header {
+        min-height: 64px;
+        padding: 0 16px !important;
+    }
+
+    .checkout-title {
+        gap: 9px;
+    }
+
+    .checkout-title-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+    }
+
+    .checkout-title h3 {
+        font-size: 19px;
+    }
+
+    .checkout-close {
+        width: 34px;
+        height: 34px;
+        font-size: 27px !important;
+    }
+
+    .checkout-body {
+        padding: 16px 16px 14px !important;
+    }
+
+    .coin-checkout-section {
+        margin: 0 0 14px;
+        padding: 15px;
+        border-radius: 16px;
+    }
+
+    .coin-header {
+        margin-bottom: 13px;
+    }
+
+    .coin-brand .label {
+        font-size: 16px;
+    }
+
+    .coin-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .coin-header .saldo {
+        font-size: 12px;
+    }
+
+    .coin-header .saldo strong {
+        font-size: 14px;
+    }
+
+    .coin-toggle-group {
+        gap: 8px;
+    }
+
+    .toggle-btn {
+        min-height: 45px;
+        padding: 8px 7px;
+        font-size: 12px;
+        border-radius: 12px;
+    }
+
+    .coin-amount-control {
+        grid-template-columns: 47px minmax(0, 1fr) 47px;
+        gap: 7px;
+    }
+
+    .coin-control-btn {
+        width: 47px;
+        height: 47px;
+        font-size: 24px;
+    }
+
+    .coin-input-wrap {
+        height: 47px;
+        padding: 0 10px;
+    }
+
+    .coin-input-wrap input {
+        font-size: 19px;
+    }
+
+    .coin-max-btn {
+        min-height: 45px;
+        font-size: 13px;
+    }
+
+    .checkout-voucher {
+        padding: 0 16px 15px;
+    }
+
+    .voucher-input-row {
+        gap: 7px;
+    }
+
+    .checkout-voucher .input-modern {
+        height: 46px;
+        font-size: 13px;
+        padding: 0 12px;
+    }
+
+    .voucher-apply-btn {
+        min-width: 91px;
+        height: 46px;
+        padding: 0 12px !important;
+        font-size: 12px !important;
+    }
+
+    .checkout-footer {
+        padding: 15px 16px 17px !important;
+    }
+
+    .checkout-total-row {
+        margin-bottom: 12px;
+    }
+
+    .total-label {
+        font-size: 13px;
+    }
+
+    .checkout-total-price {
+        font-size: 22px;
+    }
+
+    .checkout-qris-btn {
+        min-height: 50px;
+        font-size: 14px !important;
+    }
+}
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width: 370px) {
+
+    .checkout-modal {
+        width: calc(100vw - 12px) !important;
+    }
+
+    .coin-checkout-section {
+        padding: 13px;
+    }
+
+    .coin-header .saldo {
+        font-size: 11px;
+    }
+
+    .coin-brand .label {
+        font-size: 15px;
+    }
+
+    .toggle-btn {
+        font-size: 11px;
+    }
+
+    .voucher-apply-btn {
+        min-width: 82px;
+    }
+
+    .checkout-total-price {
+        font-size: 20px;
+    }
+}
     </style>
 </head>
 <body>
@@ -2757,54 +3468,189 @@
         </div>
     </div>
 
-    <!-- CHECKOUT -->
-    <div class="modal-overlay" id="checkoutModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="text-lg font-extrabold" style="color:var(--text);"><i class="fas fa-credit-card text-primary mr-2"></i>Checkout</h3>
-                <button class="modal-close text-2xl" style="color:var(--textSec);" data-modal="checkoutModal">&times;</button>
-            </div>
-            <div class="modal-body" id="checkoutDetails"></div>
-            <div class="coin-checkout-section">
-    <div class="coin-header">
-        <span class="label"><i class="fas fa-coins text-yellow-500 mr-1"></i> RIKY COIN</span>
-        <span class="saldo">Saldo: <span id="checkoutCoinBalance">0</span> Coin</span>
-    </div>
-    <div class="coin-toggle-group">
-        <button class="toggle-btn active" data-use="no">Tidak Gunakan</button>
-        <button class="toggle-btn" data-use="yes">Gunakan Coin</button>
-    </div>
-    <div id="coinAmountSection" style="display:none;">
-        <div class="coin-amount-control">
-            <button id="coinDecBtn">−</button>
-            <input type="number" id="coinAmountInput" value="0" min="0">
-            <button id="coinIncBtn">+</button>
-            <button class="coin-max-btn" id="coinMaxBtn">Maksimal</button>
-        </div>
-        <div class="coin-info-text">
-            Maksimal 20% dari total ( <span id="maxCoinDisplay">0</span> Coin )
-        </div>
-    </div>
-    <div class="coin-discount-display" id="coinDiscountDisplay">Potongan: Rp0</div>
-</div>
-            <div class="px-4 pb-1">
-                <div class="flex gap-1.5">
-                    <input type="text" id="checkoutVoucherInput" placeholder="Kode voucher" class="input-modern text-sm flex-1">
-                    <button class="btn-primary text-xs px-3" id="checkoutVoucherApply">Terapkan</button>
-                </div>
-                <div id="voucherMessage" class="text-xs mt-1"></div>
-                <div id="voucherDetail" class="text-xs mt-1 hidden"></div>
-            </div>
-            <div class="modal-footer">
-                <div class="w-full flex justify-between items-center">
-                    <span class="text-sm font-semibold" style="color:var(--textSec);">Total</span>
-                    <span class="text-xl font-black text-primary" id="checkoutTotal">Rp0</span>
-                </div>
-                <button class="btn-primary w-full mt-1.5" id="checkoutQrisBtn"><i class="fas fa-qrcode"></i> Bayar dengan QRIS</button>
-            </div>
-        </div>
-    </div>
+ <!-- CHECKOUT -->
+<div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content checkout-modal">
 
+        <!-- HEADER -->
+        <div class="modal-header checkout-header">
+            <div class="checkout-title">
+                <div class="checkout-title-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <h3>Checkout</h3>
+            </div>
+
+            <button
+                class="modal-close checkout-close"
+                style="color:var(--textSec);"
+                data-modal="checkoutModal"
+                aria-label="Tutup">
+                &times;
+            </button>
+        </div>
+
+        <!-- DETAIL PRODUK -->
+        <div class="modal-body checkout-body" id="checkoutDetails"></div>
+
+        <!-- RIKY COIN -->
+        <div class="coin-checkout-section">
+
+            <div class="coin-header">
+                <div class="coin-brand">
+                    <div class="coin-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+
+                    <span class="label">RIKY COIN</span>
+                </div>
+
+                <div class="saldo">
+                    Saldo:
+                    <strong id="checkoutCoinBalance">0</strong>
+                    <span>Coin</span>
+                </div>
+            </div>
+
+            <!-- PILIHAN COIN -->
+            <div class="coin-toggle-group">
+                <button
+                    type="button"
+                    class="toggle-btn active"
+                    data-use="no">
+                    Tidak Gunakan
+                </button>
+
+                <button
+                    type="button"
+                    class="toggle-btn"
+                    data-use="yes">
+                    Gunakan Coin
+                </button>
+            </div>
+
+            <!-- JUMLAH COIN -->
+            <div id="coinAmountSection" class="coin-amount-section" style="display:none;">
+
+                <div class="coin-amount-label">
+                    <span>Jumlah Coin</span>
+                    <span class="coin-value-hint">
+                        1 Coin = Rp1
+                    </span>
+                </div>
+
+                <div class="coin-amount-control">
+
+                    <button
+                        type="button"
+                        id="coinDecBtn"
+                        class="coin-control-btn"
+                        aria-label="Kurangi Coin">
+                        −
+                    </button>
+
+                    <div class="coin-input-wrap">
+                        <input
+                            type="number"
+                            id="coinAmountInput"
+                            value="0"
+                            min="0"
+                            inputmode="numeric">
+                        <span>Coin</span>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="coinIncBtn"
+                        class="coin-control-btn"
+                        aria-label="Tambah Coin">
+                        +
+                    </button>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="coin-max-btn"
+                    id="coinMaxBtn">
+                    <i class="fas fa-bolt"></i>
+                    Maksimalkan Coin
+                </button>
+
+                <div class="coin-info-text">
+                    Maksimal 20% dari total
+                    <span>(<span id="maxCoinDisplay">0</span> Coin)</span>
+                </div>
+
+            </div>
+
+            <!-- POTONGAN COIN -->
+            <div class="coin-discount-display" id="coinDiscountDisplay">
+                <span>Potongan</span>
+                <strong>Rp0</strong>
+            </div>
+
+        </div>
+
+        <!-- VOUCHER -->
+        <div class="checkout-voucher">
+
+            <div class="voucher-label">
+                <i class="fas fa-ticket"></i>
+                <span>Punya kode voucher?</span>
+            </div>
+
+            <div class="voucher-input-row">
+
+                <input
+                    type="text"
+                    id="checkoutVoucherInput"
+                    placeholder="Masukkan kode voucher"
+                    autocomplete="off"
+                    class="input-modern">
+
+                <button
+                    type="button"
+                    class="btn-primary voucher-apply-btn"
+                    id="checkoutVoucherApply">
+                    Terapkan
+                </button>
+
+            </div>
+
+            <div id="voucherMessage" class="voucher-message"></div>
+            <div id="voucherDetail" class="voucher-detail hidden"></div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer checkout-footer">
+
+            <div class="checkout-total-row">
+                <div>
+                    <span class="total-label">Total Pembayaran</span>
+                    <span class="total-subtitle">Sudah termasuk potongan</span>
+                </div>
+
+                <span
+                    class="checkout-total-price"
+                    id="checkoutTotal">
+                    Rp0
+                </span>
+            </div>
+
+            <button
+                type="button"
+                class="btn-primary checkout-qris-btn"
+                id="checkoutQrisBtn">
+                <i class="fas fa-qrcode"></i>
+                <span>Bayar dengan QRIS</span>
+            </button>
+
+        </div>
+
+    </div>
+</div>
     <!-- QRIS -->
     <div class="modal-overlay" id="qrisModal">
         <div class="modal-content" style="max-width:360px;">
