@@ -4720,38 +4720,58 @@ else if (action === 'coins') {
             document.getElementById('voucherDetail').classList.add('hidden');
         }
 
-        document.getElementById('checkoutVoucherApply')?.addEventListener('click', function() {
-            const code = document.getElementById('checkoutVoucherInput').value.trim().toUpperCase();
-            const msg = document.getElementById('voucherMessage');
-            if (!code) { msg.innerHTML = '<span style="color:#EF4444;">Masukkan kode voucher.</span>'; return; }
-            const user = getLoggedInUser();
-            if (!user) { msg.innerHTML = '<span style="color:#EF4444;">Login dulu untuk pakai voucher.</span>'; return; }
-            const users = getUsers();
-            const uData = users.find(u => u.username === user.username);
-            if (uData && uData.voucherUsed) { msg.innerHTML = '<span style="color:#EF4444;">Voucher sudah dipakai.</span>'; return; }
-            const voucher = validVouchers.find(v => v.code === code);
-            if (!voucher) { msg.innerHTML = '<span style="color:#EF4444;">Kode tidak valid.</span>'; return; }
-            const hasBot = cart.some(i => i.tipe === 'bot');
-            if (!hasBot) { msg.innerHTML = '<span style="color:#EF4444;">Voucher khusus produk bot.</span>'; return; }
-            const total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
-            const disc = Math.min(voucher.discount, total);
-            const after = total - disc;
-            appliedVoucher = { code, discountAmount: disc, totalAfterDiscount: after };
-            msg.innerHTML = `<span style="color:#22C55E;">✓ Voucher berhasil! Potongan Rp${disc.toLocaleString()}</span>`;
-            const detail = document.getElementById('voucherDetail');
-            detail.classList.remove('hidden');
-            detail.innerHTML =
-                `<div class="flex justify-between text-xs py-0.5"><span style="color:var(--textSec);">Diskon</span><span style="color:#22C55E;">-Rp${disc.toLocaleString()}</span></div><div class="flex justify-between text-xs font-bold py-0.5 border-t" style="border-color:var(--border);"><span style="color:var(--text);">Total setelah diskon</span><span class="text-primary">Rp${after.toLocaleString()}</span></div><button class="text-xs text-red-400 hover:text-red-300 mt-0.5" id="removeVoucherBtn">Hapus Voucher</button>`;
-            document.getElementById('checkoutTotal').textContent = `Rp${after.toLocaleString()}`;
-            document.getElementById('removeVoucherBtn')?.addEventListener('click', () => {
-                appliedVoucher = null;
-                document.getElementById('voucherDetail').classList.add('hidden');
-                const t2 = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
-                document.getElementById('checkoutTotal').textContent = `Rp${t2.toLocaleString()}`;
-                msg.innerHTML = '';
-                document.getElementById('checkoutVoucherInput').value = '';
-            });
-        });
+        document.getElementById('checkoutVoucherApply')?.addEventListener('click', async function() {
+    const code = document.getElementById('checkoutVoucherInput').value.trim().toUpperCase();
+    const msg = document.getElementById('voucherMessage');
+    if (!code) { msg.innerHTML = '<span style="color:#EF4444;">Masukkan kode voucher.</span>'; return; }
+
+    const user = getLoggedInUser();
+    if (!user) { msg.innerHTML = '<span style="color:#EF4444;">Login dulu untuk pakai voucher.</span>'; return; }
+
+    const result = await validateVoucher(code);
+    if (!result) {
+        msg.innerHTML = '<span style="color:#EF4444;">Kode tidak valid.</span>';
+        return;
+    }
+    if (!result.valid) {
+        if (result.reason === 'expired') msg.innerHTML = '<span style="color:#EF4444;">Voucher sudah kadaluarsa.</span>';
+        else if (result.reason === 'quota') msg.innerHTML = '<span style="color:#EF4444;">Kuota voucher sudah habis.</span>';
+        else msg.innerHTML = '<span style="color:#EF4444;">Voucher tidak aktif.</span>';
+        return;
+    }
+
+    const total = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+    const discAmount = Math.floor(total * (result.discountPercent / 100));
+    const after = total - discAmount;
+
+    appliedVoucher = {
+        code: code,
+        discountAmount: discAmount,
+        totalAfterDiscount: after,
+        docId: result.docId,
+        discountPercent: result.discountPercent
+    };
+
+    msg.innerHTML = `<span style="color:#22C55E;">✓ Voucher ${code} berhasil! Potongan ${result.discountPercent}% (Rp${discAmount.toLocaleString()})</span>`;
+    document.getElementById('checkoutTotal').textContent = `Rp${after.toLocaleString()}`;
+
+    const detail = document.getElementById('voucherDetail');
+    detail.classList.remove('hidden');
+    detail.innerHTML = `
+        <div class="flex justify-between text-xs py-0.5"><span style="color:var(--textSec);">Diskon ${result.discountPercent}%</span><span style="color:#22C55E;">-Rp${discAmount.toLocaleString()}</span></div>
+        <div class="flex justify-between text-xs font-bold py-0.5 border-t" style="border-color:var(--border);"><span style="color:var(--text);">Total setelah diskon</span><span class="text-primary">Rp${after.toLocaleString()}</span></div>
+        <button class="text-xs text-red-400 hover:text-red-300 mt-0.5" id="removeVoucherBtn">Hapus Voucher</button>
+    `;
+
+    document.getElementById('removeVoucherBtn')?.addEventListener('click', () => {
+        appliedVoucher = null;
+        document.getElementById('voucherDetail').classList.add('hidden');
+        const t2 = cart.reduce((s, i) => s + i.harga * (i.qty || 1), 0);
+        document.getElementById('checkoutTotal').textContent = `Rp${t2.toLocaleString()}`;
+        msg.innerHTML = '';
+        document.getElementById('checkoutVoucherInput').value = '';
+    });
+});
 
         document.getElementById('checkoutQrisBtn')?.addEventListener('click', () => {
             if (!cart.length) { showToast('Keranjang kosong!', 'error'); return; }
@@ -4828,6 +4848,10 @@ else if (action === 'coins') {
                     localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
                     cart = [];
                     saveCart();
+                    // Increment pemakaian voucher jika ada
+if (appliedVoucher && appliedVoucher.docId) {
+    await incrementVoucherUsage(appliedVoucher.docId);
+}
                     document.getElementById('uploadModal').classList.remove('open');
                     showToast('Pesanan berhasil! Admin akan segera proses.', 'success');
                     appliedVoucher = null;
@@ -5021,6 +5045,50 @@ else if (action === 'coins') {
                 }
             });
         }
+        // ============================================================
+// VALIDASI VOUCHER DARI FIRESTORE (TAMBAHAN BARU)
+// ============================================================
+async function validateVoucher(code) {
+    try {
+        const snapshot = await db.collection('vouchers')
+            .where('code', '==', code.toUpperCase())
+            .where('active', '==', true)
+            .get();
+
+        if (snapshot.empty) return null;
+
+        const doc = snapshot.docs[0];
+        const data = doc.data();
+        const now = new Date();
+        const expires = data.expiresAt.toDate ? data.expiresAt.toDate() : new Date(data.expiresAt);
+
+        if (expires < now) return { valid: false, reason: 'expired' };
+
+        const used = data.usedCount || 0;
+        if (used >= data.maxUses) return { valid: false, reason: 'quota' };
+
+        return {
+            valid: true,
+            docId: doc.id,
+            discountPercent: data.discountPercent,
+            maxUses: data.maxUses,
+            usedCount: used
+        };
+    } catch (err) {
+        console.error('Validasi voucher error:', err);
+        return null;
+    }
+}
+
+async function incrementVoucherUsage(docId) {
+    try {
+        await db.collection('vouchers').doc(docId).update({
+            usedCount: firebase.firestore.FieldValue.increment(1)
+        });
+    } catch (err) {
+        console.error('Gagal increment voucher:', err);
+    }
+}
 // ============================================
 // FUNGSI SHOW COIN HISTORY
 // ============================================
@@ -5693,6 +5761,7 @@ function escapeHtml(text) {
         // EXPOSE
         // ============================================================
         window.navigateTo = navigateTo;
+        window.showCoinHistory = showCoinHistory;
         window.showCoinHistory = showCoinHistory;
         window.openAuthModal = openAuthModal;
         window.openCartModal = openCartModal;
