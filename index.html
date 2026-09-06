@@ -7932,7 +7932,7 @@ document.getElementById('kirimBuktiBtn')?.addEventListener('click', async functi
         cart = [];
         saveCart();
 
-        // KIRIM KE TELEGRAM
+        // KIRIM KE TELEGRAM (OPSIONAL)
         const caption = `✨ RIKY STORE - PESANAN BARU\n\nID: #${orderId}\nTotal: Rp${finalTotal.toLocaleString()}\nWA: ${wa}\nStatus: Menunggu Verifikasi`;
         const fd = new FormData();
         fd.append('chat_id', CHAT_ID);
