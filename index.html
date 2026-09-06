@@ -6851,7 +6851,8 @@ PAGE: LEADERBOARD
                 else navigateTo('reseller');
             }
         }
-
+// EXPOSE navigasi ke window (INI PENTING!)
+window.navigateTo = navigateTo;
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
             btn.addEventListener('click', () => {
                 navigateTo(btn.dataset.page);
@@ -8994,24 +8995,13 @@ function listenLeaderboard() {
 // ============================================================
 // Simpan fungsi navigateTo asli jika sudah ada (misal dari kode sebelumnya)
 // Jika belum ada, kita buat fallback sendiri.
-if (typeof window.navigateTo !== 'function') {
-    window.navigateTo = function(page) {
-        // fallback sederhana
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        const target = document.getElementById(`page-${page}`);
-        if (target) target.classList.add('active');
-        document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-        const navBtn = document.querySelector(`.bottom-nav .nav-item[data-page="${page}"]`);
-        if (navBtn) navBtn.classList.add('active');
-        document.getElementById('drawer')?.classList.remove('open');
-        document.getElementById('drawerOverlay')?.classList.remove('open');
-        document.body.classList.remove('drawer-open');
-        document.getElementById('searchResults')?.classList.add('hidden');
-    };
-}
+// ============================================================
+// NAVIGASI OVERRIDE UNTUK LEADERBOARD
+// ============================================================
+// Simpan referensi ke fungsi navigateTo asli (sudah di-expose)
+const _originalNavigateTo = window.navigateTo;
 
 // Override untuk menangani leaderboard
-const _originalNav = window.navigateTo;
 window.navigateTo = function(page) {
     if (page === 'leaderboard') {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -9026,7 +9016,7 @@ window.navigateTo = function(page) {
         return;
     }
     // panggil fungsi asli
-    _originalNav(page);
+    _originalNavigateTo(page);
 };
     </script>
 
@@ -12487,20 +12477,21 @@ window.navigateTo = function(page) {
 // ============================================================
 // LEADERBOARD REAL-TIME (FIRESTORE)
 // ============================================================
+// ============================================================
+// LEADERBOARD REAL-TIME (FIRESTORE)
+// ============================================================
 
-let leaderboardUnsubscribe = null; // untuk membersihkan listener
+let leaderboardUnsubscribe = null;
 
 function listenLeaderboard() {
     const container = document.getElementById('leaderboardContainer');
     if (!container) return;
 
-    // Hentikan listener sebelumnya jika ada
     if (leaderboardUnsubscribe) {
         leaderboardUnsubscribe();
         leaderboardUnsubscribe = null;
     }
 
-    // Tampilkan loading
     container.innerHTML = `
         <div class="text-center py-6" style="color:var(--textSec);">
             <i class="fas fa-spinner fa-spin text-2xl"></i>
@@ -12508,7 +12499,6 @@ function listenLeaderboard() {
         </div>
     `;
 
-    // Listener ke Firestore: hanya order dengan status 'success' dan coinRewarded true
     leaderboardUnsubscribe = db.collection('orders')
         .where('status', '==', 'success')
         .where('coinRewarded', '==', true)
@@ -12524,13 +12514,11 @@ function listenLeaderboard() {
                 return;
             }
 
-            // Kumpulkan semua order yang sudah sukses
             const orders = [];
             snapshot.forEach(doc => {
                 orders.push(doc.data());
             });
 
-            // Kelompokkan per username
             const userMap = new Map();
             orders.forEach(order => {
                 const username = order.username || 'Guest';
@@ -12542,7 +12530,6 @@ function listenLeaderboard() {
                 data.count += 1;
             });
 
-            // Urutkan berdasarkan total tertinggi, ambil 5 teratas
             const sorted = Array.from(userMap.entries())
                 .map(([username, data]) => ({ username, total: data.total, count: data.count }))
                 .sort((a, b) => b.total - a.total)
@@ -12558,7 +12545,6 @@ function listenLeaderboard() {
                 return;
             }
 
-            // Tampilkan dengan medali
             const medalClasses = ['gold', 'silver', 'bronze'];
             const medalIcons = ['🥇', '🥈', '🥉'];
 
@@ -12596,6 +12582,30 @@ function listenLeaderboard() {
             `;
         });
 }
+
+// ============================================================
+// NAVIGASI OVERRIDE UNTUK LEADERBOARD
+// ============================================================
+// Pastikan fungsi navigateTo sudah di-expose ke window
+// (sudah dilakukan di bagian NAVIGATION dengan window.navigateTo = navigateTo)
+
+const _originalNavigateTo = window.navigateTo;
+
+window.navigateTo = function(page) {
+    if (page === 'leaderboard') {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const target = document.getElementById('page-leaderboard');
+        if (target) target.classList.add('active');
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('drawer')?.classList.remove('open');
+        document.getElementById('drawerOverlay')?.classList.remove('open');
+        document.body.classList.remove('drawer-open');
+        document.getElementById('searchResults')?.classList.add('hidden');
+        listenLeaderboard();
+        return;
+    }
+    _originalNavigateTo(page);
+};
     </script>
 
 </body>
