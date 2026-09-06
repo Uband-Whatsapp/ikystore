@@ -873,85 +873,8 @@ const db = firebase.firestore();
 // STATE
 // =====================================================
 
-let orders = [];
-
-
-
-// =====================================================
-// FETCH DATA DARI FIRESTORE
-// =====================================================
-
-async function fetchData() {
-
-    try {
-
-        const snapshot = await db
-            .collection('orders')
-            .where('status', '==', 'pending')
-            .get();
-
-
-        orders = [];
-
-
-        snapshot.forEach(doc => {
-
-            const data = doc.data();
-
-
-            orders.push({
-
-                firestoreId: doc.id,
-
-                ...data
-
-            });
-
-        });
-
-
-        // URUTKAN ORDER TERBARU
-
-        orders.sort((a, b) => {
-
-            return Number(b.id || 0) - Number(a.id || 0);
-
-        });
-
-
-        console.log(
-            '✅ Order pending:',
-            orders.length
-        );
-
-
-        return true;
-
-
-    } catch (error) {
-
-        console.error(
-            '❌ Gagal mengambil order:',
-            error
-        );
-
-
-        Swal.fire({
-
-            icon: 'error',
-
-            title: 'Gagal Memuat Data',
-
-            text: error.message
-
-        });
-
-
-        return false;
-
-    }
-
-}
+let ordersData = [];          // <-- GANTI: sekarang pake ini
+let ordersUnsubscribe = null; // <-- untuk listener
 
 
 
@@ -979,10 +902,207 @@ function escapeHtml(text) {
 
 
 // =====================================================
-// RENDER ORDERS
+// REAL-TIME LISTENER
 // =====================================================
 
-function renderOrders() {
+function listenOrders() {
+
+    const container =
+        document.getElementById('orderList');
+
+
+    const pendingCount =
+        document.getElementById('pendingCount');
+
+
+
+    // Hentikan listener lama jika ada
+
+    if (ordersUnsubscribe) {
+
+        ordersUnsubscribe();
+
+        ordersUnsubscribe = null;
+
+    }
+
+
+    container.innerHTML = `
+
+        <div
+            class="card text-center text-muted"
+            style="padding:30px 20px;"
+        >
+
+            <i
+                class="fas fa-spinner fa-spin"
+                style="font-size:24px;"
+            ></i>
+
+            <div style="margin-top:10px;">
+                Memuat pesanan...
+            </div>
+
+        </div>
+
+    `;
+
+
+    ordersUnsubscribe = db
+
+        .collection('orders')
+
+        .where('status', '==', 'pending')
+
+        .onSnapshot(
+
+            (snapshot) => {
+
+                console.log(
+                    '📦 Jumlah order pending:',
+                    snapshot.size
+                );
+
+
+                if (snapshot.empty) {
+
+                    container.innerHTML = `
+
+                        <div
+                            class="card text-center text-muted"
+                            style="padding:40px 20px;"
+                        >
+
+                            <div
+                                style="
+                                    font-size:30px;
+                                    margin-bottom:12px;
+                                    color:#22c55e;
+                                "
+                            >
+                                <i class="fas fa-circle-check"></i>
+                            </div>
+
+
+                            <div
+                                style="
+                                    font-weight:700;
+                                    color:#e2e8f0;
+                                    margin-bottom:5px;
+                                "
+                            >
+                                Tidak Ada Pesanan Pending
+                            </div>
+
+
+                            <div style="font-size:12px;">
+                                Semua pesanan yang perlu
+                                diverifikasi akan muncul di sini.
+                            </div>
+
+                        </div>
+
+                    `;
+
+                    pendingCount.textContent = '0 Pending';
+
+                    ordersData = [];
+
+                    return;
+
+                }
+
+
+                // Kumpulkan data
+
+                const newOrders = [];
+
+
+                snapshot.forEach(doc => {
+
+                    const data = doc.data();
+
+                    newOrders.push({
+
+                        firestoreId: doc.id,
+
+                        ...data
+
+                    });
+
+                });
+
+
+                // Urutkan terbaru
+
+                newOrders.sort((a, b) => {
+
+                    return Number(b.id || 0) - Number(a.id || 0);
+
+                });
+
+
+                ordersData = newOrders;
+
+
+                pendingCount.textContent =
+                    `${ordersData.length} Pending`;
+
+
+                // RENDER
+
+                renderOrders(ordersData);
+
+            },
+
+            (error) => {
+
+                console.error(
+                    '❌ Firestore listener error:',
+                    error
+                );
+
+                container.innerHTML = `
+
+                    <div
+                        class="card text-center text-danger"
+                        style="padding:30px 20px;"
+                    >
+
+                        <i
+                            class="fas fa-exclamation-triangle"
+                            style="font-size:24px;"
+                        ></i>
+
+                        <div style="margin-top:10px;">
+                            Gagal memuat data:
+                            ${error.message}
+                        </div>
+
+                        <button
+                            class="btn-primary mt-3"
+                            onclick="listenOrders()"
+                        >
+                            Coba Lagi
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+
+        );
+
+}
+
+
+
+// =====================================================
+// RENDER ORDERS (terima parameter)
+// =====================================================
+
+function renderOrders(orders) {
 
     const container =
         document.getElementById('orderList');
@@ -1412,13 +1532,17 @@ function renderOrders() {
 
 async function verifyOrder(index, isSuccess) {
 
+    // PAKAI ordersData (global)
+    const order = ordersData[index];
 
-    const order =
-        orders[index];
-
-
-    if (!order) return;
-
+    if (!order) {
+        Swal.fire(
+            'Error',
+            'Pesanan tidak ditemukan.',
+            'error'
+        );
+        return;
+    }
 
 
     // ==========================================
@@ -1442,7 +1566,8 @@ async function verifyOrder(index, isSuccess) {
                 'error'
             );
 
-            refreshOrders();
+            // Restart listener
+            listenOrders();
 
             return;
 
@@ -1463,7 +1588,7 @@ async function verifyOrder(index, isSuccess) {
                 'info'
             );
 
-            refreshOrders();
+            listenOrders();
 
             return;
 
@@ -1789,7 +1914,9 @@ async function verifyOrder(index, isSuccess) {
             });
 
 
-            await refreshOrders();
+            // TIDAK PERLU refreshOrders() karena listener otomatis update
+            // Tapi kita restart listener biar langsung refresh (opsional)
+            listenOrders();
 
 
 
@@ -1964,7 +2091,8 @@ async function verifyOrder(index, isSuccess) {
 
 
 
-            await refreshOrders();
+            // Restart listener
+            listenOrders();
 
 
 
@@ -1999,46 +2127,18 @@ async function verifyOrder(index, isSuccess) {
 
 
 // =====================================================
-// REFRESH
+// REFRESH (RESTART LISTENER)
 // =====================================================
 
 async function refreshOrders() {
 
-    const container =
-        document.getElementById('orderList');
-
-
-    container.innerHTML = `
-
-        <div
-            class="card text-center text-muted"
-        >
-
-            <i
-                class="fas fa-spinner fa-spin"
-                style="font-size:22px;"
-            ></i>
-
-            <div
-                style="margin-top:10px;"
-            >
-                Memuat pesanan...
-            </div>
-
-        </div>
-
-    `;
-
-
-    const success =
-        await fetchData();
-
-
-    if (success) {
-
-        renderOrders();
-
+    // Hentikan listener, lalu mulai ulang
+    if (ordersUnsubscribe) {
+        ordersUnsubscribe();
+        ordersUnsubscribe = null;
     }
+
+    listenOrders();
 
 }
 
@@ -2131,7 +2231,8 @@ function showAdminDashboard() {
 
 
 
-    refreshOrders();
+    // Mulai listener real-time
+    listenOrders();
 
 
 }
@@ -2149,6 +2250,13 @@ function logoutAdmin() {
         'adminSession'
     );
 
+
+
+    // Hentikan listener jika masih jalan
+    if (ordersUnsubscribe) {
+        ordersUnsubscribe();
+        ordersUnsubscribe = null;
+    }
 
 
     document
