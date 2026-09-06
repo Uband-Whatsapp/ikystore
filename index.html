@@ -4588,189 +4588,6 @@
         padding-bottom: 11px !important;
     }
 }
-/* ===== LEADERBOARD ===== */
-.leaderboard-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 13px 14px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-sizing: border-box;
-    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
-}
-
-.leaderboard-item + .leaderboard-item {
-    margin-top: 8px;
-}
-
-.leaderboard-item:hover {
-    border-color: var(--primary);
-    transform: translateY(-1px);
-    box-shadow: var(--shadowSm);
-}
-
-/* RANK */
-.leaderboard-item .rank {
-    flex: 0 0 34px;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9px;
-    background: var(--bg);
-    color: var(--textSec);
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.leaderboard-item .rank.gold {
-    color: #B77900;
-    background: rgba(251, 191, 36, .12);
-}
-
-.leaderboard-item .rank.silver {
-    color: #6B7280;
-    background: rgba(156, 163, 175, .12);
-}
-
-.leaderboard-item .rank.bronze {
-    color: #A65300;
-    background: rgba(217, 119, 6, .12);
-}
-
-/* USER INFO */
-.leaderboard-item .info {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-}
-
-.leaderboard-item .info .username {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: var(--text);
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.3;
-}
-
-.leaderboard-item .info .stats {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 4px 10px;
-    margin-top: 4px;
-    color: var(--textSec);
-    font-size: 11px;
-    line-height: 1.3;
-}
-
-.leaderboard-item .info .stats span {
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-}
-
-.leaderboard-item .info .stats span i {
-    margin-right: 4px;
-    font-size: 10px;
-}
-
-/* TOTAL */
-.leaderboard-item .total {
-    flex: 0 0 auto;
-    min-width: 72px;
-    text-align: right;
-    color: var(--primary);
-    font-size: 14px;
-    font-weight: 800;
-    white-space: nowrap;
-}
-
-/* MEDAL */
-.leaderboard-item .badge-medal {
-    flex: 0 0 auto;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-    line-height: 1;
-}
-
-/* EMPTY */
-.leaderboard-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 150px;
-    padding: 24px 16px;
-    box-sizing: border-box;
-    text-align: center;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-}
-
-.leaderboard-empty i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    margin-bottom: 10px;
-    border-radius: 12px;
-    background: var(--bg);
-    color: var(--textSec);
-    font-size: 22px;
-    opacity: .45;
-}
-
-/* ===== MOBILE ===== */
-@media (max-width: 480px) {
-    .leaderboard-item {
-        gap: 10px;
-        padding: 11px 12px;
-        border-radius: 11px;
-    }
-
-    .leaderboard-item .rank {
-        flex-basis: 31px;
-        width: 31px;
-        height: 31px;
-        border-radius: 8px;
-        font-size: 12px;
-    }
-
-    .leaderboard-item .info .username {
-        font-size: 13px;
-    }
-
-    .leaderboard-item .info .stats {
-        font-size: 10px;
-        gap: 3px 8px;
-    }
-
-    .leaderboard-item .total {
-        min-width: 62px;
-        font-size: 12px;
-    }
-
-    .leaderboard-item .badge-medal {
-        width: 25px;
-        height: 25px;
-        font-size: 18px;
-    }
-}
     </style>
 </head>
 <body>
@@ -4921,10 +4738,6 @@
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="topup"><i class="fas fa-gamepad text-primary w-5 text-center"></i> Top Up Game</button>
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="premium"><i class="fas fa-crown text-primary w-5 text-center"></i> APK Premium</button>
                     <button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="allproducts"><i class="fas fa-th-large text-primary w-5 text-center"></i> Semua Produk</button>
-                    <!-- LEADERBOARD MENU -->
-<button class="drawer-link w-full text-left px-3 py-2 rounded-xl hover:bg-card transition flex items-center gap-3 text-sm font-medium" style="color:var(--text);" data-page="leaderboard">
-    <i class="fas fa-trophy text-yellow-500 w-5 text-center"></i> Leaderboard
-</button>
                 </div>
             </div>
 
@@ -5434,40 +5247,7 @@
             <div class="mt-3" id="resellerPriceList"></div>
         </div>
     </div>
-<!-- ============================================================
-PAGE: LEADERBOARD
-============================================================ -->
-<div class="page" id="page-leaderboard">
-    <div class="mt-3">
-        <div class="flex items-center gap-2.5 mb-2">
-            <i class="fas fa-trophy text-3xl text-yellow-500"></i>
-            <h2 class="text-xl font-extrabold" style="color:var(--text);">
-                Leaderboard
-            </h2>
-        </div>
 
-        <p class="text-sm" style="color:var(--textSec);">
-            Top 5 pembeli dengan transaksi terbanyak (sudah diverifikasi)
-        </p>
-    </div>
-
-    <!-- Container leaderboard -->
-    <div id="leaderboardContainer" class="mt-4 space-y-2.5">
-        <!-- Akan diisi JavaScript -->
-        <div class="text-center py-6" style="color:var(--textSec);">
-            <i class="fas fa-spinner fa-spin text-2xl"></i>
-            <p class="mt-2">Memuat leaderboard...</p>
-        </div>
-    </div>
-
-    <!-- Tombol kembali -->
-    <div class="mt-6 text-center">
-        <button class="btn-outline text-sm" onclick="navigateTo('home')">
-            <i class="fas fa-arrow-left"></i>
-            Kembali ke Beranda
-        </button>
-    </div>
-</div>
     <!-- ============================================================
     PAGE: MENU (empty - untuk bottom nav)
     ============================================================ -->
@@ -6181,25 +5961,6 @@ PAGE: LEADERBOARD
         const validVouchers = [{ code: VOUCHER_CODE, discount: VOUCHER_DISCOUNT }];
         const BOT_TOKEN = "8640664034:AAEhOswKTw0dp5aWBdY2lScSg8dSIKN9rPg";
         const CHAT_ID = "8744341504";
-    // ============================================================
-        // KONFIGURASI FIREBASE
-        // ============================================================
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
-            authDomain: "riky-store-push.firebaseapp.com",
-            projectId: "riky-store-push",
-            storageBucket: "riky-store-push.firebasestorage.app",
-            messagingSenderId: "700709840952",
-            appId: "1:700709840952:web:d2efb042652f931d269ecd"
-        };
-
-        // Hindari initialize Firebase lebih dari sekali
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-
-        const db = firebase.firestore();
 
         // ============================================================
         // TOAST
@@ -6851,8 +6612,7 @@ PAGE: LEADERBOARD
                 else navigateTo('reseller');
             }
         }
-// EXPOSE navigasi ke window (INI PENTING!)
-window.navigateTo = navigateTo;
+
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
             btn.addEventListener('click', () => {
                 navigateTo(btn.dataset.page);
@@ -7888,102 +7648,75 @@ else if (action === 'coins') {
                 preview.classList.remove('hidden'); } else preview.classList.add('hidden');
         }
 
-document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
-    const wa = document.getElementById('buyerWa').value.trim();
-    const file = document.getElementById('buktiFile').files[0];
-    const note = document.getElementById('checkoutNote').value.trim();
-    if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
-    if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
+        document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
+            const wa = document.getElementById('buyerWa').value.trim();
+            const file = document.getElementById('buktiFile').files[0];
+            const note = document.getElementById('checkoutNote').value.trim();
+            if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
+            if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
+            let total = appliedVoucher ? appliedVoucher.totalAfterDiscount : cart.reduce((s, i) => s + i.harga * (i.qty ||
+                1), 0);
+            let caption = "✨ RIKY STORE - PESANAN BARU ✨\n\n";
+            cart.forEach(item => {
+                let d = '';
+                if (item.tipe === 'game') d = `ID: ${item.userId}`;
+                else if (item.tipe === 'bot') d = item.linkGrup ? `Link Grup: ${item.linkGrup}` :
+                `No WA: ${item.phone}`;
+                else if (item.tipe === 'premium') d = 'Aktivasi langsung';
+                caption += `📦 ${item.nama} x${item.qty||1} - Rp${(item.harga*(item.qty||1)).toLocaleString()}\n   ▸ ${d}\n\n`;
+            });
+            caption += `💎 TOTAL: Rp${total.toLocaleString()}\n`;
+            if (appliedVoucher) caption +=
+                `🎫 Voucher: ${appliedVoucher.code} (potongan Rp${appliedVoucher.discountAmount.toLocaleString()})\n`;
+            caption += `\n👤 Pembeli\n📱 WA: ${wa}\n`;
+            if (note) caption += `📝 Catatan: ${note}\n`;
+            caption += `\n⏳ Status: Menunggu Konfirmasi Admin`;
+            if (appliedVoucher) {
+                const user = getLoggedInUser();
+                if (user) {
+                    const users = getUsers();
+                    const idx = users.findIndex(u => u.username === user.username);
+                    if (idx !== -1) { users[idx].voucherUsed = true;
+                        saveUsers(users);
+                        user.voucherUsed = true;
+                        setLoggedInUser(user); }
+                }
+            }
+            const fd = new FormData();
+            fd.append('chat_id', CHAT_ID);
+            fd.append('caption', caption);
+            fd.append('photo', file);
+            fd.append('parse_mode', 'Markdown');
+            try {
+                this.textContent = 'Mengirim...';
+                this.disabled = true;
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST',
+                    body: fd });
+                const result = await res.json();
+                if (result.ok) {
+                    const user = getLoggedInUser();
+                    const historyOrder = { id: Date.now(), tanggal: new Date().toLocaleString('id-ID'), items: [
+                            ...cart
+                        ], total: total, username: user ? user.username : 'guest' };
+                    orderHistory.unshift(historyOrder);
+                    localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
+                    cart = [];
+                    saveCart();
+                    // Increment pemakaian voucher jika ada
+if (appliedVoucher && appliedVoucher.docId) {
+    await incrementVoucherUsage(appliedVoucher.docId);
+}
+                    document.getElementById('uploadModal').classList.remove('open');
+                    showToast('Pesanan berhasil! Admin akan segera proses.', 'success');
+                    appliedVoucher = null;
+                    document.getElementById('checkoutVoucherInput').value = '';
+                    document.getElementById('voucherDetail').classList.add('hidden');
+                    document.getElementById('voucherMessage').innerHTML = '';
+                } else showToast('Gagal kirim, coba lagi', 'error');
+            } catch (e) { showToast('Error jaringan, coba lagi', 'error'); } finally { this.textContent = 'Kirim';
+                this.disabled = false; }
+        });
 
-    const user = getLoggedInUser();
-    if (!user) { showToast('Login dulu!', 'error'); return; }
-
-    // HITUNG TOTAL
-    const subtotal = cart.reduce((s, i) => s + (i.harga * (i.qty || 1)), 0);
-    const coinDiscount = Number(window._tempCoinDiscount || 0);
-    const coinUsed = Number(window._tempCoinUsed || 0);
-    const finalTotal = Math.max(0, subtotal - coinDiscount);
-
-    // VALIDASI COIN
-    if (coinUsed > 0) {
-        const balance = getCoinBalance(user.username);
-        if (coinUsed > balance) { showToast('Saldo coin tidak mencukupi!', 'error'); return; }
-        if (coinUsed > Math.floor(subtotal * 0.20)) { showToast('Melebihi batas 20%!', 'error'); return; }
-    }
-
-    const orderId = Date.now();
-    const order = {
-        id: orderId,
-        tanggal: new Date().toLocaleString('id-ID'),
-        items: cart.map(item => ({ ...item })),
-        subtotal: Number(subtotal),
-        coinUsed: Number(coinUsed),
-        coinDiscount: Number(coinDiscount),
-        total: Number(finalTotal),
-        username: user.username || '',
-        status: 'pending',
-        coinRewarded: false,
-        buyerWa: wa,
-        note: note || '',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
-
-    // CEK FIRESTORE
-    if (typeof db === 'undefined') {
-        showToast('Firestore tidak tersedia!', 'error');
-        console.error('❌ db undefined');
-        return;
-    }
-
-    try {
-        console.log('📦 Menyimpan order ke Firestore:', order);
-        await db.collection('orders').doc(String(orderId)).set(order);
-        console.log('✅ Order berhasil disimpan ke Firestore!');
-
-        // POTONG COIN
-        if (coinUsed > 0) {
-            useCoinFromUser(user.username, coinUsed, `Digunakan untuk pesanan #${orderId}`, orderId);
-        }
-
-        // BACKUP LOCAL
-        const historyOrder = { id: orderId, tanggal: order.tanggal, items: [...cart], total: finalTotal, username: user.username };
-        orderHistory.unshift(historyOrder);
-        localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
-        cart = [];
-        saveCart();
-
-        // KIRIM KE TELEGRAM (OPSIONAL)
-        const caption = `✨ RIKY STORE - PESANAN BARU\n\nID: #${orderId}\nTotal: Rp${finalTotal.toLocaleString()}\nWA: ${wa}\nStatus: Menunggu Verifikasi`;
-        const fd = new FormData();
-        fd.append('chat_id', CHAT_ID);
-        fd.append('caption', caption);
-        fd.append('photo', file);
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-
-        document.getElementById('uploadModal').classList.remove('open');
-        document.getElementById('qrisModal').classList.remove('open');
-        showToast('✅ Pesanan berhasil! Cek admin panel.', 'success');
-
-        // RESET
-        window._checkoutCoinUsed = 0;
-        window._checkoutCoinDiscount = 0;
-        window._checkoutSubtotal = 0;
-        window._tempCoinDiscount = 0;
-        window._tempCoinUsed = 0;
-        appliedVoucher = null;
-        document.getElementById('checkoutVoucherInput').value = '';
-        document.getElementById('voucherDetail').classList.add('hidden');
-        document.getElementById('voucherMessage').innerHTML = '';
-        updateCoinUI();
-
-    } catch (err) {
-        console.error('❌ Gagal simpan ke Firestore:', err);
-        showToast('❌ Gagal simpan pesanan: ' + err.message, 'error');
-    } finally {
-        this.textContent = 'Kirim';
-        this.disabled = false;
-    }
-});
         // ============================================================
         // MODAL CLOSE
         // ============================================================
@@ -8881,143 +8614,21 @@ function escapeHtml(text) {
         // ============================================================
         // EXPOSE
         // ============================================================
-// ============================================================
-// ESCAPE HTML (untuk keamanan)
-// ============================================================
-
-// ============================================================
-// LEADERBOARD REAL-TIME (FIRESTORE)
-// ============================================================
-let leaderboardUnsubscribe = null;
-
-function listenLeaderboard() {
-    const container = document.getElementById('leaderboardContainer');
-    if (!container) return;
-
-    if (leaderboardUnsubscribe) {
-        leaderboardUnsubscribe();
-        leaderboardUnsubscribe = null;
-    }
-
-    container.innerHTML = `
-        <div class="text-center py-6" style="color:var(--textSec);">
-            <i class="fas fa-spinner fa-spin text-2xl"></i>
-            <p class="mt-2">Memuat leaderboard...</p>
-        </div>
-    `;
-
-    leaderboardUnsubscribe = db.collection('orders')
-        .where('status', '==', 'success')
-        .where('coinRewarded', '==', true)
-        .onSnapshot((snapshot) => {
-            if (snapshot.empty) {
-                container.innerHTML = `
-                    <div class="leaderboard-empty">
-                        <i class="fas fa-trophy"></i>
-                        <h4 class="text-sm font-bold" style="color:var(--text);">Belum ada transaksi yang diverifikasi</h4>
-                        <p class="text-xs mt-1" style="color:var(--textSec);">Tunggu admin memverifikasi pesanan.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const orders = [];
-            snapshot.forEach(doc => {
-                orders.push(doc.data());
-            });
-
-            const userMap = new Map();
-            orders.forEach(order => {
-                const username = order.username || 'Guest';
-                if (!userMap.has(username)) {
-                    userMap.set(username, { total: 0, count: 0 });
-                }
-                const data = userMap.get(username);
-                data.total += (order.total || 0);
-                data.count += 1;
-            });
-
-            const sorted = Array.from(userMap.entries())
-                .map(([username, data]) => ({ username, total: data.total, count: data.count }))
-                .sort((a, b) => b.total - a.total)
-                .slice(0, 5);
-
-            if (sorted.length === 0) {
-                container.innerHTML = `
-                    <div class="leaderboard-empty">
-                        <i class="fas fa-trophy"></i>
-                        <h4 class="text-sm font-bold" style="color:var(--text);">Belum ada data</h4>
-                    </div>
-                `;
-                return;
-            }
-
-            const medalClasses = ['gold', 'silver', 'bronze'];
-            const medalIcons = ['🥇', '🥈', '🥉'];
-
-            let html = '';
-            sorted.forEach((user, index) => {
-                const rank = index + 1;
-                const medalClass = rank <= 3 ? medalClasses[index] : '';
-                const medalIcon = rank <= 3 ? medalIcons[index] : `#${rank}`;
-                const isMedal = rank <= 3;
-
-                html += `
-                    <div class="leaderboard-item">
-                        <div class="rank ${medalClass}">
-                            ${isMedal ? medalIcon : medalIcon}
-                        </div>
-                        <div class="info">
-                            <div class="username">${escapeHtml(user.username)}</div>
-                            <div class="stats">
-                                <span><i class="fas fa-shopping-bag"></i> ${user.count} order</span>
-                                <span><i class="fas fa-coins"></i> Rp${user.total.toLocaleString('id-ID')}</span>
-                            </div>
-                        </div>
-                        <div class="total">Rp${user.total.toLocaleString('id-ID')}</div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }, (error) => {
-            console.error('Leaderboard listener error:', error);
-            container.innerHTML = `
-                <div class="text-center py-6 text-red-500">
-                    <i class="fas fa-exclamation-triangle"></i> Gagal memuat leaderboard
-                </div>
-            `;
-        });
-}
-
-// ============================================================
-// NAVIGASI (PERBAIKAN)
-// ============================================================
-// Simpan fungsi navigateTo asli jika sudah ada (misal dari kode sebelumnya)
-// Jika belum ada, kita buat fallback sendiri.
-// ============================================================
-// NAVIGASI OVERRIDE UNTUK LEADERBOARD
-// ============================================================
-// Simpan referensi ke fungsi navigateTo asli (sudah di-expose)
-const _originalNavigateTo = window.navigateTo;
-
-// Override untuk menangani leaderboard
-window.navigateTo = function(page) {
-    if (page === 'leaderboard') {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        const target = document.getElementById('page-leaderboard');
-        if (target) target.classList.add('active');
-        document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('drawer')?.classList.remove('open');
-        document.getElementById('drawerOverlay')?.classList.remove('open');
-        document.body.classList.remove('drawer-open');
-        document.getElementById('searchResults')?.classList.add('hidden');
-        listenLeaderboard(); // mulai listener
-        return;
-    }
-    // panggil fungsi asli
-    _originalNavigateTo(page);
-};
+        window.navigateTo = navigateTo;
+        window.showCoinHistory = showCoinHistory;
+        window.showCoinHistory = showCoinHistory;
+        window.openAuthModal = openAuthModal;
+        window.openCartModal = openCartModal;
+        window.openOrdersModal = openOrdersModal;
+        window.openHistoryModal = openHistoryModal;
+        window.openTicketModal = openTicketModal;
+        window.openFaqModal = openFaqModal;
+        window.openGuideModal = openGuideModal;
+        window.showToast = showToast;
+        window.previewBukti = previewBukti;
+        window.openResellerPage = openResellerPage;
+        window.openResellerForm = openResellerForm;
+        window.renderResellerPriceEditor = renderResellerPriceEditor;
     </script>
 
     <!-- Firebase SDK -->
@@ -9025,6 +8636,26 @@ window.navigateTo = function(page) {
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
+        // ============================================================
+        // KONFIGURASI FIREBASE
+        // ============================================================
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcj0yRzKmOxaT1sugTsKhl9-fh2288uCU",
+            authDomain: "riky-store-push.firebaseapp.com",
+            projectId: "riky-store-push",
+            storageBucket: "riky-store-push.firebasestorage.app",
+            messagingSenderId: "700709840952",
+            appId: "1:700709840952:web:d2efb042652f931d269ecd"
+        };
+
+        // Hindari initialize Firebase lebih dari sekali
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const db = firebase.firestore();
+
 
         // ============================================================
         // PUSH NOTIFICATION
@@ -12474,138 +12105,7 @@ window.navigateTo = function(page) {
             );
 
         }
-// ============================================================
-// LEADERBOARD REAL-TIME (FIRESTORE)
-// ============================================================
-// ============================================================
-// LEADERBOARD REAL-TIME (FIRESTORE)
-// ============================================================
 
-let leaderboardUnsubscribe = null;
-
-function listenLeaderboard() {
-    const container = document.getElementById('leaderboardContainer');
-    if (!container) return;
-
-    if (leaderboardUnsubscribe) {
-        leaderboardUnsubscribe();
-        leaderboardUnsubscribe = null;
-    }
-
-    container.innerHTML = `
-        <div class="text-center py-6" style="color:var(--textSec);">
-            <i class="fas fa-spinner fa-spin text-2xl"></i>
-            <p class="mt-2">Memuat leaderboard...</p>
-        </div>
-    `;
-
-    leaderboardUnsubscribe = db.collection('orders')
-        .where('status', '==', 'success')
-        .where('coinRewarded', '==', true)
-        .onSnapshot((snapshot) => {
-            if (snapshot.empty) {
-                container.innerHTML = `
-                    <div class="leaderboard-empty">
-                        <i class="fas fa-trophy"></i>
-                        <h4 class="text-sm font-bold" style="color:var(--text);">Belum ada transaksi yang diverifikasi</h4>
-                        <p class="text-xs mt-1" style="color:var(--textSec);">Tunggu admin memverifikasi pesanan.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const orders = [];
-            snapshot.forEach(doc => {
-                orders.push(doc.data());
-            });
-
-            const userMap = new Map();
-            orders.forEach(order => {
-                const username = order.username || 'Guest';
-                if (!userMap.has(username)) {
-                    userMap.set(username, { total: 0, count: 0 });
-                }
-                const data = userMap.get(username);
-                data.total += (order.total || 0);
-                data.count += 1;
-            });
-
-            const sorted = Array.from(userMap.entries())
-                .map(([username, data]) => ({ username, total: data.total, count: data.count }))
-                .sort((a, b) => b.total - a.total)
-                .slice(0, 5);
-
-            if (sorted.length === 0) {
-                container.innerHTML = `
-                    <div class="leaderboard-empty">
-                        <i class="fas fa-trophy"></i>
-                        <h4 class="text-sm font-bold" style="color:var(--text);">Belum ada data</h4>
-                    </div>
-                `;
-                return;
-            }
-
-            const medalClasses = ['gold', 'silver', 'bronze'];
-            const medalIcons = ['🥇', '🥈', '🥉'];
-
-            let html = '';
-            sorted.forEach((user, index) => {
-                const rank = index + 1;
-                const medalClass = rank <= 3 ? medalClasses[index] : '';
-                const medalIcon = rank <= 3 ? medalIcons[index] : `#${rank}`;
-                const isMedal = rank <= 3;
-
-                html += `
-                    <div class="leaderboard-item">
-                        <div class="rank ${medalClass}">
-                            ${isMedal ? medalIcon : medalIcon}
-                        </div>
-                        <div class="info">
-                            <div class="username">${escapeHtml(user.username)}</div>
-                            <div class="stats">
-                                <span><i class="fas fa-shopping-bag"></i> ${user.count} order</span>
-                                <span><i class="fas fa-coins"></i> Rp${user.total.toLocaleString('id-ID')}</span>
-                            </div>
-                        </div>
-                        <div class="total">Rp${user.total.toLocaleString('id-ID')}</div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }, (error) => {
-            console.error('Leaderboard listener error:', error);
-            container.innerHTML = `
-                <div class="text-center py-6 text-red-500">
-                    <i class="fas fa-exclamation-triangle"></i> Gagal memuat leaderboard
-                </div>
-            `;
-        });
-}
-
-// ============================================================
-// NAVIGASI OVERRIDE UNTUK LEADERBOARD
-// ============================================================
-// Pastikan fungsi navigateTo sudah di-expose ke window
-// (sudah dilakukan di bagian NAVIGATION dengan window.navigateTo = navigateTo)
-
-const _originalNavigateTo = window.navigateTo;
-
-window.navigateTo = function(page) {
-    if (page === 'leaderboard') {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        const target = document.getElementById('page-leaderboard');
-        if (target) target.classList.add('active');
-        document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('drawer')?.classList.remove('open');
-        document.getElementById('drawerOverlay')?.classList.remove('open');
-        document.body.classList.remove('drawer-open');
-        document.getElementById('searchResults')?.classList.add('hidden');
-        listenLeaderboard();
-        return;
-    }
-    _originalNavigateTo(page);
-};
     </script>
 
 </body>
