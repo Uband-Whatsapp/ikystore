@@ -7868,75 +7868,102 @@ else if (action === 'coins') {
                 preview.classList.remove('hidden'); } else preview.classList.add('hidden');
         }
 
-        document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
-            const wa = document.getElementById('buyerWa').value.trim();
-            const file = document.getElementById('buktiFile').files[0];
-            const note = document.getElementById('checkoutNote').value.trim();
-            if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
-            if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
-            let total = appliedVoucher ? appliedVoucher.totalAfterDiscount : cart.reduce((s, i) => s + i.harga * (i.qty ||
-                1), 0);
-            let caption = "✨ RIKY STORE - PESANAN BARU ✨\n\n";
-            cart.forEach(item => {
-                let d = '';
-                if (item.tipe === 'game') d = `ID: ${item.userId}`;
-                else if (item.tipe === 'bot') d = item.linkGrup ? `Link Grup: ${item.linkGrup}` :
-                `No WA: ${item.phone}`;
-                else if (item.tipe === 'premium') d = 'Aktivasi langsung';
-                caption += `📦 ${item.nama} x${item.qty||1} - Rp${(item.harga*(item.qty||1)).toLocaleString()}\n   ▸ ${d}\n\n`;
-            });
-            caption += `💎 TOTAL: Rp${total.toLocaleString()}\n`;
-            if (appliedVoucher) caption +=
-                `🎫 Voucher: ${appliedVoucher.code} (potongan Rp${appliedVoucher.discountAmount.toLocaleString()})\n`;
-            caption += `\n👤 Pembeli\n📱 WA: ${wa}\n`;
-            if (note) caption += `📝 Catatan: ${note}\n`;
-            caption += `\n⏳ Status: Menunggu Konfirmasi Admin`;
-            if (appliedVoucher) {
-                const user = getLoggedInUser();
-                if (user) {
-                    const users = getUsers();
-                    const idx = users.findIndex(u => u.username === user.username);
-                    if (idx !== -1) { users[idx].voucherUsed = true;
-                        saveUsers(users);
-                        user.voucherUsed = true;
-                        setLoggedInUser(user); }
-                }
-            }
-            const fd = new FormData();
-            fd.append('chat_id', CHAT_ID);
-            fd.append('caption', caption);
-            fd.append('photo', file);
-            fd.append('parse_mode', 'Markdown');
-            try {
-                this.textContent = 'Mengirim...';
-                this.disabled = true;
-                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST',
-                    body: fd });
-                const result = await res.json();
-                if (result.ok) {
-                    const user = getLoggedInUser();
-                    const historyOrder = { id: Date.now(), tanggal: new Date().toLocaleString('id-ID'), items: [
-                            ...cart
-                        ], total: total, username: user ? user.username : 'guest' };
-                    orderHistory.unshift(historyOrder);
-                    localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
-                    cart = [];
-                    saveCart();
-                    // Increment pemakaian voucher jika ada
-if (appliedVoucher && appliedVoucher.docId) {
-    await incrementVoucherUsage(appliedVoucher.docId);
-}
-                    document.getElementById('uploadModal').classList.remove('open');
-                    showToast('Pesanan berhasil! Admin akan segera proses.', 'success');
-                    appliedVoucher = null;
-                    document.getElementById('checkoutVoucherInput').value = '';
-                    document.getElementById('voucherDetail').classList.add('hidden');
-                    document.getElementById('voucherMessage').innerHTML = '';
-                } else showToast('Gagal kirim, coba lagi', 'error');
-            } catch (e) { showToast('Error jaringan, coba lagi', 'error'); } finally { this.textContent = 'Kirim';
-                this.disabled = false; }
-        });
+document.getElementById('kirimBuktiBtn')?.addEventListener('click', async function() {
+    const wa = document.getElementById('buyerWa').value.trim();
+    const file = document.getElementById('buktiFile').files[0];
+    const note = document.getElementById('checkoutNote').value.trim();
+    if (!wa) { showToast('Isi nomor WhatsApp!', 'error'); return; }
+    if (!file) { showToast('Upload bukti transfer!', 'error'); return; }
 
+    const user = getLoggedInUser();
+    if (!user) { showToast('Login dulu!', 'error'); return; }
+
+    // HITUNG TOTAL
+    const subtotal = cart.reduce((s, i) => s + (i.harga * (i.qty || 1)), 0);
+    const coinDiscount = Number(window._tempCoinDiscount || 0);
+    const coinUsed = Number(window._tempCoinUsed || 0);
+    const finalTotal = Math.max(0, subtotal - coinDiscount);
+
+    // VALIDASI COIN
+    if (coinUsed > 0) {
+        const balance = getCoinBalance(user.username);
+        if (coinUsed > balance) { showToast('Saldo coin tidak mencukupi!', 'error'); return; }
+        if (coinUsed > Math.floor(subtotal * 0.20)) { showToast('Melebihi batas 20%!', 'error'); return; }
+    }
+
+    const orderId = Date.now();
+    const order = {
+        id: orderId,
+        tanggal: new Date().toLocaleString('id-ID'),
+        items: cart.map(item => ({ ...item })),
+        subtotal: Number(subtotal),
+        coinUsed: Number(coinUsed),
+        coinDiscount: Number(coinDiscount),
+        total: Number(finalTotal),
+        username: user.username || '',
+        status: 'pending',
+        coinRewarded: false,
+        buyerWa: wa,
+        note: note || '',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    // CEK FIRESTORE
+    if (typeof db === 'undefined') {
+        showToast('Firestore tidak tersedia!', 'error');
+        console.error('❌ db undefined');
+        return;
+    }
+
+    try {
+        console.log('📦 Menyimpan order ke Firestore:', order);
+        await db.collection('orders').doc(String(orderId)).set(order);
+        console.log('✅ Order berhasil disimpan ke Firestore!');
+
+        // POTONG COIN
+        if (coinUsed > 0) {
+            useCoinFromUser(user.username, coinUsed, `Digunakan untuk pesanan #${orderId}`, orderId);
+        }
+
+        // BACKUP LOCAL
+        const historyOrder = { id: orderId, tanggal: order.tanggal, items: [...cart], total: finalTotal, username: user.username };
+        orderHistory.unshift(historyOrder);
+        localStorage.setItem('rikyHistory', JSON.stringify(orderHistory));
+        cart = [];
+        saveCart();
+
+        // KIRIM KE TELEGRAM
+        const caption = `✨ RIKY STORE - PESANAN BARU\n\nID: #${orderId}\nTotal: Rp${finalTotal.toLocaleString()}\nWA: ${wa}\nStatus: Menunggu Verifikasi`;
+        const fd = new FormData();
+        fd.append('chat_id', CHAT_ID);
+        fd.append('caption', caption);
+        fd.append('photo', file);
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+
+        document.getElementById('uploadModal').classList.remove('open');
+        document.getElementById('qrisModal').classList.remove('open');
+        showToast('✅ Pesanan berhasil! Cek admin panel.', 'success');
+
+        // RESET
+        window._checkoutCoinUsed = 0;
+        window._checkoutCoinDiscount = 0;
+        window._checkoutSubtotal = 0;
+        window._tempCoinDiscount = 0;
+        window._tempCoinUsed = 0;
+        appliedVoucher = null;
+        document.getElementById('checkoutVoucherInput').value = '';
+        document.getElementById('voucherDetail').classList.add('hidden');
+        document.getElementById('voucherMessage').innerHTML = '';
+        updateCoinUI();
+
+    } catch (err) {
+        console.error('❌ Gagal simpan ke Firestore:', err);
+        showToast('❌ Gagal simpan pesanan: ' + err.message, 'error');
+    } finally {
+        this.textContent = 'Kirim';
+        this.disabled = false;
+    }
+});
         // ============================================================
         // MODAL CLOSE
         // ============================================================
